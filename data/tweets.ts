@@ -1,0 +1,16 @@
+export const tweetUrls = [
+  "https://x.com/keilaspieth/status/1859695836776600004",
+  "https://x.com/AaronWStanley/status/1859198770455429324",
+  "https://x.com/FilFoundation/status/1858523352287072658",
+  "https://x.com/icphub_CA/status/1858132992230613071",
+  "https://x.com/andyboyan/status/1857880662881292672",
+  "https://x.com/EzvenG/status/1857524518081663383",
+  "https://x.com/TheCryptoCooke/status/1857502782913388704",
+  "https://x.com/reva_jariwala/status/1857257357941539074",
+  "https://x.com/owenswill14/status/1856763089364165042",
+  "https://x.com/Leah___Valente/status/1856049086836650311",
+  "https://x.com/aryajgandhi/status/1855765133483450552",
+  "https://x.com/BoilerChain/status/1856000047088804333",
+  "https://x.com/0xJsum/status/1855694058825658449",
+  "https://x.com/byKatherineRoss/status/1855282340899291591",
+];
