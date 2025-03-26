@@ -1,19 +1,18 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import Image from "next/image"; // Import the Image component
 
 const Content = () => {
   return (
     <section className="relative w-full flex flex-col md:flex-row items-center justify-between py-16 md:py-24">
       {/* GIF Side */}
       <div className="relative w-full md:w-1/2 aspect-video rounded-lg overflow-hidden">
-        <img
+        <Image
           src="/MBC_Anim_v2_2.gif" // Path to your GIF file
           alt="Animated Content" // Important for accessibility
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          layout="fill" // Ensures the image covers the container
+          objectFit="cover" // Similar to object-cover in CSS
         />
-        {/* Optional: Overlay (might not be as effective with a GIF) */}
-        {/* <div className="absolute top-0 left-0 w-full h-full bg-black/20"></div> */}
       </div>
 
       {/* Text Side */}
@@ -27,7 +26,7 @@ const Content = () => {
           and workshops across 9 tracks.
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
-          <Button variant="primary">Apply to Speak</Button>
+          <Button variant="default">Apply to Speak</Button>
           <Button variant="secondary">Become a Sponsor</Button>
           <Button variant="outline">Agenda</Button>
         </div>

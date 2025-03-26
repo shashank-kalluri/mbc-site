@@ -1,5 +1,5 @@
 import { speakers } from "@/data/speakers";
-import SpeakerCard from "@/components/SpeakerCard.tsx";
+import SpeakerCard from "@/components/SpeakerCard";
 
 const Speakers = () => {
   return (

@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { FaTwitter, FaLinkedin } from "react-icons/fa";
+import Image from "next/image";
 
 interface SpeakerProps {
   name: string;
@@ -21,7 +21,7 @@ const SpeakerCard = ({
     <div className="w-48 md:w-52 lg:w-56 p-4 rounded-lg shadow-lg flex flex-col items-center text-center">
       <div className="relative w-32 h-32 md:w-36 md:h-36 rounded-lg overflow-hidden">
         <Image
-          src={defaultImage}
+          src={defaultImage || image}
           alt={name}
           layout="fill"
           objectFit="cover"

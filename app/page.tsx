@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Hero from "@/components/Hero.tsx";
-import Content from "@/components/Content.tsx";
-import Countdown from "@/components/Countdown.tsx";
-import FAQ from "@/components/FAQ.tsx";
-import Speakers from "@/components/Speakers.tsx";
-import TwitterBoard from "@/components/TwitterBoard.tsx";
+import Hero from "@/components/Hero";
+import Content from "@/components/Content";
+import Countdown from "@/components/Countdown";
+import FAQ from "@/components/FAQ";
+import Speakers from "@/components/Speakers";
+import TwitterBoard from "@/components/TwitterBoard";
 
 import { faqItems } from "@/data/faq";
 

@@ -5,7 +5,6 @@ import { unstable_cache } from "next/cache";
 import { TweetSkeleton, EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { getTweet as _getTweet } from "react-tweet/api";
 import { tweetUrls } from "@/data/tweets";
-import { cn } from "@/lib/utils";
 
 const getTweet = unstable_cache(
   async (id: string) => _getTweet(id),
@@ -33,7 +32,7 @@ const TweetBoard = () => {
         {tweetUrls.map((url, index) => (
           <div key={index} className="break-inside-avoid p-2">
             <Suspense fallback={<TweetSkeleton />}>
-              <TweetComponent id={url.split("/").pop()} />
+              <TweetComponent id={url.split("/").pop() || ""} />
             </Suspense>
           </div>
         ))}

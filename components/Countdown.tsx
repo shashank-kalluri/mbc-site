@@ -3,7 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const RotatingText = ({ words, speed = 2000 }) => {
+const RotatingText = ({
+  words,
+  speed = 2000,
+}: {
+  words: string[];
+  speed?: number;
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -43,7 +49,11 @@ const RotatingText = ({ words, speed = 2000 }) => {
   );
 };
 
-const CountdownTimer = ({ targetDate }) => {
+interface CountdownTimerProps {
+  targetDate: string;
+}
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -86,15 +96,19 @@ const CountdownTimer = ({ targetDate }) => {
         .padStart(2, "0")}:${timeLeft.seconds.toString().padStart(2, "0")}`}
     </div>
   );
-};
+}; // Fixing the implicit 'any' type error by adding a type annotation
 
-const Countdown = ({ eventDate }) => {
+interface CountdownProps {
+  eventDate: string;
+}
+
+const Countdown: React.FC<CountdownProps> = ({ eventDate }) => {
   const rotatingWords = ["launching", "hacking", "building"];
 
   return (
     <section className="py-10 flex flex-col items-center justify-center px-4">
       <div className="mb-4 text-center text-base sm:text-lg text-muted-foreground">
-        We're <RotatingText words={rotatingWords} speed={1500} /> in
+        We&apos;re <RotatingText words={rotatingWords} speed={1500} /> in
       </div>
       <CountdownTimer targetDate={eventDate} />
       <div className="mt-4 text-center text-base sm:text-lg text-muted-foreground">
