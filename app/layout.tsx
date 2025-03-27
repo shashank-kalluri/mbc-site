@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     apple: "/MBC Logo-08-white.png",
   },
   openGraph: {
-    siteName: "midwestblockchain.org",
+    siteName: "https://mbc-site-five.vercel.app/",
     images: [
       {
         url: "https://github.com/shashank-kalluri/mbc-site/blob/main/public/MBC%20Logo-02.png", // Must be an absolute URL
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "midwestblockchain.org",
+    title: "https://mbc-site-five.vercel.app/",
     description: "The student blockchain conference",
     creator: "@MBC_Conference",
     creatorId: "1805686542125744129",
