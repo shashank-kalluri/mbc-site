@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "https://mbc-site-five.vercel.app/",
     images: [
       {
-        url: "https://github.com/shashank-kalluri/mbc-site/blob/main/public/MBC%20Logo-02.png", // Must be an absolute URL
+        url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/MBC%20Logo-02.png", // Must be an absolute URL
         width: 30001,
         height: 3000,
       },
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     creator: "@MBC_Conference",
     creatorId: "1805686542125744129",
     images: [
-      "https://github.com/shashank-kalluri/mbc-site/blob/main/public/MBC%20Logo-02.png",
+      "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/MBC%20Logo-02.png",
     ], // Must be an absolute URL
   },
 };
