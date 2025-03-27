@@ -21,6 +21,46 @@ import { ReactLenis } from "@/lib/lenis";
 export const metadata: Metadata = {
   title: "MBC 2025",
   description: "The student blockchain conference",
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "./favicon.ico",
+    shortcut: "/MBC Logo-08-white.png",
+    apple: "/MBC Logo-08-white.png",
+  },
+  openGraph: {
+    siteName: "midwestblockchain.org",
+    images: [
+      {
+        url: "https://github.com/shashank-kalluri/mbc-site/blob/main/public/MBC%20Logo-02.png", // Must be an absolute URL
+        width: 30001,
+        height: 3000,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "midwestblockchain.org",
+    description: "The student blockchain conference",
+    creator: "@MBC_Conference",
+    creatorId: "1805686542125744129",
+    images: [
+      "https://github.com/shashank-kalluri/mbc-site/blob/main/public/MBC%20Logo-02.png",
+    ], // Must be an absolute URL
+  },
 };
 
 // const roboto = Roboto({
@@ -33,7 +73,6 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
 });
 
-// ... existing code ...
 const zuume = localFont({
   src: [
     {
