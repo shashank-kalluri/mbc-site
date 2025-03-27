@@ -25,7 +25,7 @@ const TweetComponent = async ({ id }: { id: string }) => {
 const TweetBoard = () => {
   return (
     <section className="w-full py-16 px-4 sm:px-6">
-      <h2 className="text-3xl md:text-6xl font-mono italic font-bold tracking-tight text-center mb-10">
+      <h2 className="text-3xl md:text-6xl text-maize font-mono italic font-bold tracking-tight text-center mb-10">
         The MBC Fam
       </h2>
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">

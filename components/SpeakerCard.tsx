@@ -4,33 +4,44 @@ import Image from "next/image";
 interface SpeakerProps {
   name: string;
   role: string;
-  image: string;
+  company: string;
+  image?: string;
   twitter?: string;
   linkedin?: string;
 }
-const defaultImage = "https://picsum.photos/200";
 
 const SpeakerCard = ({
   name,
   role,
+  company,
   image,
   twitter,
   linkedin,
 }: SpeakerProps) => {
+  // Generate a unique fallback image using the speaker's name
+  const fallbackImage = `https://i.pravatar.cc/300?u=${encodeURIComponent(
+    name
+  )}`;
+
   return (
-    <div className="w-48 md:w-52 lg:w-56 p-4 rounded-lg shadow-lg flex flex-col items-center text-center">
-      <div className="relative w-32 h-32 md:w-36 md:h-36 rounded-lg overflow-hidden">
+    <div className="w-60 md:w-64 lg:w-72 p-6 rounded-lg shadow-lg flex flex-col items-center text-center h-full">
+      <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-lg overflow-hidden">
         <Image
-          src={defaultImage || image}
+          src={image || fallbackImage}
           alt={name}
           layout="fill"
           objectFit="cover"
           className="rounded-lg"
         />
       </div>
-      <h3 className="font-semibold text-lg mt-3">{name}</h3>
-      <p className="text-sm text-gray-500">{role}</p>
-      <div className="mt-2 flex space-x-3">
+      <div className="mt-4 space-y-1 flex-grow mb-4">
+        <h3 className="font-semibold text-lg break-words">{name}</h3>
+        <p className="text-sm text-gray-500 break-words">{role}</p>
+        <p className="text-sm text-gray-700 font-semibold break-words">
+          {company}
+        </p>
+      </div>
+      <div className="mt-auto flex space-x-3 justify-center">
         <a
           href={twitter ? `https://twitter.com/${twitter}` : "#"}
           target="_blank"
@@ -41,10 +52,10 @@ const SpeakerCard = ({
           aria-label={
             twitter
               ? `Twitter profile of ${name}`
-              : `Twitter link not available`
+              : "Twitter link not available"
           }
         >
-          <FaTwitter className="h-5 w-5" />
+          <FaTwitter className="h-6 w-6" />
         </a>
         <a
           href={linkedin ? `https://www.linkedin.com/in/${linkedin}` : "#"}
@@ -56,10 +67,10 @@ const SpeakerCard = ({
           aria-label={
             linkedin
               ? `LinkedIn profile of ${name}`
-              : `LinkedIn link not available`
+              : "LinkedIn link not available"
           }
         >
-          <FaLinkedin className="h-5 w-5" />
+          <FaLinkedin className="h-6 w-6" />
         </a>
       </div>
     </div>

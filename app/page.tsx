@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
-import Content from "@/components/Content";
+import ContentRight from "@/components/ContentRight";
+import ContentLeft from "@/components/ContentLeft";
 import Countdown from "@/components/Countdown";
 import FAQ from "@/components/FAQ";
 import Speakers from "@/components/Speakers";
@@ -13,8 +14,9 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <Content />
+      <ContentRight />
       <Countdown eventDate={eventDate}></Countdown>
+      <ContentLeft />
       <Speakers />
       <TwitterBoard />
       <FAQ items={faqItems} />

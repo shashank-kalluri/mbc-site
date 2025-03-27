@@ -88,7 +88,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   return (
-    <div className="text-4xl sm:text-6xl font-mono font-bold text-[rgb(251,176,64)]">
+    <div className="text-4xl sm:text-6xl font-mono font-bold text-maize">
       {`${timeLeft.days.toString().padStart(2, "0")}:${timeLeft.hours
         .toString()
         .padStart(2, "0")}:${timeLeft.minutes
@@ -107,7 +107,7 @@ const Countdown: React.FC<CountdownProps> = ({ eventDate }) => {
 
   return (
     <section className="py-10 flex flex-col items-center justify-center px-4">
-      <div className="mb-4 text-center text-base sm:text-lg text-muted-foreground">
+      <div className="mb-4 italic font-mono text-5xl text-center sm:text-6xl text-muted-foreground">
         We&apos;re <RotatingText words={rotatingWords} speed={1500} /> in
       </div>
       <CountdownTimer targetDate={eventDate} />

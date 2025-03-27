@@ -3,6 +3,7 @@ import { FaTwitter, FaLinkedin } from "react-icons/fa";
 export interface Speaker {
   name: string;
   role: string;
+  company: string;
   image: string; // Path to the speaker's image
   twitter?: string;
   linkedin?: string;
@@ -12,344 +13,398 @@ export const speakers: Speaker[] = [
   {
     name: "Austin Federa",
     role: "Head of Strategy",
-    image: "/images/austin-federa.jpg", // Replace with actual image path
+    company: "Solana Foundation",
+    image: "",
     twitter: "Austin_Federa",
     linkedin: "austin-federa",
   },
   {
     name: "Christopher Jensen",
     role: "Director of Digital Assets Research",
-    image: "/images/christopher-jensen.jpg", // Replace with actual image path
+    company: "Franklin Templeton",
+    image: "",
     linkedin: "christopher-jensen-8a4a971",
   },
   {
     name: "Ross Shuel",
     role: "Network Operations Partner",
-    image: "/images/ross-shuel.jpg", // Replace with actual image path
+    company: "a16z Crypto",
+    image: "",
     linkedin: "ross-shuel",
   },
   {
     name: "Daniel Feder",
     role: "Director of Investments",
-    image: "/images/daniel-feder.jpg", // Replace with actual image path
-    linkedin: "daniel-feder-7a8b5919", // Example LinkedIn - please verify
+    company: "University of Michigan Endowment",
+    image: "",
+    linkedin: "daniel-feder-7a8b5919",
   },
   {
     name: "Brandon Schroedle",
     role: "Senior Analyst",
-    image: "/images/brandon-schroedle.jpg", // Replace with actual image path
+    company: "University of Michigan Endowment",
+    image: "",
     linkedin: "brandon-schroedle",
   },
   {
     name: "Soona Amhaz",
     role: "Founder + Managing Partner",
-    image: "/images/soona-amhaz.jpg", // Replace with actual image path
+    company: "Volt Capital",
+    image: "",
     twitter: "SoonaAmhaz",
     linkedin: "soona-amhaz",
   },
   {
     name: "Yevgeny Khessin",
     role: "CTO & Co-Founder",
-    image: "/images/yevgeny-khessin.jpg", // Replace with actual image path
+    company: "DIMO",
+    image: "",
     twitter: "yevgenykhessin",
     linkedin: "yevgenykhessin",
   },
   {
     name: "Jane Lippencott",
     role: "Partner",
-    image: "/images/jane-lippencott.jpg", // Replace with actual image path
+    company: "a16z crypto",
+    image: "",
     twitter: "janelippencott",
     linkedin: "janelippencott",
   },
   {
     name: "Trevor Bacon",
     role: "CEO",
-    image: "/images/trevor-bacon.jpg", // Replace with actual image path
+    company: "Parcl",
+    image: "",
     twitter: "trevorbacon",
     linkedin: "trevor-bacon-5a4b3814",
   },
   {
     name: "Phillip Kassab",
     role: "Growth Manager",
-    image: "/images/phillip-kassab.jpg", // Replace with actual image path
+    company: "Sei Foundation",
+    image: "",
     twitter: "PhillipKassab",
     linkedin: "phillip-kassab",
   },
   {
     name: "Aaron Stanley",
     role: "Editorial Director + Head of Special Projects",
-    image: "/images/aaron-stanley.jpg", // Replace with actual image path
+    company: "Filecoin Foundation",
+    image: "",
     twitter: "astanley3",
     linkedin: "aaron-stanley-b7665a2",
   },
   {
     name: "Anais Rachel",
     role: "Analyst",
-    image: "/images/anais-rachel.jpg", // Replace with actual image path
+    company: "Fidelity Digital Assets Management",
+    image: "",
     linkedin: "anais-rachel",
   },
   {
     name: "Evan Fisher",
     role: "Founder + GP",
-    image: "/images/evan-fisher.jpg", // Replace with actual image path
+    company: "Portal VC",
+    image: "",
     twitter: "evanfisher7",
     linkedin: "evan-fisher-portal",
   },
   {
     name: "Andy Boyan",
     role: "Head of Growth",
-    image: "/images/andy-boyan.jpg", // Replace with actual image path
+    company: "Last Network",
+    image: "",
     twitter: "andyboyan",
     linkedin: "andyboyan",
   },
   {
     name: "Clare Adelgren",
     role: "Head of Blockchain Sales and Operations",
-    image: "/images/clare-adelgren.jpg", // Replace with actual image path
+    company: "EY",
+    image: "",
     linkedin: "clareadelgren",
   },
   {
     name: "Rich Morrow",
     role: "COO",
-    image: "/images/rich-morrow.jpg", // Replace with actual image path
+    company: "Baxus",
+    image: "",
     linkedin: "rich-morrow-b7b0391",
   },
   {
     name: "Jessica Furr",
     role: "Associate General Counsel",
-    image: "/images/jessica-furr.jpg", // Replace with actual image path
+    company: "Dragonfly",
+    image: "",
     linkedin: "jessica-furr-esq",
   },
   {
     name: "Christina Cheung",
     role: "Senior Counsel",
-    image: "/images/christina-cheung.jpg", // Replace with actual image path
+    company: "Polygon Labs",
+    image: "",
     linkedin: "christinacheung",
   },
   {
     name: "Alan Orwick",
     role: "Co-Founder",
-    image: "/images/alan-orwick.jpg", // Replace with actual image path
+    company: "Quai Network",
+    image: "",
     twitter: "AlanOrwick",
     linkedin: "alan-orwick",
   },
   {
     name: "Joey Hiller",
     role: "Director of Network Products",
-    image: "/images/joey-hiller.jpg", // Replace with actual image path
+    company: "Helium",
+    image: "",
     linkedin: "joeyhiller",
   },
   {
     name: "Nate Levine",
     role: "Co-Founder",
-    image: "/images/nate-levine.jpg", // Replace with actual image path
+    company: "Colosseum",
+    image: "",
     twitter: "n8levine",
     linkedin: "nate-levine",
   },
   {
     name: "Michael Lee",
     role: "Co-Founder",
-    image: "/images/michael-lee.jpg", // Replace with actual image path
+    company: "Abstract Chain",
+    image: "",
     linkedin: "michael-lee-abstract",
   },
   {
     name: "Lauren Weymouth",
     role: "Senior Director, University Partnerships",
-    image: "/images/lauren-weymouth.jpg", // Replace with actual image path
+    company: "Ripple",
+    image: "",
     linkedin: "laurenweymouth",
   },
   {
     name: "Stephen McKeon",
     role: "Managing Partner",
-    image: "/images/stephen-mckeon.jpg", // Replace with actual image path
+    company: "Collab + Currency",
+    image: "",
     twitter: "StephenMcKeon",
     linkedin: "stephenmckeon",
   },
   {
     name: "Max Resnick",
     role: "Head of Research",
-    image: "/images/max-resnick.jpg", // Replace with actual image path
+    company: "Special Mechanisms Group",
+    image: "",
     linkedin: "max-resnick",
   },
   {
     name: "Rebhi Oweis",
     role: "Emerging Talent Recruiter",
-    image: "/images/rebhi-oweis.jpg", // Replace with actual image path
+    company: "Coinbase",
+    image: "",
     linkedin: "rebhi-oweis",
   },
   {
     name: "Gerald Gallagher",
     role: "Counsel",
-    image: "/images/gerald-gallagher.jpg", // Replace with actual image path
+    company: "Sei Labs",
+    image: "",
     linkedin: "gerald-gallagher-esq",
   },
   {
     name: "Christian Kaczmarczyk",
     role: "Principal",
-    image: "/images/christian-kaczmarczyk.jpg", // Replace with actual image path
+    company: "Third Prime",
+    image: "",
     linkedin: "christian-kaczmarczyk-8194a820",
   },
   {
     name: "Lauren Connolly",
     role: "Head of Design",
-    image: "/images/lauren-connolly.jpg", // Replace with actual image path
+    company: "Zora",
+    image: "",
     twitter: "laurenmconnolly",
     linkedin: "laurenmconnolly",
   },
   {
     name: "Peter Adriaens",
     role: "Director",
-    image: "/images/peter-adriaens.jpg", // Replace with actual image path
+    company: "Center for Digital Asset Finance",
+    image: "",
     linkedin: "peter-adriaens-0274b11",
   },
   {
     name: "Odai Ammar",
     role: "Co-Founder/CEO",
-    image: "/images/odai-ammar.jpg", // Replace with actual image path
+    company: "Elmnts",
+    image: "",
     twitter: "odaiammar",
     linkedin: "odaiammar",
   },
   {
     name: "Peter Gaffney",
     role: "VP, Business Development & Strategy",
-    image: "/images/peter-gaffney.jpg", // Replace with actual image path
+    company: "Blue Water Financial Technologies",
+    image: "",
     linkedin: "petergaffney",
   },
   {
     name: "Patryk Krasnicki",
     role: "Senior Research Analyst",
-    image: "/images/patryk-krasnicki.jpg", // Replace with actual image path
+    company: "Messari",
+    image: "",
     twitter: "PKrasnicki",
     linkedin: "patryk-krasnicki",
   },
   {
     name: "Luis Fausto",
     role: "Content Manager",
-    image: "/images/luis-fausto.jpg", // Replace with actual image path
+    company: "Sonic",
+    image: "",
     twitter: "luisfausto_",
     linkedin: "luis-fausto",
   },
   {
     name: "Ritvick Paliwal",
     role: "Partner",
-    image: "/images/ritvick-paliwal.jpg", // Replace with actual image path
+    company: "Quantum Leap Labs",
+    image: "",
     linkedin: "ritvickpaliwal",
   },
   {
     name: "Javier Arroyo Ferrer",
     role: "Leader",
-    image: "/images/javier-arroyo-ferrer.jpg", // Replace with actual image path
+    company: "ICP HUB Canada & US",
+    image: "",
     linkedin: "javier-arroyo-ferrer",
   },
   {
     name: "Daniel Leavitt",
     role: "Senior Developer Engineer",
-    image: "/images/daniel-leavitt.jpg", // Replace with actual image path
+    company: "Sui",
+    image: "",
     twitter: "djleavitt",
     linkedin: "daniel-leavitt",
   },
   {
     name: "Musab Alturki",
     role: "Senior Blockchain Lead",
-    image: "/images/musab-alturki.jpg", // Replace with actual image path
+    company: "Pi Squared",
+    image: "",
     linkedin: "musab-alturki",
   },
   {
     name: "Parth Valecha",
     role: "Managing Partner",
-    image: "/images/parth-valecha.jpg", // Replace with actual image path
+    company: "Arana Ventures",
+    image: "",
     linkedin: "parth-valecha",
   },
   {
     name: "Abdullah Umar",
     role: "Head of Governance",
-    image: "/images/abdullah-umar.jpg", // Replace with actual image path
+    company: "Arana Digital",
+    image: "",
     linkedin: "abdullah-umar-arana",
   },
   {
     name: "Getty Hill",
     role: "Co-Founder",
-    image: "/images/getty-hill.jpg", // Replace with actual image path
+    company: "GFX Labs",
+    image: "",
     twitter: "GettyHill",
     linkedin: "getty-hill",
   },
   {
     name: "Benjamin Sturisky",
     role: "Analyst",
-    image: "/images/benjamin-sturisky.jpg", // Replace with actual image path
+    company: "Delphi Digital",
+    image: "",
     twitter: "BenSturisky",
     linkedin: "benjamin-sturisky",
   },
   {
     name: "Evan Solomon",
     role: "Co-President",
-    image: "/images/evan-solomon.jpg", // Replace with actual image path
+    company: "Michigan Blockchain",
+    image: "",
     linkedin: "evan-solomon-30b81a198",
   },
   {
     name: "Mateo Membreno",
     role: "Governance",
-    image: "/images/mateo-membreno.jpg", // Replace with actual image path
+    company: "Michigan Blockchain",
+    image: "",
     linkedin: "mateo-membreno",
   },
   {
     name: "Natasha Vasan",
     role: "Law Clerk",
-    image: "/images/natasha-vasan.jpg", // Replace with actual image path
+    company: "Sullivan & Cromwell",
+    image: "",
     linkedin: "natasha-vasan",
   },
   {
     name: "Renzo Levi",
     role: "Analyst",
-    image: "/images/renzo-levi.jpg", // Replace with actual image path
+    company: "677 Group",
+    image: "",
     linkedin: "renzo-levi",
   },
   {
     name: "Aadil Ahmed",
     role: "Head of Growth",
-    image: "/images/aadil-ahmed.jpg", // Replace with actual image path
+    company: "Solana University",
+    image: "",
     linkedin: "aadilahmed1",
   },
   {
     name: "Savindu Wimalasooriya",
     role: "President",
-    image: "/images/savindu-wimalasooriya.jpg", // Replace with actual image path
+    company: "Texas Blockchain",
+    image: "",
     linkedin: "savindu-wimalasooriya",
   },
   {
     name: "Ezven Galarraga",
     role: "President",
-    image: "/images/ezven-galarraga.jpg", // Replace with actual image path
+    company: "Web3 Acceleration Association",
+    image: "",
     linkedin: "ezven-galarraga",
   },
   {
     name: "Shashank Kalluri",
     role: "Co-President",
-    image: "/images/shashank-kalluri.jpg", // Replace with actual image path
+    company: "Michigan Blockchain",
+    image: "",
     linkedin: "shashank-kalluri",
   },
   {
     name: "Max Allaire",
     role: "President",
-    image: "/images/max-allaire.jpg", // Replace with actual image path
+    company: "Tulane Fintech",
+    image: "",
     linkedin: "max-allaire-9b1b59198",
   },
   {
     name: "Ben Spong",
     role: "Founder",
-    image: "/images/ben-spong.jpg", // Replace with actual image path
+    company: "lmao.fun",
+    image: "",
     twitter: "benspong",
   },
   {
     name: "Esha Bora",
     role: "Head of Research",
-    image: "/images/esha-bora.jpg", // Replace with actual image path
+    company: "Texas Blockchain",
+    image: "",
     linkedin: "esha-bora",
   },
   {
     name: "Ravi Bakhai",
     role: "Founder",
-    image: "/images/ravi-bakhai.jpg", // Replace with actual image path
+    company: "Hype",
+    image: "",
     linkedin: "ravibakhai",
   },
 ];

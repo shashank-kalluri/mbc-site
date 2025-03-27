@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image"; // Import the Image component
 
-const Content = () => {
+const ContentRight = () => {
   return (
     <section className="relative w-full flex flex-col md:flex-row items-center justify-between py-16 md:py-24">
       {/* GIF Side */}
@@ -35,4 +35,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default ContentRight;
