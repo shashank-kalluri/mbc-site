@@ -10,8 +10,9 @@ const ContentRight = () => {
         <Image
           src="/MBC_Anim_v2_2.gif" // Path to your GIF file
           alt="Animated Content" // Important for accessibility
-          layout="fill" // Ensures the image covers the container
-          objectFit="cover" // Similar to object-cover in CSS
+          fill
+          unoptimized
+          style={{ objectFit: "cover" }} // Updated to use style prop
         />
       </div>
 

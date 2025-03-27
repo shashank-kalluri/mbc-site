@@ -29,8 +29,8 @@ const SpeakerCard = ({
         <Image
           src={image || fallbackImage}
           alt={name}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: "cover" }} // Updated to use style prop
           className="rounded-lg"
         />
       </div>

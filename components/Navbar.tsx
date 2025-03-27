@@ -32,43 +32,43 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <a
-            href="#"
+            href="#about"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             About
           </a>
           <a
-            href="#"
+            href="#sponsors"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             Sponsors
           </a>
           <a
-            href="#"
+            href="#universities"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             Universities
           </a>
           <a
-            href="#"
+            href="#speakers"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             Speakers
           </a>
           <a
-            href="#"
+            href="#agenda"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             Agenda
           </a>
           <a
-            href="#"
+            href="#tickets"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             Tickets
           </a>
           <a
-            href="#"
+            href="#faq"
             className="text-foreground hover:text-muted-foreground transition font-sans"
           >
             FAQ
@@ -98,49 +98,49 @@ export default function Navbar() {
               className="absolute top-full left-0 w-full bg-background shadow-md py-4 flex flex-col items-start space-y-4 md:hidden pl-6"
             >
               <a
-                href="#"
+                href="#about"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 About
               </a>
               <a
-                href="#"
+                href="#sponsors"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 Sponsors
               </a>
               <a
-                href="#"
+                href="#universities"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 Universities
               </a>
               <a
-                href="#"
+                href="#speakers"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 Speakers
               </a>
               <a
-                href="#"
+                href="#agenda"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 Agenda
               </a>
               <a
-                href="#"
+                href="#tickets"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >
                 Tickets
               </a>
               <a
-                href="#"
+                href="#faq"
                 className="text-foreground hover:text-muted-foreground transition font-sans"
                 onClick={() => setIsOpen(false)}
               >

@@ -13,13 +13,27 @@ export default function Home() {
 
   return (
     <div>
-      <Hero />
-      <ContentRight />
-      <Countdown eventDate={eventDate}></Countdown>
-      <ContentLeft />
-      <Speakers />
-      <TwitterBoard />
-      <FAQ items={faqItems} />
+      <section id="about">
+        <Hero />
+      </section>
+      <section id="sponsors">
+        <ContentRight />
+      </section>
+      <section id="universities">
+        <ContentLeft />
+      </section>
+      <section id="agenda">
+        <Countdown eventDate={eventDate}></Countdown>
+      </section>
+      <section id="speakers">
+        <Speakers />
+      </section>
+      <section id="tickets">
+        <TwitterBoard />
+      </section>
+      <section id="faq">
+        <FAQ items={faqItems} />
+      </section>
     </div>
   );
 }
