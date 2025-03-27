@@ -9,10 +9,16 @@ import {
 } from "react-simple-maps";
 import { Button } from "@/components/ui/button";
 
-const ContentLeft = () => {
-  const [tooltip, setTooltip] = useState(null);
+type Landmark = {
+  name: string;
+  coordinates: [number, number];
+  description: string;
+};
 
-  const landmarks = [
+const ContentLeft = () => {
+  const [tooltip, setTooltip] = useState<Landmark | null>(null);
+
+  const landmarks: Landmark[] = [
     {
       name: "Statue of Liberty",
       coordinates: [-74.0445, 40.6892],
@@ -56,8 +62,8 @@ const ContentLeft = () => {
           {landmarks.map((landmark, index) => (
             <Marker
               key={index}
-              coordinates={landmark.coordinates as [number, number]}
-              onMouseEnter={() => setTooltip(landmark as any)}
+              coordinates={landmark.coordinates}
+              onMouseEnter={() => setTooltip(landmark)}
               onMouseLeave={() => setTooltip(null)}
             >
               <circle r={5} fill="red" />
