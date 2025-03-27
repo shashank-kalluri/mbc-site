@@ -19,11 +19,11 @@ export default function Home() {
       <section id="sponsors">
         <ContentRight />
       </section>
-      <section id="universities">
-        <ContentLeft />
-      </section>
       <section id="agenda">
         <Countdown eventDate={eventDate}></Countdown>
+      </section>
+      <section id="universities">
+        <ContentLeft />
       </section>
       <section id="speakers">
         <Speakers />
