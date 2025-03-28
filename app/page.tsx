@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import ContentRight from "@/components/ContentRight";
-import ContentLeft from "@/components/ContentLeft";
+import ContentMap from "@/components/ContentMap";
 import Countdown from "@/components/Countdown";
 import FAQ from "@/components/FAQ";
 import Speakers from "@/components/Speakers";
@@ -23,7 +23,7 @@ export default function Home() {
         <Countdown eventDate={eventDate}></Countdown>
       </section>
       <section id="universities">
-        <ContentLeft />
+        <ContentMap />
       </section>
       <section id="speakers">
         <Speakers />

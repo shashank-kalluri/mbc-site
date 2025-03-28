@@ -29,7 +29,7 @@ const FAQ = ({ items }: FAQProps) => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="border border-gray-800 rounded-lg overflow-hidden"
+              className="border border-gray-800 rounded-lg overflow-hidden last:border-b"
             >
               <AccordionTrigger className="w-full text-lg font-semibold text-left py-4 px-6 hover:text-[rgb(251,176,64)] transition duration-300">
                 {item.question}

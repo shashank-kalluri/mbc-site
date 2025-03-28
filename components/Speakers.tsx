@@ -6,7 +6,7 @@ const Speakers = () => {
     <section className="py-16">
       <div className="container mx-auto px-6">
         <h2 className="text-6xl font-bold font-mono text-center text-maize mb-10">
-          Our Speakers
+          Past Speakers
         </h2>
 
         {/* Scrollable Row on Small Screens */}

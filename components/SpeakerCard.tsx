@@ -31,7 +31,7 @@ const SpeakerCard = ({
           alt={name}
           fill
           style={{ objectFit: "cover" }} // Updated to use style prop
-          className="rounded-lg"
+          className="rounded-4xl"
         />
       </div>
       <div className="mt-4 space-y-1 flex-grow mb-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -8,6 +8,7 @@ import {
   Marker,
 } from "react-simple-maps";
 import { Button } from "@/components/ui/button";
+import universitiesData from "@/data/universities";
 
 interface University {
   name: string;
@@ -15,33 +16,43 @@ interface University {
   logo: string;
 }
 
-const universities: University[] = [
-  {
-    name: "Stanford University",
-    coordinates: [-122.1703, 37.4275],
-    logo: "/university_logos/stanford.png",
-  },
-  {
-    name: "University of Michigan",
-    coordinates: [-83.7409, 42.278],
-    logo: "/university_logos/umich.png",
-  },
-  {
-    name: "UC Berkeley",
-    coordinates: [-122.259, 37.8719],
-    logo: "/university_logos/berkeley.png",
-  },
-];
-
-const ContentLeft = () => {
+const ContentMap = () => {
   const [isClient, setIsClient] = useState(false);
+  const [visibleMarkers, setVisibleMarkers] = useState<number[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const universities = universitiesData as University[]; // Type cast the imported data
 
   useEffect(() => {
-    setIsClient(true); // Mark as client-side after mount
+    setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          universities.forEach((_, index) => {
+            setTimeout(() => {
+              setVisibleMarkers((prev) => [...prev, index]);
+            }, Math.random() * 5000); // Randomized waiting time
+          });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 } // Trigger when 50% of the section is visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [universities]); // Add universities to the dependency array in case it changes
+
   return (
-    <section className="relative w-full flex flex-col md:flex-row-reverse items-center justify-between py-16 md:py-24">
+    <section
+      ref={sectionRef}
+      className="relative w-full flex flex-col md:flex-row-reverse items-center justify-between py-16 md:py-24"
+    >
       {/* Map Side */}
       <div className="relative w-full md:w-1/2 rounded-lg overflow-hidden">
         {isClient && (
@@ -71,13 +82,19 @@ const ContentLeft = () => {
             </Geographies>
             {universities.map((uni, index) => (
               <Marker key={index} coordinates={uni.coordinates}>
-                <g>
+                <g
+                  className={`transition-opacity duration-700 ease-out transform scale-50 opacity-0 ${
+                    visibleMarkers.includes(index)
+                      ? "opacity-100 scale-100"
+                      : ""
+                  }`}
+                >
                   <image
                     href={uni.logo}
-                    width={20}
-                    height={20}
+                    width={30}
+                    height={30}
                     className="shadow-md z-50 transition-transform duration-300 hover:scale-150"
-                    transform="translate(-10, -10)" // Center image within marker
+                    transform="translate(-15, -15)"
                   />
                 </g>
               </Marker>
@@ -92,9 +109,9 @@ const ContentLeft = () => {
           A Coalition of Universities
         </h2>
         <p className="text-muted-foreground text-lg mb-6">
-          Partnered with 12 Universities and counting, MBC expands the
-          blockchain industry past the coasts, connecting opportunity with
-          potential.
+          Partnered with {universities.length} Universities and counting, MBC
+          expands the blockchain industry past the coasts, connecting
+          opportunity with potential.
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
           <Button variant="default">Learn More</Button>
@@ -105,4 +122,4 @@ const ContentLeft = () => {
   );
 };
 
-export default ContentLeft;
+export default ContentMap;
