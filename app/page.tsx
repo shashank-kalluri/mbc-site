@@ -7,23 +7,27 @@ import Speakers from "@/components/Speakers";
 import TwitterBoard from "@/components/TwitterBoard";
 
 import { faqItems } from "@/data/faq";
+import Sponsors from "@/components/Sponsors";
 
 export default function Home() {
   const eventDate = "2025-12-06T10:00:00";
 
   return (
     <div>
-      <section id="about">
+      <section id="">
         <Hero />
       </section>
-      <section id="sponsors">
+      <section id="about">
         <ContentRight />
       </section>
-      <section id="agenda">
+      <section id="">
         <Countdown eventDate={eventDate}></Countdown>
       </section>
       <section id="universities">
         <ContentMap />
+      </section>
+      <section id="sponsors">
+        <Sponsors />
       </section>
       <section id="speakers">
         <Speakers />

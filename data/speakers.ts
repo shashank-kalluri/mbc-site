@@ -49,7 +49,7 @@ export const speakers: Speaker[] = [
   },
   {
     name: "Yevgeny Khessin",
-    role: "CTO & Co-Founder",
+    role: "Co-Founder & CTO",
     company: "DIMO",
     image: "/speakers/khessin.png",
     twitter: "yevgenykhessin",
@@ -57,7 +57,7 @@ export const speakers: Speaker[] = [
   },
   {
     name: "Trevor Bacon",
-    role: "CEO",
+    role: "Co-Founder & CEO",
     company: "Parcl",
     image: "/speakers/bacon.png",
     twitter: "trevorbacon",
@@ -66,7 +66,7 @@ export const speakers: Speaker[] = [
   {
     name: "Anais Rachel",
     role: "Analyst",
-    company: "Fidelity Digital Assets Management",
+    company: "Fidelity Digital Asset Management",
     image: "/speakers/rachel.png",
     linkedin: "anais-rachel",
   },

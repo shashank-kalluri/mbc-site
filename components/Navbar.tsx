@@ -6,8 +6,33 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
+const navLinks = [
+  { href: "#about", label: "About" },
+  { href: "#sponsors", label: "Sponsors" },
+  { href: "#universities", label: "Universities" },
+  { href: "#speakers", label: "Speakers" },
+  // { href: "#agenda", label: "Agenda" },
+  { href: "#tickets", label: "Tickets" },
+  { href: "#faq", label: "FAQ" },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const linkClass =
+    "text-foreground hover:text-muted-foreground transition font-sans";
+
+  const renderLinks = (isMobile = false) =>
+    navLinks.map(({ href, label }) => (
+      <a
+        key={href}
+        href={href}
+        className={linkClass}
+        onClick={isMobile ? () => setIsOpen(false) : undefined}
+      >
+        {label}
+      </a>
+    ));
 
   return (
     <>
@@ -31,48 +56,7 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <a
-            href="#about"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            About
-          </a>
-          <a
-            href="#sponsors"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            Sponsors
-          </a>
-          <a
-            href="#universities"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            Universities
-          </a>
-          <a
-            href="#speakers"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            Speakers
-          </a>
-          <a
-            href="#agenda"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            Agenda
-          </a>
-          <a
-            href="#tickets"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            Tickets
-          </a>
-          <a
-            href="#faq"
-            className="text-foreground hover:text-muted-foreground transition font-sans"
-          >
-            FAQ
-          </a>
+          {renderLinks()}
           <Button className="ml-4">Sponsor Us</Button>
         </div>
 
@@ -97,55 +81,7 @@ export default function Navbar() {
               exit={{ opacity: 0, y: -10 }}
               className="absolute top-full left-0 w-full bg-background shadow-md py-4 flex flex-col items-start space-y-4 md:hidden pl-6"
             >
-              <a
-                href="#about"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </a>
-              <a
-                href="#sponsors"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                Sponsors
-              </a>
-              <a
-                href="#universities"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                Universities
-              </a>
-              <a
-                href="#speakers"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                Speakers
-              </a>
-              <a
-                href="#agenda"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                Agenda
-              </a>
-              <a
-                href="#tickets"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                Tickets
-              </a>
-              <a
-                href="#faq"
-                className="text-foreground hover:text-muted-foreground transition font-sans"
-                onClick={() => setIsOpen(false)}
-              >
-                FAQ
-              </a>
+              {renderLinks(true)}
               <Button onClick={() => setIsOpen(false)}>Sponsor Us</Button>
             </motion.div>
           )}
