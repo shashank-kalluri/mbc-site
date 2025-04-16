@@ -154,7 +154,7 @@ export default function ImageCloud() {
           <Suspense fallback={null}>
             <RotatingGroup />
           </Suspense>
-          <TrackballControls minDistance={25} maxDistance={50} />
+          <TrackballControls minDistance={35} maxDistance={50} />
         </Canvas>
       </div>
     </section>
