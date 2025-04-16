@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { sponsors } from "@/data/sponsors";
-import { Button } from "./ui/button";
+// import { Button } from "./ui/button";
 
 const marqueeItemStyle =
   "sponsor-item min-w-[160px] flex items-center justify-center p-2 rounded-xl hover:shadow-lg transition";
