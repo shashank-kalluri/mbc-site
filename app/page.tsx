@@ -8,6 +8,7 @@ import TwitterBoard from "@/components/TwitterBoard";
 
 import { faqItems } from "@/data/faq";
 import Sponsors from "@/components/Sponsors";
+import ImageCloud from "@/components/ImageCloud";
 
 export default function Home() {
   const eventDate = "2025-12-06T10:00:00";
@@ -31,6 +32,9 @@ export default function Home() {
       </section>
       <section id="speakers">
         <Speakers />
+      </section>
+      <section id="">
+        <ImageCloud />
       </section>
       <section id="tickets">
         <TwitterBoard />
