@@ -69,13 +69,14 @@ function LogoBillboard({
             display: "block",
           }}
         />
+        <div style={{ display: "none" }}>{name}</div>
       </Html>
     </Billboard>
   );
 }
 
 function Cloud({ radius = 20 }: { radius?: number }) {
-  const universities = universitiesData as University[];
+  const universities = universitiesData;
 
   const positions = useMemo(() => {
     const spherical = new THREE.Spherical();

@@ -1,4 +1,9 @@
-const universitiesData = [
+const universitiesData: {
+  name: string;
+  coordinates: [number, number];
+  logo: string;
+  link: string;
+}[] = [
   {
     name: "Indiana University Bloomington",
     coordinates: [-86.5004, 39.1653],
