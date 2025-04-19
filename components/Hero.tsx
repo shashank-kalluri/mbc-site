@@ -51,9 +51,14 @@ const Hero = () => {
         {/* Text Content */}
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-center space-x-4">
-            <button className="bg-primary text-primary-foreground font-semibold rounded-md py-3 px-6 hover:bg-primary/80 transition-colors text-sm md:text-base">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-primary text-primary-foreground font-semibold rounded-md py-3 px-6 hover:bg-primary/80 transition-colors text-sm md:text-base"
+            >
               Become a Sponsor
-            </button>
+            </a>
             <button className="bg-secondary text-secondary-foreground font-semibold rounded-md py-3 px-6 hover:bg-secondary/80 transition-colors text-sm md:text-base">
               Get Tickets
             </button>

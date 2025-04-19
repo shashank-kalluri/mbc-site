@@ -3,9 +3,8 @@ import ContentRight from "@/components/ContentRight";
 import ContentMap from "@/components/ContentMap";
 import Countdown from "@/components/Countdown";
 import FAQ from "@/components/FAQ";
-import Speakers from "@/components/Speakers";
-import TwitterBoard from "@/components/TwitterBoard";
-
+// import Speakers from "@/components/Speakers";
+import TweetBoard from "@/components/TweetBoard";
 import { faqItems } from "@/data/faq";
 import Sponsors from "@/components/Sponsors";
 import ImageCloud from "@/components/ImageCloud";
@@ -30,14 +29,14 @@ export default function Home() {
       <section id="sponsors">
         <Sponsors />
       </section>
-      <section id="speakers">
+      {/* <section id="speakers">
         <Speakers />
-      </section>
+      </section> */}
       <section id="">
         <ImageCloud />
       </section>
-      <section id="tickets">
-        <TwitterBoard />
+      <section id="">
+        <TweetBoard />
       </section>
       <section id="faq">
         <FAQ items={faqItems} />

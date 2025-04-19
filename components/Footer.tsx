@@ -1,22 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 
 const Footer = () => {
   const navigationLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
+    { href: "#", label: "Home" },
+    { href: "#about", label: "About" },
     { href: "/services", label: "Services" },
-    { href: "/contact", label: "Contact" },
+    {
+      href: "mailto:blockchain@umich.edu?subject=MBC%20Inquiry&body=Hi%20MBC%20Team",
+      label: "Contact",
+    },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/terms", label: "Terms of Service" },
   ];
 
   const socialLinks = [
-    { href: "#", icon: <Facebook className="h-5 w-5" />, alt: "Facebook" },
-    { href: "#", icon: <Instagram className="h-5 w-5" />, alt: "Instagram" },
-    { href: "#", icon: <Twitter className="h-5 w-5" />, alt: "Twitter" },
-    { href: "#", icon: <Youtube className="h-5 w-5" />, alt: "YouTube" },
+    {
+      href: "https://www.facebook.com/michiganblockchain",
+      icon: <Facebook className="h-5 w-5" />,
+      alt: "Facebook",
+    },
+    {
+      href: "https://www.instagram.com/michblockchain/",
+      icon: <Instagram className="h-5 w-5" />,
+      alt: "Instagram",
+    },
+    {
+      href: "https://x.com/MBC_Conference",
+      icon: <Twitter className="h-5 w-5" />,
+      alt: "Twitter",
+    },
+    {
+      href: "https://www.linkedin.com/company/umich-blockchain/",
+      icon: <Linkedin className="h-5 w-5" />,
+      alt: "LinkedIn",
+    },
   ];
 
   return (

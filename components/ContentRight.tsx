@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image"; // Import the Image component
+import Image from "next/image";
 
 const ContentRight = () => {
   return (
@@ -8,11 +8,11 @@ const ContentRight = () => {
       {/* GIF Side */}
       <div className="relative w-full md:w-1/2 aspect-video rounded-lg overflow-hidden">
         <Image
-          src="/MBC_Anim_v2_2.gif" // Path to your GIF file
-          alt="Animated Content" // Important for accessibility
+          src="/MBC_Anim_v2_2.gif"
+          alt="Animated Content"
           fill
           unoptimized
-          style={{ objectFit: "cover" }} // Updated to use style prop
+          style={{ objectFit: "cover" }}
         />
       </div>
 
@@ -27,9 +27,21 @@ const ContentRight = () => {
           and workshops across 9 tracks.
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
-          <Button variant="default">Apply to Speak</Button>
-          <Button variant="secondary">Become a Sponsor</Button>
-          <Button variant="outline">Agenda</Button>
+          <Button asChild variant="default">
+            <a href="#">Apply to Speak</a>
+          </Button>
+          <Button asChild variant="secondary">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Become a Sponsor
+            </a>
+          </Button>
+          <Button asChild variant="outline">
+            <a href="#">Agenda</a>
+          </Button>
         </div>
       </div>
     </section>

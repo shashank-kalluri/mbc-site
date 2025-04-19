@@ -6,64 +6,35 @@ export interface Sponsor {
 }
 
 export const sponsors: Sponsor[] = [
-  // Tier 1
-  {
-    name: "Solana",
-    logo: "/sponsors/solana.png",
-    url: "https://solana.com",
-    tier: 1,
-  },
-  {
-    name: "Coinbase",
-    logo: "/sponsors/coinbase.png",
-    url: "https://www.coinbase.com",
-    tier: 1,
-  },
-
-  // Tier 2
-  {
-    name: "Ethereum",
-    logo: "/sponsors/ethereum.png",
-    url: "https://ethereum.org",
-    tier: 2,
-  },
-  {
-    name: "Polygon",
-    logo: "/sponsors/polygon.png",
-    url: "https://polygon.technology",
-    tier: 2,
-  },
-  {
-    name: "Arbitrum",
-    logo: "/sponsors/arbitrum.png",
-    url: "https://arbitrum.io",
-    tier: 2,
-  },
-  {
-    name: "Base",
-    logo: "/sponsors/base.png",
-    url: "https://base.org",
-    tier: 2,
-  },
   {
     name: "Uniswap Foundation",
     logo: "/sponsors/uniswap.png",
     url: "https://www.uniswapfoundation.org",
-    tier: 2,
+    tier: 3,
   },
-
-  // Tier 3
+  // {
+  //   name: "Last Network",
+  //   logo: "/sponsors/last.png",
+  //   url: "https://www.last.net/",
+  //   tier: 3,
+  // },
+  {
+    name: "Coinbase",
+    logo: "/sponsors/coinbase.png",
+    url: "https://www.coinbase.com/",
+    tier: 3,
+  },
   {
     name: "Avalanche",
     logo: "/sponsors/avalanche.png",
     url: "https://avax.network",
-    tier: 3,
+    tier: 2,
   },
   {
     name: "Filecoin",
     logo: "/sponsors/filecoin.png",
     url: "https://filecoin.io",
-    tier: 3,
+    tier: 2,
   },
   {
     name: "ICP",
@@ -72,19 +43,29 @@ export const sponsors: Sponsor[] = [
     tier: 3,
   },
   {
-    name: "Sonic",
+    name: "Sonic Labs",
     logo: "/sponsors/sonic.png",
-    url: "https://sonic.ooo",
+    url: "https://www.soniclabs.com/",
     tier: 3,
   },
   {
     name: "Sui",
     logo: "/sponsors/sui.png",
     url: "https://sui.io",
-    tier: 3,
+    tier: 2,
   },
-
-  // Tier 4
+  // {
+  //   name: "Pi Squared",
+  //   logo: "/sponsors/pisquared.png",
+  //   url: "https://pi2.network/",
+  //   tier: 2,
+  // },
+  {
+    name: "Franklin Templeton",
+    logo: "/sponsors/ft.png",
+    url: "https://www.franklintempleton.com/",
+    tier: 2,
+  },
   {
     name: "Colosseum",
     logo: "/sponsors/colosseum.png",
@@ -95,18 +76,30 @@ export const sponsors: Sponsor[] = [
     name: "Sei",
     logo: "/sponsors/sei.png",
     url: "https://www.sei.io",
-    tier: 4,
+    tier: 1,
   },
   {
     name: "Parcl",
     logo: "/sponsors/parcl.png",
     url: "https://www.parcl.co",
-    tier: 4,
+    tier: 2,
   },
   {
     name: "Abstract",
     logo: "/sponsors/abstract.png",
-    url: "https://www.abstract.money",
+    url: "https://www.abs.xyz/",
     tier: 4,
+  },
+  {
+    name: "Michigan Business+Tech",
+    logo: "/sponsors/businesstech.png",
+    url: "https://businesstech.bus.umich.edu/",
+    tier: 1,
+  },
+  {
+    name: "Quai Network",
+    logo: "/sponsors/quai.png",
+    url: "https://qu.ai/",
+    tier: 3,
   },
 ];

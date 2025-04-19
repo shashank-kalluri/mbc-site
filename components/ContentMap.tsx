@@ -115,7 +115,15 @@ const ContentMap = () => {
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
           <Button variant="default">Learn More</Button>
-          <Button variant="secondary">Become a Sponsor</Button>
+          <Button asChild variant="secondary">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Become a Sponsor
+            </a>
+          </Button>
         </div>
       </div>
     </section>
