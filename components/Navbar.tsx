@@ -10,8 +10,8 @@ const navLinks = [
   { href: "#about", label: "About" },
   { href: "#sponsors", label: "Sponsors" },
   { href: "#universities", label: "Universities" },
-  { href: "#speakers", label: "Speakers" },
-  { href: "#tickets", label: "Tickets" },
+  // { href: "#speakers", label: "Speakers" },
+  { href: "https://lu.ma/x6apzbr8", label: "Tickets" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -28,6 +28,8 @@ export default function Navbar() {
         href={href}
         className={linkClass}
         onClick={isMobile ? () => setIsOpen(false) : undefined}
+        target={label === "Tickets" ? "_blank" : undefined}
+        rel={label === "Tickets" ? "noopener noreferrer" : undefined}
       >
         {label}
       </a>

@@ -130,21 +130,34 @@ export default function ImageCloud() {
   return (
     <section
       className="relative w-full flex flex-col md:flex-row-reverse items-center justify-between
-                 py-16 md:py-24 px-4 md:px-10 lg:px-16 bg-background text-foreground"
+                 py-16 md:py-24 px-4 md:px-10 lg:px-16 gap-10 bg-background text-foreground"
     >
       {/* Text Side */}
       <div className="relative z-10 w-full md:w-1/2 flex flex-col items-start justify-center mb-10 md:mb-0">
-        <h2 className="text-5xl font-mono font-bold italic md:text-6xl tracking-tight mb-4">
-          Partner Universities
+        <h2 className="text-5xl font-mono font-bold italic md:text-6xl tracking-tight text-foreground mb-4">
+          Access the Inaccessible
         </h2>
         <p className="text-muted-foreground text-lg mb-6">
-          A constellation of innovation—our university partners span coast to
-          coast, pushing blockchain forward in every region. Join the growing
-          coalition.
+          200+ students representing over a dozen Universities, 30+ companies
+          pioneering the on-chain future, and over 50+ speakers delivering talks
+          and workshops across 9 tracks.
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
-          <Button variant="default">Explore Partners</Button>
-          <Button variant="secondary">Get Involved</Button>
+          <Button variant="default">
+            <a href="#">Apply to Speak</a>
+          </Button>
+          <Button asChild variant="secondary">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Become a Sponsor
+            </a>
+          </Button>
+          <Button variant="outline">
+            <a href="#">Agenda</a>
+          </Button>
         </div>
       </div>
 

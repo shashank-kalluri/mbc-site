@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import ContentRight from "@/components/ContentRight";
 import ContentMap from "@/components/ContentMap";
 import Countdown from "@/components/Countdown";
 import FAQ from "@/components/FAQ";
@@ -10,15 +9,15 @@ import Sponsors from "@/components/Sponsors";
 import ImageCloud from "@/components/ImageCloud";
 
 export default function Home() {
-  const eventDate = "2025-12-06T10:00:00";
+  const eventDate = "2025-12-05T10:00:00";
 
   return (
     <div>
       <section id="">
         <Hero />
       </section>
-      <section id="about">
-        <ContentRight />
+      <section id="">
+        <ImageCloud />
       </section>
       <section id="">
         <Countdown eventDate={eventDate}></Countdown>
@@ -32,9 +31,6 @@ export default function Home() {
       {/* <section id="speakers">
         <Speakers />
       </section> */}
-      <section id="">
-        <ImageCloud />
-      </section>
       <section id="">
         <TweetBoard />
       </section>

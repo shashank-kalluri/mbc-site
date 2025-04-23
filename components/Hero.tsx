@@ -65,6 +65,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-b from-transparent to-background backdrop-blur-sm z-20 pointer-events-none" />
     </section>
   );
 };

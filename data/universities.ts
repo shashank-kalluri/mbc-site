@@ -53,6 +53,31 @@ const universitiesData: {
     link: "https://www.cornell.edu",
   },
   {
+    name: "University of Oregon",
+    coordinates: [-123.0751, 44.0459],
+    logo: "/university_logos/oregon.png",
+    link: "https://www.uoregon.edu",
+  },
+  {
+    name: "University of California, Berkeley",
+    coordinates: [-122.2585, 37.8719],
+    logo: "/university_logos/berkeley.png",
+    link: "https://www.berkeley.edu",
+  },
+  {
+    name: "University of Colorado Boulder",
+    coordinates: [-105.2705, 40.0076],
+    logo: "/university_logos/colorado.png",
+    link: "https://www.colorado.edu",
+  },
+
+  {
+    name: "California State University, Fullerton",
+    coordinates: [-117.8854, 33.8826],
+    logo: "/university_logos/fullerton.png",
+    link: "https://www.fullerton.edu",
+  },
+  {
     name: "Northwestern University",
     coordinates: [-87.6757, 42.0558],
     logo: "/university_logos/northwestern.png",
@@ -171,6 +196,12 @@ const universitiesData: {
     coordinates: [-71.0892, 42.34],
     logo: "/university_logos/northeastern.png",
     link: "https://www.northeastern.edu",
+  },
+  {
+    name: "California Polytechnic State University",
+    coordinates: [-120.6625, 35.3004],
+    logo: "/university_logos/calpoly.png",
+    link: "https://www.calpoly.edu",
   },
   {
     name: "Stanford University",
