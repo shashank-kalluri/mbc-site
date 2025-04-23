@@ -7,7 +7,6 @@ import {
   Geography,
   Marker,
 } from "react-simple-maps";
-import { Button } from "@/components/ui/button";
 import universitiesData from "@/data/universities";
 
 interface University {
