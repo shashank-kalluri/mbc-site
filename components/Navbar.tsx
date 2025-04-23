@@ -11,7 +11,7 @@ const navLinks = [
   { href: "#sponsors", label: "Sponsors" },
   { href: "#universities", label: "Universities" },
   // { href: "#speakers", label: "Speakers" },
-  { href: "https://lu.ma/x6apzbr8", label: "Tickets" },
+  // { href: "https://lu.ma/x6apzbr8", label: "Tickets" },
   { href: "#faq", label: "FAQ" },
 ];
 
