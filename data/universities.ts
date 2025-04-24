@@ -204,6 +204,48 @@ const universitiesData: {
     link: "https://www.calpoly.edu",
   },
   {
+    name: "Davidson College",
+    coordinates: [-80.8342, 35.4993],
+    logo: "/university_logos/davidson.png",
+    link: "https://www.davidson.edu",
+  },
+  {
+    name: "Emory University",
+    coordinates: [-84.3219, 33.7925],
+    logo: "/university_logos/emory.png",
+    link: "https://www.emory.edu",
+  },
+  {
+    name: "Villanova University",
+    coordinates: [-75.3416, 40.0373],
+    logo: "/university_logos/villanova.png",
+    link: "https://www1.villanova.edu",
+  },
+  {
+    name: "Dartmouth College",
+    coordinates: [-72.2896, 43.7044],
+    logo: "/university_logos/dartmouth.png",
+    link: "https://home.dartmouth.edu",
+  },
+  {
+    name: "University of Waterloo",
+    coordinates: [-80.5397, 43.4723],
+    logo: "/university_logos/waterloo.png",
+    link: "https://uwaterloo.ca",
+  },
+  {
+    name: "Dalhousie University",
+    coordinates: [-63.5917, 44.6366],
+    logo: "/university_logos/dalhousie.png",
+    link: "https://www.dal.ca",
+  },
+  {
+    name: "University of Washington",
+    coordinates: [-122.3093, 47.6553],
+    logo: "/university_logos/washington.png",
+    link: "https://www.washington.edu",
+  },
+  {
     name: "Stanford University",
     coordinates: [-122.1703, 37.4275],
     logo: "/university_logos/stanford.png",

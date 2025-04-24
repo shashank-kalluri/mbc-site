@@ -138,9 +138,9 @@ export default function ImageCloud() {
           Access the Inaccessible
         </h2>
         <p className="text-muted-foreground text-lg mb-6">
-          200+ students representing over a dozen Universities, 30+ companies
-          pioneering the on-chain future, and over 50+ speakers delivering talks
-          and workshops across 9 tracks.
+          700+ students representing over a 50 Universities, 30+ companies
+          pioneering the onchain future, and over 50+ speakers delivering demos,
+          workshops, and presentations.
         </p>
         <div className="flex flex-wrap sm:flex-row gap-4">
           <Button variant="default">

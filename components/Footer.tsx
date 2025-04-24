@@ -32,7 +32,7 @@ const Footer = () => {
       alt: "Twitter",
     },
     {
-      href: "https://www.linkedin.com/company/umich-blockchain/",
+      href: "https://www.linkedin.com/company/midwest-blockchain-conference/about/",
       icon: <Linkedin className="h-5 w-5" />,
       alt: "LinkedIn",
     },
