@@ -27,7 +27,10 @@ const Hero = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
-        <source src="/video.mp4" type="video/mp4" />
+        <source
+          src="https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/video.mp4"
+          type="video/mp4"
+        />
         Your browser does not support the video tag.
       </video>
 
@@ -47,10 +50,9 @@ const Hero = () => {
             priority
           />
         </div>
-
         {/* Text Content */}
         <div className="max-w-3xl mx-auto">
-          <div className="flex justify-center space-x-4">
+          <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
             <a
               href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
               target="_blank"
