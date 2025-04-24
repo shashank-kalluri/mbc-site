@@ -12,13 +12,14 @@ const universitiesData: {
   },
   {
     name: "Michigan State University",
-    coordinates: [-84.4839, 42.7017],
+    // moved northwest by Δlon -0.30, Δlat +0.30
+    coordinates: [-84.7839, 43.0017],
     logo: "/university_logos/msu.png",
     link: "https://msu.edu",
   },
   {
     name: "Fordham University",
-    coordinates: [-73.8868, 40.8654],
+    coordinates: [-73.8868, 41.5654],
     logo: "/university_logos/fordham.png",
     link: "https://www.fordham.edu",
   },
@@ -60,7 +61,7 @@ const universitiesData: {
   },
   {
     name: "University of California, Berkeley",
-    coordinates: [-122.2585, 37.8719],
+    coordinates: [-122.2585, 38.5719],
     logo: "/university_logos/berkeley.png",
     link: "https://www.berkeley.edu",
   },
@@ -70,7 +71,6 @@ const universitiesData: {
     logo: "/university_logos/colorado.png",
     link: "https://www.colorado.edu",
   },
-
   {
     name: "California State University, Fullerton",
     coordinates: [-117.8854, 33.8826],
@@ -79,7 +79,7 @@ const universitiesData: {
   },
   {
     name: "Northwestern University",
-    coordinates: [-87.6757, 42.0558],
+    coordinates: [-88.3757, 42.0558],
     logo: "/university_logos/northwestern.png",
     link: "https://www.northwestern.edu",
   },
@@ -115,7 +115,7 @@ const universitiesData: {
   },
   {
     name: "Boston University",
-    coordinates: [-71.1053, 42.3504],
+    coordinates: [-71.1053, 41.6504],
     logo: "/university_logos/boston.png",
     link: "https://www.bu.edu",
   },
@@ -139,7 +139,7 @@ const universitiesData: {
   },
   {
     name: "University of Pennsylvania",
-    coordinates: [-75.193, 39.9522],
+    coordinates: [-75.193, 39.2522],
     logo: "/university_logos/upenn.png",
     link: "https://www.upenn.edu",
   },
@@ -163,7 +163,7 @@ const universitiesData: {
   },
   {
     name: "Princeton University",
-    coordinates: [-74.6591, 40.3459],
+    coordinates: [-74.6591, 41.0459],
     logo: "/university_logos/princeton.png",
     link: "https://www.princeton.edu",
   },
@@ -175,25 +175,25 @@ const universitiesData: {
   },
   {
     name: "Georgia Institute of Technology",
-    coordinates: [-84.388, 33.7756],
+    coordinates: [-85.088, 33.7756],
     logo: "/university_logos/georgia_tech.png",
     link: "https://www.gatech.edu",
   },
   {
     name: "Columbia University",
-    coordinates: [-73.9626, 40.8075],
+    coordinates: [-74.6626, 40.8075],
     logo: "/university_logos/columbia.png",
     link: "https://www.columbia.edu",
   },
   {
     name: "New York University",
-    coordinates: [-73.9975, 40.7304],
+    coordinates: [-73.9975, 40.0304],
     logo: "/university_logos/nyu.png",
     link: "https://www.nyu.edu",
   },
   {
     name: "Northeastern University",
-    coordinates: [-71.0892, 42.34],
+    coordinates: [-71.0892, 43.04],
     logo: "/university_logos/northeastern.png",
     link: "https://www.northeastern.edu",
   },
@@ -211,7 +211,7 @@ const universitiesData: {
   },
   {
     name: "Emory University",
-    coordinates: [-84.3219, 33.7925],
+    coordinates: [-83.6219, 33.7925],
     logo: "/university_logos/emory.png",
     link: "https://www.emory.edu",
   },
@@ -247,19 +247,20 @@ const universitiesData: {
   },
   {
     name: "Stanford University",
-    coordinates: [-122.1703, 37.4275],
+    coordinates: [-122.1703, 36.7275],
     logo: "/university_logos/stanford.png",
     link: "https://www.stanford.edu",
   },
   {
     name: "University of Michigan",
-    coordinates: [-83.7382, 42.278],
+    // moved southeast by Δlon +0.30, Δlat -0.30
+    coordinates: [-83.4382, 41.978],
     logo: "/university_logos/umich.png",
     link: "https://umich.edu",
   },
   {
     name: "University of Chicago",
-    coordinates: [-87.6065, 41.7886],
+    coordinates: [-86.9165, 41.7886],
     logo: "/university_logos/uchicago.png",
     link: "https://www.uchicago.edu",
   },
