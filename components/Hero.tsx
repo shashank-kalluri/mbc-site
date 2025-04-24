@@ -60,7 +60,7 @@ const Hero = () => {
               Become a Sponsor
             </a>
             <button className="bg-secondary text-secondary-foreground font-semibold rounded-md py-3 px-6 hover:bg-secondary/80 transition-colors text-sm md:text-base">
-              Get Tickets
+              Tickets coming soon...
             </button>
           </div>
         </div>
