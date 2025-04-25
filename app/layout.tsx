@@ -41,6 +41,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     siteName: "https://midwestblockchain.org/",
+    url: "https://midwestblockchain.org/",
     images: [
       {
         url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/MBC%20Logo-02.png", // Must be an absolute URL

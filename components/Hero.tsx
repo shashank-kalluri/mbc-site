@@ -54,7 +54,7 @@ const Hero = () => {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
             <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+              href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-primary text-primary-foreground font-semibold rounded-md py-3 px-6 hover:bg-primary/80 transition-colors text-sm md:text-base"
