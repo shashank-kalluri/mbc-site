@@ -17,8 +17,9 @@ async function fetchAllTweets(): Promise<(TweetData | undefined)[]> {
 }
 
 export default async function TweetBoard() {
-  const tweets = await fetchAllTweets();
-
+  const tweets = (await fetchAllTweets()).filter(
+    (t): t is TweetData => t !== undefined
+  );
   return (
     <section className="w-full py-16 text-white">
       {/* — everything inside this wrapper now — */}
