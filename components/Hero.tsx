@@ -28,7 +28,7 @@ const Hero = () => {
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
         <source
-          src="https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/video.mp4"
+          src="https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/video.mp4?t=1"
           type="video/mp4"
         />
         Your browser does not support the video tag.

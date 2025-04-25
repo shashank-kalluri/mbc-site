@@ -60,7 +60,7 @@ export default function Navbar() {
         {renderLinks()}
         <Button asChild className="ml-4">
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+            href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -94,7 +94,7 @@ export default function Navbar() {
             {renderLinks(true)}
             <Button asChild onClick={() => setIsOpen(false)}>
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLScL6pHyyGNPQwTFgD0bYT9tekTCJ-gngCnknKEj2KpXDMAAKw/viewform?usp=header"
+                href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
                 target="_blank"
                 rel="noopener noreferrer"
               >
