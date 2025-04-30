@@ -41,13 +41,11 @@ const Hero = () => {
       <div className="relative z-20 text-center px-6 md:px-12 lg:px-24">
         {/* Big Logo */}
         <div className="mb-8">
-          <Image
-            src="/MBC Logo-07-white.png"
-            alt="MBC 2025"
-            width={400}
-            height={100}
-            className="mx-auto object-contain"
-            priority
+          <img
+            src={`https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/strikeoutanimation.gif?t=${Date.now()}`}
+            alt="MBC 2025 Animation"
+            className="mx-auto max-w-full h-auto"
+            style={{ width: "100%", maxWidth: "600px" }}
           />
         </div>
         {/* Text Content */}
