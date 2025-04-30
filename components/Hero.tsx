@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React, { useRef, useEffect } from "react";
 
 const Hero = () => {
