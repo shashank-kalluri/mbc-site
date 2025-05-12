@@ -5,6 +5,24 @@ const universitiesData: {
   link: string;
 }[] = [
   {
+    name: "University of Utah",
+    coordinates: [-111.8421, 40.7649],
+    logo: "/university_logos/utah.png",
+    link: "https://www.utah.edu",
+  },
+  {
+    name: "University of Miami",
+    coordinates: [-80.2781, 25.7174],
+    logo: "/university_logos/umiami.png",
+    link: "https://www.miami.edu",
+  },
+  {
+    name: "Harvard University",
+    coordinates: [-71.1167, 42.377],
+    logo: "/university_logos/harvard.png",
+    link: "https://www.harvard.edu",
+  },
+  {
     name: "Indiana University Bloomington",
     coordinates: [-86.5004, 39.1653],
     logo: "/university_logos/indiana.png",
