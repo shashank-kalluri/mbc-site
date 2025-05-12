@@ -58,9 +58,14 @@ const Hero = () => {
             >
               Become a Sponsor
             </a>
-            <button className="bg-secondary text-secondary-foreground font-semibold rounded-md py-3 px-6 hover:bg-secondary/80 transition-colors text-sm md:text-base">
-              Tickets coming soon...
-            </button>
+            <a
+              href="https://lu.ma/x6apzbr8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-secondary text-secondary-foreground font-semibold rounded-md py-3 px-6 hover:bg-secondary/80 transition-colors text-sm md:text-base"
+            >
+              Tickets
+            </a>
           </div>
         </div>
       </div>
