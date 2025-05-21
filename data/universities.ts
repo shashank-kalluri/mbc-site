@@ -282,6 +282,18 @@ const universitiesData: {
     logo: "/university_logos/uchicago.png",
     link: "https://www.uchicago.edu",
   },
+  {
+    name: "Duke University",
+    coordinates: [-78.9382, 36.0014],
+    logo: "/university_logos/duke.png",
+    link: "https://www.duke.edu",
+  },
+  {
+    name: "Arizona State University",
+    coordinates: [-111.9281, 33.4197],
+    logo: "/university_logos/asu.png",
+    link: "https://www.asu.edu",
+  },
 ];
 
 export default universitiesData;
