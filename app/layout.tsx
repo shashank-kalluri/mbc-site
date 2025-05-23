@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     url: "https://midwestblockchain.org/",
     images: [
       {
-        url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/MBC%20Logo-02.png", // Must be an absolute URL
-        width: 30001,
+        url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png", // Must be an absolute URL
+        width: 3001,
         height: 3000,
       },
     ],
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     creator: "@MBC_Conference",
     creatorId: "1805686542125744129",
     images: [
-      "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/MBC%20Logo-02.png",
+      "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
     ], // Must be an absolute URL
   },
 };
