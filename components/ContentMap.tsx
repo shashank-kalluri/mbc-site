@@ -1,3 +1,4 @@
+// ContentMap.tsx
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -13,6 +14,7 @@ interface University {
   name: string;
   coordinates: [number, number];
   logo: string;
+  link: string; // Added url property
 }
 
 const ContentMap = () => {
@@ -85,7 +87,10 @@ const ContentMap = () => {
           </Geographies>
           {universities.map((uni, index) => (
             <Marker key={index} coordinates={uni.coordinates}>
-              <g
+              <a
+                href={uni.link} // Link to the university's URL
+                target="_blank" // Opens in a new tab
+                rel="noopener noreferrer" // Security best practice for target="_blank"
                 className={`transition-opacity duration-700 ease-out transform scale-50 opacity-0 ${
                   visibleMarkers.includes(index) ? "opacity-100 scale-100" : ""
                 }`}
@@ -97,7 +102,7 @@ const ContentMap = () => {
                   className="shadow-md z-50 transition-transform duration-300 hover:scale-150"
                   transform="translate(-15, -15)"
                 />
-              </g>
+              </a>
             </Marker>
           ))}
         </ComposableMap>
