@@ -294,6 +294,12 @@ const universitiesData: {
     logo: "/university_logos/asu.png",
     link: "https://www.asu.edu",
   },
+  {
+    name: "University of Alaska Anchorage",
+    coordinates: [-149.8079, 61.1906],
+    logo: "/university_logos/alaska.png",
+    link: "https://www.uaa.alaska.edu",
+  },
 ];
 
 export default universitiesData;
