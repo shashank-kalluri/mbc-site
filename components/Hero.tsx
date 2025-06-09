@@ -47,6 +47,20 @@ const Hero = () => {
             style={{ width: "100%", maxWidth: "600px" }}
           />
         </div>
+        {/* Date & Location */}
+        <p className="text-muted-foreground text-sm md:text-base font-medium mb-6">
+          <span className="block md:inline">December 5–6, 2025</span>
+          <span className="hidden md:inline"> · </span>
+          <a
+            href="https://maps.google.com/?q=701+Tappan+Ave,+Ann+Arbor,+MI+48109"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block md:inline text-maize hover:text-maize/80 transition-colors no-underline"
+          >
+            University of Michigan, Ann Arbor
+          </a>
+        </p>
+
         {/* Text Content */}
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
