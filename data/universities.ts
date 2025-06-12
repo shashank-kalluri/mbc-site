@@ -17,8 +17,14 @@ const universitiesData: {
     link: "https://www.miami.edu",
   },
   {
+    name: "California State University, Fullerton",
+    coordinates: [-118.5, 34.2],
+    logo: "/university_logos/fullerton.png",
+    link: "https://www.fullerton.edu",
+  },
+  {
     name: "University of California, Irvine",
-    coordinates: [-117.8443, 33.6405],
+    coordinates: [-117.5, 33.3],
     logo: "/university_logos/irvine.png",
     link: "https://www.uci.edu",
   },
@@ -94,12 +100,6 @@ const universitiesData: {
     coordinates: [-105.2705, 40.0076],
     logo: "/university_logos/colorado.png",
     link: "https://www.colorado.edu",
-  },
-  {
-    name: "California State University, Fullerton",
-    coordinates: [-117.8854, 33.8826],
-    logo: "/university_logos/fullerton.png",
-    link: "https://www.fullerton.edu",
   },
   {
     name: "Northwestern University",
