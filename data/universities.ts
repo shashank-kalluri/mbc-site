@@ -17,6 +17,12 @@ const universitiesData: {
     link: "https://www.miami.edu",
   },
   {
+    name: "University of California, Irvine",
+    coordinates: [-117.8443, 33.6405],
+    logo: "/university_logos/irvine.png",
+    link: "https://www.uci.edu",
+  },
+  {
     name: "Harvard University",
     coordinates: [-71.1167, 42.377],
     logo: "/university_logos/harvard.png",

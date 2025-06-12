@@ -14,7 +14,7 @@ interface University {
   name: string;
   coordinates: [number, number];
   logo: string;
-  link: string; // Added url property
+  link: string;
 }
 
 const ContentMap = () => {
@@ -88,9 +88,9 @@ const ContentMap = () => {
           {universities.map((uni, index) => (
             <Marker key={index} coordinates={uni.coordinates}>
               <a
-                href={uni.link} // Link to the university's URL
-                target="_blank" // Opens in a new tab
-                rel="noopener noreferrer" // Security best practice for target="_blank"
+                href={uni.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`transition-opacity duration-700 ease-out transform scale-50 opacity-0 ${
                   visibleMarkers.includes(index) ? "opacity-100 scale-100" : ""
                 }`}
