@@ -306,6 +306,12 @@ const universitiesData: {
     logo: "/university_logos/alaska.png",
     link: "https://www.uaa.alaska.edu",
   },
+  {
+    name: "University of Southern California",
+    coordinates: [-118.2851, 34.0224],
+    logo: "/university_logos/usc.png",
+    link: "https://www.usc.edu",
+  },
 ];
 
 export default universitiesData;
