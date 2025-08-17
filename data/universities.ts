@@ -315,7 +315,7 @@ const universitiesData: {
   {
     name: "Miami University",
     coordinates: [-84.7296, 39.5111],
-    logo: "/university_logos/miami.png",
+    logo: "/university_logos/miami.svg",
     link: "https://miamioh.edu",
   },
   {
