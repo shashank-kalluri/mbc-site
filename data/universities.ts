@@ -312,6 +312,24 @@ const universitiesData: {
     logo: "/university_logos/usc.png",
     link: "https://www.usc.edu",
   },
+  {
+    name: "Miami University",
+    coordinates: [-84.7296, 39.5111],
+    logo: "/university_logos/miami.png",
+    link: "https://miamioh.edu",
+  },
+  {
+    name: "Georgetown University",
+    coordinates: [-77.0735, 38.9076],
+    logo: "/university_logos/georgetown.png",
+    link: "https://www.georgetown.edu",
+  },
+  {
+    name: "Carleton University",
+    coordinates: [-75.6972, 45.3876],
+    logo: "/university_logos/carleton.png",
+    link: "https://carleton.ca",
+  },
 ];
 
 export default universitiesData;
