@@ -8,10 +8,13 @@ import Image from "next/image";
 
 const navLinks = [
   { href: "#about", label: "About" },
-  { href: "#sponsors", label: "Sponsors" },
+  { href: "#tickets", label: "Tickets" }, // swapped
   { href: "#universities", label: "Universities" },
   // { href: "#speakers", label: "Speakers" },
-  { href: "https://lu.ma/x6apzbr8", label: "Tickets" },
+  {
+    href: "https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166",
+    label: "Sponsor Us",
+  },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -28,8 +31,8 @@ export default function Navbar() {
         href={href}
         className={linkClass}
         onClick={isMobile ? () => setIsOpen(false) : undefined}
-        target={label === "Tickets" ? "_blank" : undefined}
-        rel={label === "Tickets" ? "noopener noreferrer" : undefined}
+        target={label === "Sponsor Us" ? "_blank" : undefined}
+        rel={label === "Sponsor Us" ? "noopener noreferrer" : undefined}
       >
         {label}
       </a>
@@ -60,11 +63,11 @@ export default function Navbar() {
         {renderLinks()}
         <Button asChild className="ml-4">
           <a
-            href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
+            href="https://lu.ma/x6apzbr8"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Sponsor Us
+            Tickets
           </a>
         </Button>
       </div>
@@ -94,11 +97,11 @@ export default function Navbar() {
             {renderLinks(true)}
             <Button asChild onClick={() => setIsOpen(false)}>
               <a
-                href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
+                href="https://lu.ma/x6apzbr8"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Sponsor Us
+                Tickets
               </a>
             </Button>
           </motion.div>

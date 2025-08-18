@@ -154,11 +154,11 @@ export default function ImageCloud() {
           </Button>
           <Button asChild variant="secondary">
             <a
-              href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
+              href="https://lu.ma/x6apzbr8"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Become a Sponsor
+              Get Tickets
             </a>
           </Button>
           <Button variant="outline">
