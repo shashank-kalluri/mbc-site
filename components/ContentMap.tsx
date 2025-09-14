@@ -1,13 +1,14 @@
 // ContentMap.tsx
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker,
 } from "react-simple-maps";
+import { geoAlbersUsa } from "d3-geo";
 import universitiesData from "@/data/universities";
 
 interface University {
@@ -24,9 +25,29 @@ const ContentMap = () => {
   const randomDelays = useRef<number[]>([]);
   const universities = universitiesData as University[];
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const width = 800;
+  const height = 500;
+
+  const projection = useMemo(
+    () =>
+      geoAlbersUsa()
+        .translate([width / 2, height / 2])
+        .scale(1000),
+    [width, height]
+  );
+
+  // Helper to test if a [lon, lat] can be projected by geoAlbersUsa
+  const isInRange = (coords: [number, number]) => {
+    const p = projection(coords as [number, number]);
+    return (
+      Array.isArray(p) &&
+      p.length === 2 &&
+      Number.isFinite(p[0]) &&
+      Number.isFinite(p[1])
+    );
+  };
+
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     if (randomDelays.current.length === 0) {
@@ -47,10 +68,7 @@ const ContentMap = () => {
       { threshold: 0.5 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, [universities]);
 
@@ -59,12 +77,12 @@ const ContentMap = () => {
       ref={sectionRef}
       className="relative w-screen h-screen overflow-hidden"
     >
-      {/* Fullscreen Map */}
       {isClient && (
         <ComposableMap
           projection="geoAlbersUsa"
-          width={800}
-          height={500}
+          projectionConfig={{ scale: 1000 }}
+          width={width}
+          height={height}
           className="absolute top-0 left-0 w-full h-full"
         >
           <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
@@ -85,26 +103,32 @@ const ContentMap = () => {
               ))
             }
           </Geographies>
-          {universities.map((uni, index) => (
-            <Marker key={index} coordinates={uni.coordinates}>
-              <a
-                href={uni.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`transition-opacity duration-700 ease-out transform scale-50 opacity-0 ${
-                  visibleMarkers.includes(index) ? "opacity-100 scale-100" : ""
-                }`}
-              >
-                <image
-                  href={uni.logo}
-                  width={30}
-                  height={30}
-                  className="shadow-md z-50 transition-transform duration-300 hover:scale-150"
-                  transform="translate(-15, -15)"
-                />
-              </a>
-            </Marker>
-          ))}
+
+          {universities.map((uni, index) =>
+            isInRange(uni.coordinates) ? ( // skip markers out of range
+              <Marker key={index} coordinates={uni.coordinates}>
+                <g
+                  onClick={() =>
+                    window.open(uni.link, "_blank", "noopener,noreferrer")
+                  }
+                  style={{ cursor: "pointer" }}
+                  className={`transition-opacity duration-700 ease-out transform scale-50 opacity-0 ${
+                    visibleMarkers.includes(index)
+                      ? "opacity-100 scale-100"
+                      : ""
+                  }`}
+                >
+                  <image
+                    href={uni.logo}
+                    width={30}
+                    height={30}
+                    className="shadow-md z-50 transition-transform duration-300 hover:scale-150"
+                    transform="translate(-15, -15)"
+                  />
+                </g>
+              </Marker>
+            ) : null
+          )}
         </ComposableMap>
       )}
     </section>

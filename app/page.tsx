@@ -18,7 +18,7 @@ export default function Home() {
         <section id="">
           <Hero />
         </section>
-        <section id="">
+        <section id="about">
           <ImageCloud />
         </section>
         <section id="">

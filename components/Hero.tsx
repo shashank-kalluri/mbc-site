@@ -63,22 +63,14 @@ const Hero = () => {
 
         {/* Text Content */}
         <div className="max-w-3xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
-            <a
-              href="https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-primary text-primary-foreground font-semibold rounded-md py-3 px-6 hover:bg-primary/80 transition-colors text-sm md:text-base"
-            >
-              Become a Sponsor
-            </a>
+          <div className="flex justify-center">
             <a
               href="https://lu.ma/x6apzbr8"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-secondary text-secondary-foreground font-semibold rounded-md py-3 px-6 hover:bg-secondary/80 transition-colors text-sm md:text-base"
+              className="bg-primary text-primary-foreground font-semibold rounded-full py-3 px-10 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
             >
-              Tickets
+              Get Tickets →
             </a>
           </div>
         </div>

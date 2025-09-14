@@ -5,6 +5,102 @@ const universitiesData: {
   link: string;
 }[] = [
   {
+    name: "Imperial College London",
+    coordinates: [-0.1749, 51.4988],
+    logo: "/university_logos/imperial.png",
+    link: "https://www.imperial.ac.uk",
+  },
+  {
+    name: "University of Oxford",
+    coordinates: [-1.254, 51.7548],
+    logo: "/university_logos/oxford.png",
+    link: "https://www.ox.ac.uk",
+  },
+  {
+    name: "Technical University of Munich",
+    coordinates: [11.5679, 48.1499],
+    logo: "/university_logos/tum.png",
+    link: "https://www.tum.de",
+  },
+  {
+    name: "University of Hong Kong",
+    coordinates: [114.1371, 22.283],
+    logo: "/university_logos/hku.png",
+    link: "https://www.hku.hk",
+  },
+  {
+    name: "University of Cambridge",
+    coordinates: [0.1218, 52.2053],
+    logo: "/university_logos/cambridge.png",
+    link: "https://www.cam.ac.uk",
+  },
+  {
+    name: "Singapore Management University",
+    coordinates: [103.85, 1.2966],
+    logo: "/university_logos/smu-singapore.png",
+    link: "https://www.smu.edu.sg",
+  },
+  {
+    name: "Boston College",
+    coordinates: [-71.171, 42.3356],
+    logo: "/university_logos/boston_college.png",
+    link: "https://www.bc.edu",
+  },
+  {
+    name: "California State University, Long Beach",
+    coordinates: [-118.1135, 33.7838],
+    logo: "/university_logos/csulb.png",
+    link: "https://www.csulb.edu",
+  },
+  {
+    name: "University of California, San Diego",
+    coordinates: [-117.2359, 32.8801],
+    logo: "/university_logos/ucsd.png",
+    link: "https://ucsd.edu",
+  },
+  {
+    name: "University of California, Santa Barbara",
+    coordinates: [-119.846, 34.414],
+    logo: "/university_logos/ucsb.png",
+    link: "https://www.ucsb.edu",
+  },
+  {
+    name: "Carnegie Mellon University",
+    coordinates: [-79.9436, 40.4432],
+    logo: "/university_logos/cmu.png",
+    link: "https://www.cmu.edu",
+  },
+  {
+    name: "Texas A&M University",
+    coordinates: [-96.3416, 30.615],
+    logo: "/university_logos/tamu.png",
+    link: "https://www.tamu.edu",
+  },
+  {
+    name: "Baruch College",
+    coordinates: [-73.9842, 40.7403],
+    logo: "/university_logos/baruch.png",
+    link: "https://www.baruch.cuny.edu",
+  },
+  {
+    name: "Macaulay Honors College",
+    coordinates: [-73.9836, 40.7701],
+    logo: "/university_logos/macaulay.png",
+    link: "https://macaulay.cuny.edu",
+  },
+  {
+    name: "Mount Allison University",
+    coordinates: [-64.3712, 45.8986],
+    logo: "/university_logos/mount_allison.png",
+    link: "https://www.mta.ca",
+  },
+  {
+    name: "University of Windsor",
+    coordinates: [-82.066, 42.3073],
+    logo: "/university_logos/windsor.png",
+    link: "https://www.uwindsor.ca",
+  },
+  {
     name: "University of Utah",
     coordinates: [-111.8421, 40.7649],
     logo: "/university_logos/utah.png",

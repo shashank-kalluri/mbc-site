@@ -8,13 +8,11 @@ import Image from "next/image";
 
 const navLinks = [
   { href: "#about", label: "About" },
-  { href: "#tickets", label: "Tickets" }, // swapped
   { href: "#universities", label: "Universities" },
-  // { href: "#speakers", label: "Speakers" },
   {
-    href: "https://app.deform.cc/form/af29bbbf-ad01-44f1-b006-400937bd4166",
-    label: "Sponsor Us",
-  },
+    href: "https://forms.gle/xaPMhXr5EaJhYaut8",
+    label: "Apply to Speak",
+  }, // ← updated with form link
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -29,10 +27,10 @@ export default function Navbar() {
       <a
         key={href}
         href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
         className={linkClass}
         onClick={isMobile ? () => setIsOpen(false) : undefined}
-        target={label === "Sponsor Us" ? "_blank" : undefined}
-        rel={label === "Sponsor Us" ? "noopener noreferrer" : undefined}
       >
         {label}
       </a>
