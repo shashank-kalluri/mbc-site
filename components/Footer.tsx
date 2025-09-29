@@ -22,7 +22,7 @@ const Footer = () => {
       alt: "Facebook",
     },
     {
-      href: "https://www.instagram.com/mbc_conference/",
+      href: "https://www.instagram.com/college.xyz/",
       icon: <Instagram className="h-5 w-5" />,
       alt: "Instagram",
     },
