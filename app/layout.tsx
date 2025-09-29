@@ -168,11 +168,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <Analytics />
       <ReactLenis root>
         <body
           className={`${robotoMono.variable} ${zuume.variable} antialiased`}
         >
+          <Analytics />
           <Navbar></Navbar>
           {children}
           <Footer></Footer>
