@@ -6,7 +6,7 @@ const Footer = () => {
   const navigationLinks = [
     { href: "#", label: "Home" },
     { href: "#about", label: "About" },
-    { href: "/services", label: "Services" },
+    { href: "https://college.xyz", label: "College.xyz" },
     {
       href: "mailto:blockchain@umich.edu?subject=MBC%20Inquiry&body=Hi%20MBC%20Team",
       label: "Contact",
