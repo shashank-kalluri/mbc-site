@@ -5,9 +5,10 @@ import FAQ from "@/components/FAQ";
 // import Speakers from "@/components/Speakers";
 import TweetBoard from "@/components/TweetBoard";
 import { faqItems } from "@/data/faq";
-import Sponsors from "@/components/Sponsors";
+import PastSponsors from "@/components/PastSponsors";
 import ImageCloud from "@/components/ImageCloud";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Sponsors from "@/components/Sponsors";
 
 export default function Home() {
   const eventDate = "2025-12-05T10:00:00";

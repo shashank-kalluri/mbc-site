@@ -8,6 +8,7 @@ import Image from "next/image";
 
 const navLinks = [
   { href: "#about", label: "About" },
+  { href: "#sponsors", label: "Sponsors" },
   { href: "#universities", label: "Universities" },
   {
     href: "https://forms.gle/xaPMhXr5EaJhYaut8",
