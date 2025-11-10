@@ -41,7 +41,7 @@ const Hero = () => {
         {/* Big Logo */}
         <div className="mb-8">
           <img
-            src={`https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/strikeoutanimation.gif?t=${Date.now()}`}
+            src={`https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/images/strikeoutanimation.gif?t=${Date.now()}`}
             alt="MBC 2025 Animation"
             className="mx-auto max-w-full h-auto"
             style={{ width: "100%", maxWidth: "600px" }}

@@ -30,6 +30,7 @@ export interface Partnership {
   logo_url_dark: string | null;
   website_url: string;
   tier: number;
+  status: string;
   created_at: string;
   updated_at: string;
 }

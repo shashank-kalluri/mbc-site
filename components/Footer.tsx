@@ -3,16 +3,19 @@ import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
+  // Split into internal vs external/mailto for correct Link/anchor usage
   const navigationLinks = [
-    { href: "#", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "https://college.xyz", label: "College.xyz" },
+    { href: "/", label: "Home", internal: true },
+    { href: "/#about", label: "About", internal: true },
+    { href: "/programs", label: "Programs", internal: true }, // ← NEW
+    { href: "https://college.xyz", label: "College.xyz", internal: false },
     {
       href: "mailto:blockchain@umich.edu?subject=MBC%20Inquiry&body=Hi%20MBC%20Team",
       label: "Contact",
+      internal: false,
     },
-    { href: "/privacy", label: "Privacy Policy" },
-    { href: "/terms", label: "Terms of Service" },
+    { href: "/privacy", label: "Privacy Policy", internal: true },
+    { href: "/terms", label: "Terms of Service", internal: true },
   ];
 
   const socialLinks = [
@@ -38,6 +41,28 @@ const Footer = () => {
     },
   ];
 
+  const renderLink = (link: (typeof navigationLinks)[number]) => {
+    const cls = "text-muted-foreground hover:text-foreground transition";
+    if (link.internal) {
+      return (
+        <Link key={link.href} href={link.href} className={cls}>
+          {link.label}
+        </Link>
+      );
+    }
+    return (
+      <a
+        key={link.href}
+        href={link.href}
+        className={cls}
+        target={link.href.startsWith("http") ? "_blank" : undefined}
+        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+      >
+        {link.label}
+      </a>
+    );
+  };
+
   return (
     <footer className="bg-background py-12 text-foreground">
       <div className="container mx-auto px-6">
@@ -46,11 +71,12 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <Link href="/" className="block">
               <Image
-                src="/MBC Logo-07-white.png" // Replace with your actual logo path
-                alt="Footer Logo"
-                width={150} // Adjust as needed
-                height={50} // Adjust as needed
+                src="/MBC Logo-07-white.png"
+                alt="Midwest Blockchain Conference"
+                width={150}
+                height={50}
                 className="object-contain"
+                priority
               />
             </Link>
           </div>
@@ -61,14 +87,7 @@ const Footer = () => {
               <h6 className="font-semibold mb-2">Explore</h6>
               <ul className="space-y-2">
                 {navigationLinks.slice(0, 3).map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+                  <li key={link.href}>{renderLink(link)}</li>
                 ))}
               </ul>
             </div>
@@ -76,18 +95,10 @@ const Footer = () => {
               <h6 className="font-semibold mb-2">More</h6>
               <ul className="space-y-2">
                 {navigationLinks.slice(3).map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+                  <li key={link.href}>{renderLink(link)}</li>
                 ))}
               </ul>
             </div>
-            {/* Add more navigation sections if needed */}
           </div>
 
           {/* Social Icons */}
@@ -95,20 +106,22 @@ const Footer = () => {
             <h6 className="font-semibold mb-2">Connect</h6>
             <div className="flex space-x-4">
               {socialLinks.map((link) => (
-                <Link
+                <a
                   key={link.alt}
                   href={link.href}
                   className="text-muted-foreground hover:text-foreground transition"
                   aria-label={link.alt}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {link.icon}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Copyright Section */}
+        {/* Copyright */}
         <div className="py-4 text-center text-muted-foreground text-sm">
           &copy; {new Date().getFullYear()} Midwest Blockchain Conference. All
           rights reserved.
