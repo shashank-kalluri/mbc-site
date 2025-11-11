@@ -36,7 +36,6 @@ import {
 
 type Prize = { label: string; amount?: string; description?: string };
 type TimelineItem = { label: string; datetime: string; note?: string };
-
 type Program = {
   id: string;
   name: string;
@@ -316,25 +315,33 @@ export default function ProgramsPage() {
 
         {/* PROGRAMS TABS */}
         <Tabs defaultValue={PROGRAMS[0].id} className="w-full">
-          <TabsList className="flex flex-wrap gap-2 bg-transparent p-0">
-            {PROGRAMS.map((p) => (
-              <TabsTrigger
-                key={p.id}
-                value={p.id}
-                className="rounded-full border px-4 py-2 data-[state=active]:bg-foreground data-[state=active]:text-background"
-              >
-                <span className="mr-2">{p.emoji}</span> {p.name}
-              </TabsTrigger>
-            ))}
+          {/* SCROLL WRAPPER prevents page stretch */}
+          <div className="relative mx-1 md:mx-0">
+            <div className="overflow-x-auto overscroll-x-contain px-5 md:px-0 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory max-w-full">
+              {/* TabsList lives inside fixed-width scroller */}
+              <TabsList className="inline-flex min-w-max gap-2 p-1 rounded-xl border border-foreground/10 shadow-sm bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+                {PROGRAMS.map((p) => (
+                  <TabsTrigger
+                    key={p.id}
+                    value={p.id}
+                    className="shrink-0 snap-start rounded-full border px-4 py-2 transition shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 bg-background/60 hover:bg-foreground/5 ring-1 ring-transparent data-[state=active]:bg-foreground data-[state=active]:text-background data-[state=active]:ring-foreground/20 data-[state=active]:shadow-md"
+                  >
+                    <span className="mr-2">{p.emoji}</span>
+                    {p.name}
+                  </TabsTrigger>
+                ))}
 
-            {/* Sessions tab (Luma) */}
-            <TabsTrigger
-              value="sessions"
-              className="rounded-full border px-4 py-2 data-[state=active]:bg-foreground data-[state=active]:text-background"
-            >
-              <span className="mr-2">🗓️</span> Sessions
-            </TabsTrigger>
-          </TabsList>
+                {/* Sessions tab (Luma) */}
+                <TabsTrigger
+                  value="sessions"
+                  className="shrink-0 snap-start rounded-full border px-4 py-2 transition shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 bg-background/60 hover:bg-foreground/5 ring-1 ring-transparent data-[state=active]:bg-foreground data-[state=active]:text-background data-[state=active]:ring-foreground/20 data-[state=active]:shadow-md"
+                >
+                  <span className="mr-2">🗓️</span>
+                  Sessions
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
 
           {/* Program panes */}
           {PROGRAMS.map((p) => (
@@ -352,7 +359,6 @@ export default function ProgramsPage() {
                       <p className="text-foreground/70 leading-relaxed">
                         {p.blurb}
                       </p>
-
                       {p.tracks && (
                         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {p.tracks.map((t, i) => (
@@ -361,8 +367,7 @@ export default function ProgramsPage() {
                               className="rounded-xl border border-foreground/10 p-4"
                             >
                               <div className="flex items-center gap-2 font-semibold">
-                                {t.icon}
-                                {t.name}
+                                {t.icon} {t.name}
                               </div>
                               <p className="text-sm text-foreground/60 mt-1">
                                 {t.description}
@@ -408,7 +413,6 @@ export default function ProgramsPage() {
                     </Card>
                   )}
 
-                  {/* Eligibility & Rules moved under Judging */}
                   {(p.eligibility?.length || p.rules?.length) && (
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
@@ -546,7 +550,6 @@ export default function ProgramsPage() {
                             <Link href={c.href}>{c.label}</Link>
                           </Button>
                         ))}
-
                         {/* Disabled submit button for all programs */}
                         <Button
                           disabled
@@ -568,9 +571,8 @@ export default function ProgramsPage() {
             <div className="mt-8 space-y-6">
               <Card className="rounded-2xl border-foreground/10 overflow-hidden">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    🗓️ Sessions Calendar (Info Sessions, Workshops, Office
-                    Hours)
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    🗓️ Sessions Calendar
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -602,55 +604,6 @@ export default function ProgramsPage() {
             </div>
           </TabsContent>
         </Tabs>
-
-        {/* FOOTER CTA */}
-        <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="rounded-2xl border-foreground/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CircuitBoard className="h-5 w-5" /> Build at the Hackathon
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between gap-4">
-              <p className="text-foreground/70">
-                Pick Solana or Base, ship a working demo, and present live if
-                you make finals.
-              </p>
-              <Button asChild>
-                <Link href="https://docs.google.com/document/d/1Cc2vOxhOZMjJwDFm865w_u5Dax9q9Ay4fIWhNOsaYhw/edit?usp=sharing">
-                  Read Guide
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl border-foreground/10">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpenText className="h-5 w-5" /> Enter the FT Pitch
-                Competition
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between gap-4">
-              <p className="text-foreground/70">
-                Submit a 3–5 page thesis by Nov 23, then pitch live on Dec 6 if
-                selected.
-              </p>
-              <div className="flex gap-2">
-                <Button asChild variant="secondary">
-                  <Link href="https://docs.google.com/document/d/1Sf026qP_UGUSTcpXpBj2GfskQ-gq_aXTwqYN0KQasIs/edit?usp=sharing">
-                    Read Memo
-                  </Link>
-                </Button>
-                <Button asChild>
-                  <Link href="https://docs.google.com/forms/d/e/1FAIpQLScXTkcs2neukQp7u_1bMJanZ_lbH7-pPd215JLEZSgQDcroCA/viewform">
-                    Sign Up
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </section>
   );
