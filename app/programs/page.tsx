@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 /**
- * MBC Programs Page — minimal hero
+ * MBC Programs Page — simplified & aligned to Hackathon Guide (Oct 7, 2025)
  * Save as: app/programs/page.tsx
  */
 
@@ -56,7 +56,7 @@ type Program = {
 };
 
 // ---------------------------
-// Content (sourced from docs)
+// Content (synced to Hackathon Guide 10/07/2025)
 // ---------------------------
 
 const PROGRAMS: Program[] = [
@@ -65,27 +65,26 @@ const PROGRAMS: Program[] = [
     name: "Hackathon",
     slug: "hackathon",
     emoji: "💻",
-    headline: "One-week build, live finals at MBC.",
+    headline: "MBC 2025 Hackathon",
     blurb:
-      "A focused build sprint with two tracks — Solana and Base (EVM) — plus ecosystem bounties. Submit by Dec 5 (11:59 PM ET). Top 10 teams demo live on Dec 6.",
+      "Build something amazing on Solana or Base (EVM) and competed for 10s of thousands of dollars in prizes! Plus optional ecosystem bounties. Submit by Dec 5 (11:59 PM ET). Top 10 teams demo live on Dec 6.",
     cta: [
       {
         label: "Read Hackathon Guide",
         href: "https://docs.google.com/document/d/1Cc2vOxhOZMjJwDFm865w_u5Dax9q9Ay4fIWhNOsaYhw/edit?usp=sharing",
       },
-      { label: "Sponsor a Program", href: "/sponsor" },
     ],
     stats: [
       { label: "Tracks", value: "2 (Solana, Base)" },
       { label: "Finalists", value: "Top 10 (5 per track)" },
-      { label: "Submission Due", value: "Dec 5, 11:59 PM ET" },
-      { label: "Finals", value: "Dec 6 (5 min pitch + 2 min Q&A)" },
+      { label: "Submit By", value: "Dec 5, 11:59 PM ET" },
+      { label: "Finals", value: "Dec 6 (5 min + 2 min Q&A)" },
     ],
     tracks: [
       {
         name: "Solana",
         description:
-          "Deploy to devnet or mainnet and use at least one Solana tool (e.g., Anchor, Seahorse, Web3.js, SPL, Metaplex, Jupiter, Solend, AgentKit/x402).",
+          "Deploy to devnet or mainnet and use at least one Solana tool (Anchor, Seahorse, Web3.js/Kit/Gill, SPL/Token Extensions, Metaplex, Jupiter, Solend, or Solana AgentKit/x402).",
         icon: <CircuitBoard className="h-4 w-4" />,
       },
       {
@@ -103,8 +102,8 @@ const PROGRAMS: Program[] = [
       { label: "Participation Prize", amount: "$50 / team" },
     ],
     judging: [
-      "Solana Track — Innovation (30%), Impact & Usefulness (30%), Technical Execution (20%), Design & UX (15%), Presentation (15%).",
-      "Base Track — Onchain Magic (30%), Delight & Design (25%), Utility & Longevity (20%), Technical Execution (15%), Social & Cultural Resonance (10%).",
+      "Solana — Innovation (30%), Impact (30%), Technical (20%), Design (15%), Presentation (15%).",
+      "Base — Onchain Magic (30%), Delight (25%), Utility (20%), Technical (15%), Cultural Resonance (10%).",
     ],
     timeline: [
       { label: "Kickoff", datetime: "Sun, Nov 30, 2025" },
@@ -125,35 +124,26 @@ const PROGRAMS: Program[] = [
       "Cross-chain projects may submit to both tracks if truly cross-chain.",
     ],
     rules: [
-      "Submit: Title & team, ≤250 word description, ≤3 min demo video, public GitHub, technical summary, (and contract address if applicable).",
-      "Include a working demo (web, mobile, or CLI).",
-      "AI tools are allowed. You retain all IP to your project.",
-      "Respect the code of conduct and venue instructions.",
+      "Submit: title/team, ≤250-word description, ≤3-min demo video, public GitHub, technical summary, and contract address (if applicable).",
+      "Include a working demo (web, mobile, frame, or CLI).",
+      "AI tools allowed. You retain all IP.",
+      "Follow code of conduct and venue instructions.",
     ],
     faqs: [
-      {
-        q: "Can I work on a pre-existing project?",
-        a: "No. Projects must be substantially built during the hackathon.",
-      },
-      { q: "Do I need a team?", a: "No. Solo builders are welcome." },
-      {
-        q: "Can I use AI tools?",
-        a: "Yes, you are encouraged to use AI tools.",
-      },
-      {
-        q: "Who owns my project?",
-        a: "You retain all rights to your code and IP.",
-      },
+      { q: "Pre-existing project?", a: "No. Build during the hackathon." },
+      { q: "Team required?", a: "No. Solo builders are welcome." },
+      { q: "AI usage?", a: "Yes, encouraged." },
+      { q: "IP ownership?", a: "You own your code and IP." },
     ],
   },
   {
     id: "franklin-templeton",
-    name: "Franklin Templeton Research Competition",
+    name: "FT Pitch Competition",
     slug: "franklin-templeton",
     emoji: "📈",
-    headline: "Write a 3–5 page thesis, then pitch live at MBC.",
+    headline: "Franklin Templeton Pitch Competition",
     blurb:
-      "A two-round research competition (written report → live pitch) running Nov 13–Dec 6. Choose one of three tracks and build a concise, defensible investment thesis.",
+      "Work individually or in a team to submit a concise research thesis using the Messari and Artemis toolkit, then pitch in person at MBC. Sponsored by Franklin Templeton!",
     cta: [
       {
         label: "Read Competition Memo",
@@ -166,8 +156,8 @@ const PROGRAMS: Program[] = [
     ],
     stats: [
       { label: "Tracks", value: "3" },
-      { label: "Report Length", value: "3–5 pages" },
-      { label: "Finals Pitch", value: "10 min total (5 + 5 Q&A)" },
+      { label: "Report", value: "3–5 pages" },
+      { label: "Finals Pitch", value: "10 min (5 + 5)" },
       { label: "Prize Pool", value: "$12,500 + Ledgers" },
     ],
     tracks: [
@@ -207,24 +197,21 @@ const PROGRAMS: Program[] = [
         description: "+ 1 Ledger",
       },
       {
-        label: "Top Team Across All Tracks",
+        label: "Top Team (All Tracks)",
         amount: "$2,500",
         description: "+ 1 Ledger per team member",
       },
       { label: "Bounty: Best Use of Artemis Data", amount: "$2,500" },
     ],
     judging: [
-      "Round 1: Written report judged on thesis validity, thoroughness, and clarity (top 3 per track advance).",
-      "Round 2: In-person pitch at MBC on Dec 6 (5-min pitch + 5-min judge Q&A). Must match written thesis.",
+      "Round 1 (Written): thesis validity, depth, and clarity. Top 3 per track advance.",
+      "Round 2 (Live): 5-min pitch + 5-min judge Q&A. Pitch must match the written thesis.",
     ],
     timeline: [
       { label: "Sign-Up Opens", datetime: "Nov 9, 2025" },
+      { label: "Start / FT Kick-off Call", datetime: "Nov 13, 2025" },
       {
-        label: "Competition Start / FT Kick-off Call",
-        datetime: "Nov 13, 2025",
-      },
-      {
-        label: "Messari + Artemis Demo Call(s)",
+        label: "Messari + Artemis Demo Calls",
         datetime: "Nov 13–17, 2025",
         note: "TBA",
       },
@@ -234,25 +221,25 @@ const PROGRAMS: Program[] = [
       {
         label: "Live Pitch @ MBC",
         datetime: "Dec 6, 2025",
-        note: "10 minutes total: 5-min pitch + 5-min Q&A",
+        note: "10 minutes total",
       },
     ],
     eligibility: [
       "Teams of 1–4 students (3 recommended).",
       "Only MBC attendees can participate.",
-      "Each university may submit multiple teams.",
+      "Multiple teams per university allowed.",
     ],
     rules: [
-      "Written report (3–5 pages; exclude title page, graphs/tables, references).",
-      "Report structure: Title page; Executive summary (0.5–1p); Project overview (value prop, product, team, market, traction, token, catalysts, risks); Investment proposal (long/short, horizon, price target); Conclusion; References.",
-      "Submit by Nov 23 via Google Form (shared to MBC Telegram).",
-      "Final pitch must match the written thesis; create a slide deck for Dec 6.",
+      "Report length: 3–5 pages (exclude title page, figures/tables, references).",
+      "Suggested structure: title page; executive summary (0.5–1p); project overview; investment proposal (long/short, horizon, target); conclusion; references.",
+      "Submit via Google Form by Nov 23 (link in memo / MBC Telegram).",
+      "Final pitch must match the written thesis; bring a slide deck.",
     ],
     faqs: [
       { q: "Team size?", a: "1–4 students; one report per team." },
-      { q: "Who can compete?", a: "MBC attendees only." },
+      { q: "Eligibility?", a: "MBC attendees only." },
       {
-        q: "What tools are recommended?",
+        q: "Tools?",
         a: "Artemis toolkit; Messari & Artemis demo calls run Nov 13–17.",
       },
     ],
@@ -309,25 +296,25 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => (
 );
 
 // ---------------------------
-//
 // Main Page
-//
 // ---------------------------
 
 export default function ProgramsPage() {
+  const LUMA_URL = "https://luma.com/college.xyz?k=c"; // sessions: info sessions, office hours, etc.
+
   return (
-    <section className="w-full py-10 md:py-16">
+    <section className="w-full pt-24 md:pt-28 pb-10 md:pb-16">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6">
         {/* MINIMAL HERO */}
         <SectionHeader
           kicker="MBC 2025"
           title="Programs"
-          subtitle="Hands-on sprints that move you from watching to doing — whether you’re building at the Hackathon or publishing a thesis for the Franklin Templeton Research Competition."
+          subtitle="From the Hackathon to the Researchathon, The MBC 2025 programs can help you turn your ideas into impact. Real prizes, recognition, and a fast track to jobs in crypto, tech, and finance."
         />
 
         <Separator className="my-8" />
 
-        {/* PROGRAMS TABS (immediately after hero) */}
+        {/* PROGRAMS TABS */}
         <Tabs defaultValue={PROGRAMS[0].id} className="w-full">
           <TabsList className="flex flex-wrap gap-2 bg-transparent p-0">
             {PROGRAMS.map((p) => (
@@ -339,8 +326,17 @@ export default function ProgramsPage() {
                 <span className="mr-2">{p.emoji}</span> {p.name}
               </TabsTrigger>
             ))}
+
+            {/* Sessions tab (Luma) */}
+            <TabsTrigger
+              value="sessions"
+              className="rounded-full border px-4 py-2 data-[state=active]:bg-foreground data-[state=active]:text-background"
+            >
+              <span className="mr-2">🗓️</span> Sessions
+            </TabsTrigger>
           </TabsList>
 
+          {/* Program panes */}
           {PROGRAMS.map((p) => (
             <TabsContent key={p.id} value={p.id} className="focus:outline-none">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
@@ -399,7 +395,7 @@ export default function ProgramsPage() {
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <GraduationCap className="h-5 w-5" /> Judging Criteria
+                          <GraduationCap className="h-5 w-5" /> Judging
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -408,6 +404,44 @@ export default function ProgramsPage() {
                             <li key={i}>{j}</li>
                           ))}
                         </ul>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Eligibility & Rules moved under Judging */}
+                  {(p.eligibility?.length || p.rules?.length) && (
+                    <Card className="rounded-2xl border-foreground/10">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <ShieldCheck className="h-5 w-5" /> Eligibility &
+                          Rules
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        {!!p.eligibility?.length && (
+                          <div>
+                            <div className="text-sm font-semibold mb-2">
+                              Eligibility
+                            </div>
+                            <ul className="list-disc pl-5 text-sm text-foreground/70 space-y-1">
+                              {p.eligibility.map((e, i) => (
+                                <li key={i}>{e}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {!!p.rules?.length && (
+                          <div>
+                            <div className="text-sm font-semibold mb-2">
+                              Rules
+                            </div>
+                            <ul className="list-disc pl-5 text-sm text-foreground/70 space-y-1">
+                              {p.rules.map((r, i) => (
+                                <li key={i}>{r}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   )}
@@ -475,44 +509,27 @@ export default function ProgramsPage() {
                     </Card>
                   )}
 
-                  {p.eligibility?.length || p.rules?.length ? (
-                    <Card className="rounded-2xl border-foreground/10">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <ShieldCheck className="h-5 w-5" /> Eligibility &
-                          Rules
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        {p.eligibility?.length ? (
-                          <div>
-                            <div className="text-sm font-semibold mb-2">
-                              Eligibility
-                            </div>
-                            <ul className="list-disc pl-5 text-sm text-foreground/70 space-y-1">
-                              {p.eligibility.map((e, i) => (
-                                <li key={i}>{e}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        ) : null}
-                        {p.rules?.length ? (
-                          <div>
-                            <div className="text-sm font-semibold mb-2">
-                              Rules
-                            </div>
-                            <ul className="list-disc pl-5 text-sm text-foreground/70 space-y-1">
-                              {p.rules.map((r, i) => (
-                                <li key={i}>{r}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        ) : null}
-                      </CardContent>
-                    </Card>
-                  ) : null}
+                  {/* Sessions link card */}
+                  <Card className="rounded-2xl border-foreground/10">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <CalendarDays className="h-5 w-5" /> Info Sessions &
+                        Office Hours
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-3">
+                      <p className="text-sm text-foreground/70">
+                        Join prep workshops, info sessions, and office hours
+                        throughout the week.
+                      </p>
+                      <Button asChild>
+                        <Link href={LUMA_URL}>Open Sessions Calendar</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
 
-                  {p.cta?.length ? (
+                  {/* Get Involved (with disabled Submit button for all programs) */}
+                  {!!p.cta?.length && (
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
@@ -529,13 +546,61 @@ export default function ProgramsPage() {
                             <Link href={c.href}>{c.label}</Link>
                           </Button>
                         ))}
+
+                        {/* Disabled submit button for all programs */}
+                        <Button
+                          disabled
+                          className="opacity-60 cursor-not-allowed"
+                          title="Submission link coming soon"
+                        >
+                          Submit (Coming Soon)
+                        </Button>
                       </CardContent>
                     </Card>
-                  ) : null}
+                  )}
                 </aside>
               </div>
             </TabsContent>
           ))}
+
+          {/* Sessions pane (Luma embed) */}
+          <TabsContent value="sessions" className="focus:outline-none">
+            <div className="mt-8 space-y-6">
+              <Card className="rounded-2xl border-foreground/10 overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    🗓️ Sessions Calendar (Info Sessions, Workshops, Office
+                    Hours)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {/* Direct link fallback */}
+                  <div className="mb-4">
+                    <Button asChild>
+                      <Link href={LUMA_URL}>Open in Luma</Link>
+                    </Button>
+                  </div>
+
+                  {/* Responsive iframe embed */}
+                  <div className="w-full rounded-xl overflow-hidden border border-foreground/10">
+                    <iframe
+                      src="https://luma.com/embed/calendar/cal-HBogrD0yphRdekG/events"
+                      title="MBC 2025 Sessions — Luma"
+                      className="w-full h-[80vh]"
+                      style={{
+                        border: "1px solid #bfcbda88",
+                        borderRadius: "8px",
+                      }}
+                      frameBorder={0}
+                      allowFullScreen
+                      aria-hidden="false"
+                      tabIndex={0}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </Tabs>
 
         {/* FOOTER CTA */}
@@ -562,14 +627,14 @@ export default function ProgramsPage() {
           <Card className="rounded-2xl border-foreground/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <BookOpenText className="h-5 w-5" /> Enter the FT Research
+                <BookOpenText className="h-5 w-5" /> Enter the FT Pitch
                 Competition
               </CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-between gap-4">
               <p className="text-foreground/70">
-                Submit a 3–5 page thesis by Nov 23, then pitch live at MBC on
-                Dec 6 if selected.
+                Submit a 3–5 page thesis by Nov 23, then pitch live on Dec 6 if
+                selected.
               </p>
               <div className="flex gap-2">
                 <Button asChild variant="secondary">
