@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
+import Link from "next/link";
 
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -8,9 +9,7 @@ const Hero = () => {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch((error) => {
-        // Autoplay was prevented. This might happen on some browsers.
         console.error("Autoplay prevented:", error);
-        // Optionally, display a play button for the user.
       });
     }
   }, []);
@@ -34,7 +33,7 @@ const Hero = () => {
       </video>
 
       {/* Overlay to make text readable */}
-      <div className="absolute top-0 left-0 w-full h-full bg-background/60 dark:bg-background/80 z-10"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-background/60 dark:bg-background/80 z-10" />
 
       {/* Content Stack */}
       <div className="relative z-20 text-center px-6 md:px-12 lg:px-24">
@@ -47,6 +46,7 @@ const Hero = () => {
             style={{ width: "100%", maxWidth: "600px" }}
           />
         </div>
+
         {/* Date & Location */}
         <p className="text-muted-foreground text-sm md:text-base font-medium mb-6">
           <span className="block md:inline">December 5–6, 2025</span>
@@ -61,9 +61,10 @@ const Hero = () => {
           </a>
         </p>
 
-        {/* Text Content */}
+        {/* Buttons */}
         <div className="max-w-3xl mx-auto">
-          <div className="flex justify-center">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            {/* Tickets */}
             <a
               href="https://lu.ma/x6apzbr8"
               target="_blank"
@@ -72,9 +73,18 @@ const Hero = () => {
             >
               Get Tickets →
             </a>
+
+            {/* Programs */}
+            <Link
+              href="/programs"
+              className="bg-secondary text-secondary-foreground font-semibold rounded-full py-3 px-10 text-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
+            >
+              Build at MBC
+            </Link>
           </div>
         </div>
       </div>
+
       <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-b from-transparent to-background backdrop-blur-sm z-20 pointer-events-none" />
     </section>
   );
