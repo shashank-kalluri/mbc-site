@@ -89,3 +89,18 @@ export interface BountySubmission {
   created_at: string;
   updated_at: string;
 }
+
+export interface Speaker {
+  id: number;
+  slug: string;
+  name: string;
+  title: string;
+  featured: boolean;
+  company: string;
+  image_url: string | null;
+  linkedin_url: string | null;
+  x_url: string | null;
+  tags: string[];
+  created_at: string;
+  updated_at: string;
+}

@@ -8,6 +8,7 @@ import { faqItems } from "@/data/faq";
 import ImageCloud from "@/components/ImageCloud";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Sponsors from "@/components/Sponsors";
+import Speakers from "@/components/Speakers";
 export default function Home() {
   const eventDate = "2025-12-05T10:00:00";
 
@@ -29,9 +30,9 @@ export default function Home() {
         <section id="sponsors">
           <Sponsors />
         </section>
-        {/* <section id="speakers">
-        <Speakers />
-      </section> */}
+        <section id="speakers">
+          <Speakers />
+        </section>
         <section id="">
           <TweetBoard />
         </section>
