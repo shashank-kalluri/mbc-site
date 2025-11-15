@@ -12,6 +12,11 @@ type NormalizedSpeaker = Speaker & {
   tags: string[]; // always an array in the UI
   featured?: boolean | null; // optional, matches your DB column
 };
+type RawSpeaker = Omit<Speaker, "tags" | "featured"> & {
+  // what actually comes back from Supabase
+  tags: unknown;
+  featured: boolean | null;
+};
 
 // ——————————————————————————————————————————————————————
 // Helpers
@@ -73,23 +78,23 @@ function SpeakerCard({ s }: { s: NormalizedSpeaker }) {
   return (
     <article
       className={cx(
-        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm",
+        "group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm",
         "shadow-sm hover:shadow-md transition-shadow",
         "focus-within:ring-2 focus-within:ring-maize/60"
       )}
     >
       {/* Image */}
-      <div className="relative w-full overflow-hidden bg-neutral-900 aspect-[3/4] sm:aspect-[4/5]">
+      <div className="relative w-full overflow-hidden bg-neutral-900 aspect-[1/1] sm:aspect-[4/5]">
         <Image
           src={s.image_url || "/speakers/placeholder.jpg"}
           alt={s.name}
           fill
           priority={Boolean(s.featured)}
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          sizes="(max-width: 640px) 40vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        {/* Gradient wash for legibility */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+
         {/* Quick actions */}
         {(s.linkedin_url || s.x_url) && (
           <div className="absolute top-3 right-3 flex items-center gap-2">
@@ -123,7 +128,7 @@ function SpeakerCard({ s }: { s: NormalizedSpeaker }) {
 
       {/* Meta */}
       <div className="p-4">
-        <div className="mb-2 flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
           {s.tags?.slice(0, 3).map((t) => (
             <span
               key={t}
@@ -167,9 +172,8 @@ function Controls({
   setActiveTag: (v: string | null) => void;
 }) {
   return (
-    <div className="flex flex-wrap gap-3">
-      {/* Search bar */}
-      <div className="w-full sm:flex-1">
+    <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+      <div className="flex-1">
         <label className="sr-only" htmlFor="speaker-search">
           Search speakers
         </label>
@@ -179,12 +183,10 @@ function Controls({
           placeholder="Search by name, company, role…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full min-w-[200px] rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-maize/60"
+          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-maize/60"
         />
       </div>
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 w-full sm:w-auto sm:flex-row">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           onClick={() => setActiveTag(null)}
           className={cx(
@@ -196,7 +198,6 @@ function Controls({
         >
           All
         </button>
-
         {allTags.map((t) => (
           <button
             key={t}
@@ -237,11 +238,15 @@ export default function SpeakersSection({
         const data = await getSpeakers();
 
         if (!cancelled) {
-          const normalized: NormalizedSpeaker[] = (data || []).map((s) => ({
-            ...(s as Speaker),
-            tags: normalizeTags((s as any).tags),
-            featured: (s as any).featured ?? false,
-          }));
+          const normalized: NormalizedSpeaker[] = (data || []).map((s) => {
+            const raw = s as RawSpeaker;
+
+            return {
+              ...raw,
+              tags: normalizeTags(raw.tags),
+              featured: raw.featured ?? false,
+            };
+          });
 
           setSpeakers(normalized);
         }
@@ -324,12 +329,14 @@ export default function SpeakersSection({
             <div
               className={cx(
                 "mt-8 grid gap-5",
-                // 1 col on tiny, 2 cols on most phones, 3+ on larger screens
-                "grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               )}
             >
               {filtered.map((s) => (
-                <div key={s.id} className="h-full">
+                <div
+                  key={s.id}
+                  className={cx(s.featured && "lg:col-span-2 lg:row-span-1")}
+                >
                   <SpeakerCard s={s} />
                 </div>
               ))}
