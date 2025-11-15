@@ -12,6 +12,7 @@ type NormalizedSpeaker = Speaker & {
   tags: string[]; // always an array in the UI
   featured?: boolean | null; // optional, matches your DB column
 };
+
 type RawSpeaker = Omit<Speaker, "tags" | "featured"> & {
   // what actually comes back from Supabase
   tags: unknown;
@@ -84,9 +85,9 @@ function SpeakerCard({ s }: { s: NormalizedSpeaker }) {
       )}
     >
       {/* Image */}
-      <div className="relative w-full overflow-hidden bg-neutral-900 aspect-[1/1] sm:aspect-[4/5]">
+      <div className="relative w-full overflow-hidden bg-neutral-900 aspect-[1/1] sm:aspect-[6/4] lg:aspect-[4/5]">
         <Image
-          src={s.image_url || "/speakers/placeholder.jpg"}
+          src={s.image_url || "/speakers/placeholder.png"}
           alt={s.name}
           fill
           priority={Boolean(s.featured)}
@@ -172,7 +173,7 @@ function Controls({
   setActiveTag: (v: string | null) => void;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+    <div className="flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
       <div className="flex-1">
         <label className="sr-only" htmlFor="speaker-search">
           Search speakers
@@ -217,6 +218,8 @@ function Controls({
   );
 }
 
+const MOBILE_VISIBLE_COUNT = 8;
+
 // ——————————————————————————————————————————————————————
 // Section (fetches from Supabase via API helper)
 // ——————————————————————————————————————————————————————
@@ -229,6 +232,12 @@ export default function SpeakersSection({
 }) {
   const [speakers, setSpeakers] = useState<NormalizedSpeaker[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [query, setQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [showAllMobile, setShowAllMobile] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -263,8 +272,23 @@ export default function SpeakersSection({
     };
   }, []);
 
-  const [query, setQuery] = useState("");
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  // Detect mobile viewport (Tailwind 'sm' breakpoint)
+  useEffect(() => {
+    const checkMobile = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth < 640);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Reset mobile "show all" when filters/search change
+  useEffect(() => {
+    setShowAllMobile(false);
+  }, [query, activeTag]);
 
   const allTags = useMemo(
     () => Array.from(new Set(speakers.flatMap((s) => s.tags || []))).sort(),
@@ -283,6 +307,12 @@ export default function SpeakersSection({
       return matchQ && matchTag;
     });
   }, [speakers, query, activeTag]);
+
+  const displayed = useMemo(() => {
+    if (!isMobile) return filtered;
+    if (showAllMobile) return filtered;
+    return filtered.slice(0, MOBILE_VISIBLE_COUNT);
+  }, [filtered, isMobile, showAllMobile]);
 
   return (
     <section
@@ -329,18 +359,41 @@ export default function SpeakersSection({
             <div
               className={cx(
                 "mt-8 grid gap-5",
-                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
               )}
             >
-              {filtered.map((s) => (
-                <div
-                  key={s.id}
-                  className={cx(s.featured && "lg:col-span-2 lg:row-span-1")}
-                >
+              {displayed.map((s) => (
+                <div key={s.id}>
                   <SpeakerCard s={s} />
                 </div>
               ))}
             </div>
+
+            {/* Mobile "Show more" toggle */}
+            {isMobile && filtered.length > MOBILE_VISIBLE_COUNT && (
+              <div className="mt-4 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowAllMobile((prev) => !prev)}
+                  className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium text-white/80 hover:bg-white/10"
+                >
+                  <span>
+                    {showAllMobile
+                      ? "Show fewer speakers"
+                      : `Show all ${filtered.length} speakers`}
+                  </span>
+                  <span
+                    className={cx(
+                      "transform transition-transform",
+                      showAllMobile ? "rotate-180" : "rotate-0"
+                    )}
+                    aria-hidden
+                  >
+                    ▼
+                  </span>
+                </button>
+              </div>
+            )}
 
             {filtered.length === 0 && !loading && (
               <div className="mt-10 rounded-2xl border border-dashed border-white/10 p-8 text-center text-white/70">
