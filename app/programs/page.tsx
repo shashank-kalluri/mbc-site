@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -301,10 +301,10 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => (
 );
 
 // ---------------------------
-// Main Page
+// Inner Page (uses hooks)
 // ---------------------------
 
-export default function ProgramsPage() {
+function ProgramsPageInner() {
   const LUMA_URL = "https://luma.com/college.xyz?k=c"; // sessions: info sessions, office hours, etc.
 
   const router = useRouter();
@@ -326,7 +326,7 @@ export default function ProgramsPage() {
     if (programFromUrl && allTabIds.includes(programFromUrl)) {
       setCurrentTab(programFromUrl);
     }
-  }, [programFromUrl]);
+  }, [programFromUrl, allTabIds]);
 
   const handleTabChange = (value: string) => {
     setCurrentTab(value);
@@ -696,5 +696,17 @@ export default function ProgramsPage() {
         </Tabs>
       </div>
     </section>
+  );
+}
+
+// ---------------------------
+// Default export with Suspense
+// ---------------------------
+
+export default function ProgramsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProgramsPageInner />
+    </Suspense>
   );
 }
