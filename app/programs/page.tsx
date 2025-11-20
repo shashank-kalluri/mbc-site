@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Accordion,
@@ -52,6 +53,7 @@ type Program = {
   eligibility?: string[];
   rules?: string[];
   faqs?: { q: string; a: string }[];
+  submissionCta?: { label: string; href: string };
 };
 
 // ---------------------------
@@ -136,9 +138,9 @@ const PROGRAMS: Program[] = [
     ],
   },
   {
-    id: "franklin-templeton",
+    id: "research-competition",
     name: "FT Pitch Competition",
-    slug: "franklin-templeton",
+    slug: "research-competition",
     emoji: "📈",
     headline: "Franklin Templeton Pitch Competition",
     blurb:
@@ -153,6 +155,10 @@ const PROGRAMS: Program[] = [
         href: "https://docs.google.com/forms/d/e/1FAIpQLScXTkcs2neukQp7u_1bMJanZ_lbH7-pPd215JLEZSgQDcroCA/viewform",
       },
     ],
+    submissionCta: {
+      label: "Submit Research Competition Project",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLScyMXni3mb6qA9XVkvbxTAwJwWN2gDAAzGfmbwGR7w4p7_8QQ/viewform?usp=header",
+    },
     stats: [
       { label: "Tracks", value: "3" },
       { label: "Report", value: "3–5 pages" },
@@ -301,6 +307,38 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => (
 export default function ProgramsPage() {
   const LUMA_URL = "https://luma.com/college.xyz?k=c"; // sessions: info sessions, office hours, etc.
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const DEFAULT_TAB = PROGRAMS[0].id;
+  const allTabIds = [...PROGRAMS.map((p) => p.id), "sessions"];
+
+  const programFromUrl = searchParams.get("program");
+  const initialTab =
+    programFromUrl && allTabIds.includes(programFromUrl)
+      ? programFromUrl
+      : DEFAULT_TAB;
+
+  const [currentTab, setCurrentTab] = React.useState(initialTab);
+
+  React.useEffect(() => {
+    if (programFromUrl && allTabIds.includes(programFromUrl)) {
+      setCurrentTab(programFromUrl);
+    }
+  }, [programFromUrl]);
+
+  const handleTabChange = (value: string) => {
+    setCurrentTab(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("program", value);
+
+    router.replace(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    });
+  };
+
   return (
     <section className="w-full pt-24 md:pt-28 pb-10 md:pb-16">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6">
@@ -314,7 +352,11 @@ export default function ProgramsPage() {
         <Separator className="my-8" />
 
         {/* PROGRAMS TABS */}
-        <Tabs defaultValue={PROGRAMS[0].id} className="w-full">
+        <Tabs
+          value={currentTab}
+          onValueChange={handleTabChange}
+          className="w-full"
+        >
           {/* SCROLL WRAPPER prevents page stretch */}
           <div className="relative mx-1 md:mx-0">
             <div className="overflow-x-auto overscroll-x-contain px-5 md:px-0 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory max-w-full">
@@ -527,12 +569,18 @@ export default function ProgramsPage() {
                         throughout the week.
                       </p>
                       <Button asChild>
-                        <Link href={LUMA_URL}>Open Sessions Calendar</Link>
+                        <Link
+                          href={LUMA_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Open Sessions Calendar
+                        </Link>
                       </Button>
                     </CardContent>
                   </Card>
 
-                  {/* Get Involved (with disabled Submit button for all programs) */}
+                  {/* Get Involved (with highlighted submission button if present) */}
                   {!!p.cta?.length && (
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
@@ -541,23 +589,59 @@ export default function ProgramsPage() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="flex flex-col gap-3">
+                        {p.submissionCta && (
+                          <>
+                            <Button
+                              asChild
+                              size="lg"
+                              className="w-full font-semibold shadow-md bg-maize text-black hover:bg-maize/90"
+                            >
+                              <Link
+                                href={p.submissionCta.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {p.submissionCta.label}
+                              </Link>
+                            </Button>
+                            <p className="text-xs text-foreground/60 text-center">
+                              Submit your final report before the deadline.
+                            </p>
+                            <Separator className="my-2" />
+                          </>
+                        )}
+
                         {p.cta.map((c, i) => (
                           <Button
                             asChild
                             key={i}
-                            variant={i === 0 ? "default" : "secondary"}
+                            variant={
+                              p.submissionCta
+                                ? "secondary"
+                                : i === 0
+                                ? "default"
+                                : "secondary"
+                            }
                           >
-                            <Link href={c.href}>{c.label}</Link>
+                            <Link
+                              href={c.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {c.label}
+                            </Link>
                           </Button>
                         ))}
-                        {/* Disabled submit button for all programs */}
-                        <Button
-                          disabled
-                          className="opacity-60 cursor-not-allowed"
-                          title="Submission link coming soon"
-                        >
-                          Submit (Coming Soon)
-                        </Button>
+
+                        {!p.submissionCta && (
+                          <Button
+                            disabled
+                            className="opacity-60 cursor-not-allowed"
+                            title="Submission link coming soon"
+                          >
+                            Submit (Coming Soon)
+                          </Button>
+                        )}
                       </CardContent>
                     </Card>
                   )}
@@ -579,7 +663,13 @@ export default function ProgramsPage() {
                   {/* Direct link fallback */}
                   <div className="mb-4">
                     <Button asChild>
-                      <Link href={LUMA_URL}>Open in Luma</Link>
+                      <Link
+                        href={LUMA_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Open in Luma
+                      </Link>
                     </Button>
                   </div>
 
