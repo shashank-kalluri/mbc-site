@@ -516,9 +516,100 @@ function ProgramsPageInner() {
                     </Card>
                   )}
                 </div>
-
                 {/* Right: Sidebar */}
                 <aside className="space-y-8">
+                  {/* ------------------------------ */}
+                  {/* 🚀 Get Involved (Now at Top)   */}
+                  {/* ------------------------------ */}
+                  {!!p.cta?.length && (
+                    <Card className="rounded-2xl border-foreground/10">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Clock className="h-5 w-5" /> Get Involved
+                        </CardTitle>
+                      </CardHeader>
+
+                      <CardContent className="flex flex-col gap-3">
+                        {/* Highlighted Submission Button (if applicable) */}
+                        {p.submissionCta && (
+                          <>
+                            <Button
+                              asChild
+                              size="lg"
+                              className="w-full font-semibold shadow-md bg-maize text-black hover:bg-maize/90"
+                            >
+                              <Link
+                                href={p.submissionCta.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {p.submissionCta.label}
+                              </Link>
+                            </Button>
+
+                            <p className="text-xs text-foreground/60 text-center">
+                              Submit your final project before the deadline.
+                            </p>
+
+                            <Separator className="my-2" />
+                          </>
+                        )}
+
+                        {/* CTA Buttons */}
+                        {p.cta.map((c, i) => {
+                          const isFutureSignup =
+                            p.id === "research-competition" &&
+                            c.label === "Sign Up";
+
+                          return isFutureSignup ? (
+                            <Button
+                              key={i}
+                              disabled
+                              variant="secondary"
+                              className="opacity-60 cursor-not-allowed"
+                              title="Sign-ups closed"
+                            >
+                              {c.label}
+                            </Button>
+                          ) : (
+                            <Button
+                              asChild
+                              key={i}
+                              variant={p.submissionCta ? "default" : "default"}
+                            >
+                              <Link
+                                href={c.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {c.label}
+                              </Link>
+                            </Button>
+                          );
+                        })}
+
+                        {p.id === "research-competition" && (
+                          <p className="text-xs text-foreground/50 text-center">
+                            Sign-up closed - please submit again next year.
+                          </p>
+                        )}
+
+                        {!p.submissionCta && (
+                          <Button
+                            disabled
+                            className="opacity-60 cursor-not-allowed"
+                            title="Submission link coming soon"
+                          >
+                            Submit (Coming Soon)
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* ------------------------------ */}
+                  {/* 📊 At a Glance (Stats)         */}
+                  {/* ------------------------------ */}
                   {p.stats?.length ? (
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
@@ -542,6 +633,9 @@ function ProgramsPageInner() {
                     </Card>
                   ) : null}
 
+                  {/* ------------------------------ */}
+                  {/* 🗓 Timeline                    */}
+                  {/* ------------------------------ */}
                   {p.timeline && (
                     <Card className="rounded-2xl border-foreground/10">
                       <CardHeader>
@@ -555,7 +649,9 @@ function ProgramsPageInner() {
                     </Card>
                   )}
 
-                  {/* Sessions link card */}
+                  {/* ------------------------------ */}
+                  {/* 🗓 Info Sessions (Luma)        */}
+                  {/* ------------------------------ */}
                   <Card className="rounded-2xl border-foreground/10">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -579,72 +675,6 @@ function ProgramsPageInner() {
                       </Button>
                     </CardContent>
                   </Card>
-
-                  {/* Get Involved (with highlighted submission button if present) */}
-                  {!!p.cta?.length && (
-                    <Card className="rounded-2xl border-foreground/10">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Clock className="h-5 w-5" /> Get Involved
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex flex-col gap-3">
-                        {p.submissionCta && (
-                          <>
-                            <Button
-                              asChild
-                              size="lg"
-                              className="w-full font-semibold shadow-md bg-maize text-black hover:bg-maize/90"
-                            >
-                              <Link
-                                href={p.submissionCta.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {p.submissionCta.label}
-                              </Link>
-                            </Button>
-                            <p className="text-xs text-foreground/60 text-center">
-                              Submit your final report before the deadline.
-                            </p>
-                            <Separator className="my-2" />
-                          </>
-                        )}
-
-                        {p.cta.map((c, i) => (
-                          <Button
-                            asChild
-                            key={i}
-                            variant={
-                              p.submissionCta
-                                ? "secondary"
-                                : i === 0
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            <Link
-                              href={c.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {c.label}
-                            </Link>
-                          </Button>
-                        ))}
-
-                        {!p.submissionCta && (
-                          <Button
-                            disabled
-                            className="opacity-60 cursor-not-allowed"
-                            title="Submission link coming soon"
-                          >
-                            Submit (Coming Soon)
-                          </Button>
-                        )}
-                      </CardContent>
-                    </Card>
-                  )}
                 </aside>
               </div>
             </TabsContent>
