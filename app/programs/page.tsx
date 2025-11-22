@@ -71,6 +71,14 @@ const PROGRAMS: Program[] = [
       "Build something amazing on Solana or Base (EVM) and competed for 10s of thousands of dollars in prizes! Plus optional ecosystem bounties. Submit by Dec 5 (11:59 PM ET). Top 10 teams demo live on Dec 6.",
     cta: [
       {
+        label: "Sign Up for Hackathon",
+        href: "https://forms.gle/rbGeRNvZG4sFfgB77",
+      },
+      {
+        label: "Join Hackathon Telegram",
+        href: "https://t.me/+ZOVY6KZGcHE1ZmFh",
+      },
+      {
         label: "Read Hackathon Guide",
         href: "https://docs.google.com/document/d/1Cc2vOxhOZMjJwDFm865w_u5Dax9q9Ay4fIWhNOsaYhw/edit?usp=sharing",
       },
