@@ -52,8 +52,8 @@ const PartnerCard: React.FC<{
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className={`object-contain transition duration-300 ${
             isPresenting
-              ? "p-1 grayscale-0"
-              : "p-2 lg:p-1 grayscale group-hover:grayscale-0"
+              ? "p-1 opacity-80 group-hover:opacity-100"
+              : "p-2 lg:p-1 opacity-60 group-hover:opacity-100"
           }`}
           unoptimized
         />
