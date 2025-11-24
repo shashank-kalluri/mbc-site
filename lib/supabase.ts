@@ -104,3 +104,13 @@ export interface Speaker {
   created_at: string;
   updated_at: string;
 }
+
+export interface ResearchSubmission {
+  id: number;
+  submission_link: string;
+  name: string;
+  university: string;
+  asset: string;
+  category: string;
+  created_at: string;
+}

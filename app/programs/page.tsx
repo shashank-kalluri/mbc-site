@@ -13,6 +13,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import {
   CalendarDays,
   Clock,
@@ -25,6 +26,8 @@ import {
   BookOpenText,
   MessageSquare,
 } from "lucide-react";
+
+import { getResearchSubmissions } from "@/lib/api/researchsubmissions";
 
 /**
  * MBC Programs Page — simplified & aligned to Hackathon Guide (Oct 7, 2025)
@@ -54,6 +57,17 @@ type Program = {
   rules?: string[];
   faqs?: { q: string; a: string }[];
   submissionCta?: { label: string; href: string };
+};
+
+// If you already have this type elsewhere, import it instead
+type ResearchSubmission = {
+  id: number;
+  submission_link: string;
+  name: string;
+  university: string;
+  asset: string;
+  category: string;
+  created_at: string;
 };
 
 // ---------------------------
@@ -320,7 +334,12 @@ function ProgramsPageInner() {
   const pathname = usePathname();
 
   const DEFAULT_TAB = PROGRAMS[0].id;
-  const allTabIds = [...PROGRAMS.map((p) => p.id), "sessions"];
+  // Add "research-submissions" to available tab IDs
+  const allTabIds = [
+    ...PROGRAMS.map((p) => p.id),
+    "research-submissions",
+    "sessions",
+  ];
 
   const programFromUrl = searchParams.get("program");
   const initialTab =
@@ -330,11 +349,59 @@ function ProgramsPageInner() {
 
   const [currentTab, setCurrentTab] = React.useState(initialTab);
 
+  // State for research submissions
+  const [submissions, setSubmissions] = React.useState<ResearchSubmission[]>(
+    []
+  );
+  const [submissionsLoading, setSubmissionsLoading] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [selectedSubmissionId, setSelectedSubmissionId] = React.useState<
+    number | null
+  >(null);
+
+  const filteredSubmissions = React.useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return submissions;
+
+    return submissions.filter((s) => {
+      const name = s.name?.toLowerCase() || "";
+      const uni = s.university?.toLowerCase() || "";
+      const asset = s.asset?.toLowerCase() || "";
+      const category = s.category?.toLowerCase() || "";
+
+      return (
+        name.includes(q) ||
+        uni.includes(q) ||
+        asset.includes(q) ||
+        category.includes(q)
+      );
+    });
+  }, [searchQuery, submissions]);
+
+  const selectedSubmission = React.useMemo(
+    () =>
+      selectedSubmissionId
+        ? submissions.find((s) => s.id === selectedSubmissionId) || null
+        : null,
+    [submissions, selectedSubmissionId]
+  );
+
   React.useEffect(() => {
     if (programFromUrl && allTabIds.includes(programFromUrl)) {
       setCurrentTab(programFromUrl);
     }
   }, [programFromUrl, allTabIds]);
+
+  React.useEffect(() => {
+    const fetchSubmissions = async () => {
+      setSubmissionsLoading(true);
+      const data = await getResearchSubmissions();
+      setSubmissions(data);
+      setSubmissionsLoading(false);
+    };
+
+    fetchSubmissions();
+  }, []);
 
   const handleTabChange = (value: string) => {
     setCurrentTab(value);
@@ -380,6 +447,15 @@ function ProgramsPageInner() {
                     {p.name}
                   </TabsTrigger>
                 ))}
+
+                {/* Research Submissions tab */}
+                <TabsTrigger
+                  value="research-submissions"
+                  className="shrink-0 snap-start rounded-full border px-4 py-2 transition shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 bg-background/60 hover:bg-foreground/5 ring-1 ring-transparent data-[state=active]:bg-foreground data-[state=active]:text-background data-[state=active]:ring-foreground/20 data-[state=active]:shadow-md"
+                >
+                  <span className="mr-2">📚</span>
+                  Research Submissions
+                </TabsTrigger>
 
                 {/* Sessions tab (Luma) */}
                 <TabsTrigger
@@ -687,6 +763,151 @@ function ProgramsPageInner() {
               </div>
             </TabsContent>
           ))}
+
+          {/* Research Submissions pane */}
+          <TabsContent
+            value="research-submissions"
+            className="focus:outline-none"
+          >
+            <div className="mt-8 space-y-6">
+              <Card className="rounded-2xl border-foreground/10">
+                <CardHeader>
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    📚 Research Submissions Library
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-foreground/70 mb-4">
+                    Browse research submitted to the Franklin Templeton Pitch
+                    Competition. Click a submission to view the PDF, or open it
+                    directly in Google Drive.
+                  </p>
+
+                  {/* Search bar */}
+                  <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <Input
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search by name, university, asset, or category..."
+                      className="max-w-md"
+                    />
+                    {submissions.length > 0 && (
+                      <p className="text-xs text-foreground/50">
+                        Showing {filteredSubmissions.length} of{" "}
+                        {submissions.length} submissions
+                      </p>
+                    )}
+                  </div>
+
+                  {submissionsLoading ? (
+                    <p className="text-sm text-foreground/60">
+                      Loading submissions…
+                    </p>
+                  ) : submissions.length === 0 ? (
+                    <p className="text-sm text-foreground/60">
+                      No submissions are available yet. Check back soon.
+                    </p>
+                  ) : filteredSubmissions.length === 0 ? (
+                    <p className="text-sm text-foreground/60">
+                      No submissions match your search. Try a different name,
+                      university, asset, or category.
+                    </p>
+                  ) : (
+                    <>
+                      {/* Grid of cards */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {filteredSubmissions.map((s) => {
+                          const isSelected = s.id === selectedSubmissionId;
+                          return (
+                            <button
+                              key={s.id}
+                              type="button"
+                              onClick={() =>
+                                setSelectedSubmissionId(
+                                  isSelected ? null : s.id
+                                )
+                              }
+                              className={`text-left rounded-xl border px-4 py-3 transition shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 bg-background/80 ${
+                                isSelected
+                                  ? "border-foreground/40 bg-foreground/5"
+                                  : "border-foreground/10 hover:border-foreground/30"
+                              }`}
+                            >
+                              <div className="space-y-1">
+                                <div className="font-semibold text-sm line-clamp-2">
+                                  {s.name}
+                                </div>
+                                <div className="text-xs text-foreground/60 line-clamp-2">
+                                  {s.university} • {s.asset} • {s.category}
+                                </div>
+                                <div className="text-[11px] text-foreground/50">
+                                  Submitted{" "}
+                                  {new Date(s.created_at).toLocaleDateString(
+                                    undefined,
+                                    {
+                                      year: "numeric",
+                                      month: "short",
+                                      day: "numeric",
+                                    }
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Embedded PDF viewer */}
+                      {selectedSubmission && (
+                        <div className="mt-8 space-y-3">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                            <div>
+                              <div className="font-semibold text-base">
+                                {selectedSubmission.name}
+                              </div>
+                              <div className="text-xs text-foreground/60">
+                                {selectedSubmission.university} •{" "}
+                                {selectedSubmission.asset} •{" "}
+                                {selectedSubmission.category}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                asChild
+                                size="sm"
+                                variant="outline"
+                                className="whitespace-nowrap"
+                              >
+                                <Link
+                                  href={selectedSubmission.submission_link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Open in Google Drive
+                                </Link>
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="w-full rounded-xl overflow-hidden border border-foreground/10 bg-muted/20">
+                            <iframe
+                              src={selectedSubmission.submission_link}
+                              title={selectedSubmission.name}
+                              className="w-full h-[70vh]"
+                              style={{
+                                border: "none",
+                              }}
+                              allowFullScreen
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           {/* Sessions pane (Luma embed) */}
           <TabsContent value="sessions" className="focus:outline-none">
