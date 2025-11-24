@@ -243,7 +243,7 @@ const PROGRAMS: Program[] = [
       "Multiple teams per university allowed.",
     ],
     rules: [
-      "Report length: 3–5 pages (exclude title page, figures/tables, references).",
+      "Report length: 3–5 pages (exclude title page, appendix, references).",
       "Suggested structure: title page; executive summary (0.5–1p); project overview; investment proposal (long/short, horizon, target); conclusion; references.",
       "Submit via Google Form by Nov 23 (link in memo / MBC Telegram).",
       "Final pitch must match the written thesis; bring a slide deck.",
