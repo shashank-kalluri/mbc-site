@@ -63,11 +63,34 @@ type Program = {
 type ResearchSubmission = {
   id: number;
   submission_link: string;
-  name: string;
+  name: string; // may contain multiple names
   university: string;
   asset: string;
   category: string;
   created_at: string;
+};
+
+// ---------------------------
+// Helpers
+// ---------------------------
+
+/**
+ * Parse a raw "name" field that may contain multiple people.
+ * Examples:
+ *  - "Alice" -> ["Alice"]
+ *  - "Alice, Bob, Carol" -> ["Alice", "Bob", "Carol"]
+ *  - "Alice & Bob" -> ["Alice", "Bob"]
+ *  - "Alice and Bob" -> ["Alice", "Bob"]
+ */
+const parseTeamMembers = (raw?: string | null): string[] => {
+  if (!raw) return [];
+  const cleaned = raw.trim();
+  if (!cleaned) return [];
+
+  return cleaned
+    .split(/,|&| and /gi)
+    .map((s) => s.trim())
+    .filter(Boolean);
 };
 
 // ---------------------------
@@ -377,14 +400,6 @@ function ProgramsPageInner() {
       );
     });
   }, [searchQuery, submissions]);
-
-  const selectedSubmission = React.useMemo(
-    () =>
-      selectedSubmissionId
-        ? submissions.find((s) => s.id === selectedSubmissionId) || null
-        : null,
-    [submissions, selectedSubmissionId]
-  );
 
   React.useEffect(() => {
     if (programFromUrl && allTabIds.includes(programFromUrl)) {
@@ -814,94 +829,113 @@ function ProgramsPageInner() {
                     </p>
                   ) : (
                     <>
-                      {/* Grid of cards */}
+                      {/* Grid of cards + inline PDF viewer under selected row */}
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {filteredSubmissions.map((s) => {
                           const isSelected = s.id === selectedSubmissionId;
+                          const teamMembers = parseTeamMembers(s.name);
+                          const teamDisplay =
+                            teamMembers.length > 0
+                              ? teamMembers.join(", ")
+                              : s.name;
+
                           return (
-                            <button
-                              key={s.id}
-                              type="button"
-                              onClick={() =>
-                                setSelectedSubmissionId(
-                                  isSelected ? null : s.id
-                                )
-                              }
-                              className={`text-left rounded-xl border px-4 py-3 transition shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 bg-background/80 ${
-                                isSelected
-                                  ? "border-foreground/40 bg-foreground/5"
-                                  : "border-foreground/10 hover:border-foreground/30"
-                              }`}
-                            >
-                              <div className="space-y-1">
-                                <div className="font-semibold text-sm line-clamp-2">
-                                  {s.name}
-                                </div>
-                                <div className="text-xs text-foreground/60 line-clamp-2">
-                                  {s.university} • {s.asset} • {s.category}
-                                </div>
-                                <div className="text-[11px] text-foreground/50">
-                                  Submitted{" "}
-                                  {new Date(s.created_at).toLocaleDateString(
-                                    undefined,
-                                    {
-                                      year: "numeric",
-                                      month: "short",
-                                      day: "numeric",
-                                    }
+                            <React.Fragment key={s.id}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setSelectedSubmissionId(
+                                    isSelected ? null : s.id
+                                  )
+                                }
+                                className={`text-left rounded-xl border px-4 py-3 transition shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 bg-background/80 ${
+                                  isSelected
+                                    ? "border-foreground/40 bg-foreground/5"
+                                    : "border-foreground/10 hover:border-foreground/30"
+                                }`}
+                              >
+                                <div className="space-y-1">
+                                  {/* Highlighted asset */}
+                                  <div className="font-semibold text-sm line-clamp-2">
+                                    {s.asset || "Unnamed Asset"}
+                                  </div>
+
+                                  <div className="text-xs text-foreground/60 line-clamp-2">
+                                    {s.university} • {s.category}
+                                  </div>
+
+                                  {/* Names in gray underneath */}
+                                  {teamDisplay && (
+                                    <div className="text-[11px] text-foreground/50 line-clamp-2">
+                                      {teamDisplay}
+                                    </div>
                                   )}
+
+                                  <div className="text-[11px] text-foreground/50">
+                                    Submitted{" "}
+                                    {new Date(s.created_at).toLocaleDateString(
+                                      undefined,
+                                      {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric",
+                                      }
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </button>
+                              </button>
+
+                              {isSelected && (
+                                <div className="col-span-1 md:col-span-2 lg:col-span-4 mt-2 space-y-3">
+                                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                                    <div>
+                                      <div className="font-semibold text-base">
+                                        {s.asset || "Unnamed Asset"}
+                                      </div>
+                                      <div className="text-xs text-foreground/60">
+                                        {s.university} • {s.category}
+                                      </div>
+                                      {teamDisplay && (
+                                        <div className="text-xs text-foreground/60 mt-1">
+                                          Team: {teamDisplay}
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Button
+                                        asChild
+                                        size="sm"
+                                        variant="outline"
+                                        className="whitespace-nowrap"
+                                      >
+                                        <Link
+                                          href={s.submission_link}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          Open in Google Drive
+                                        </Link>
+                                      </Button>
+                                    </div>
+                                  </div>
+
+                                  <div className="w-full rounded-xl overflow-hidden border border-foreground/10 bg-muted/20">
+                                    <iframe
+                                      src={s.submission_link}
+                                      title={s.asset || s.name}
+                                      className="w-full h-[70vh]"
+                                      style={{
+                                        border: "none",
+                                      }}
+                                      allowFullScreen
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </React.Fragment>
                           );
                         })}
                       </div>
-
-                      {/* Embedded PDF viewer */}
-                      {selectedSubmission && (
-                        <div className="mt-8 space-y-3">
-                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <div>
-                              <div className="font-semibold text-base">
-                                {selectedSubmission.name}
-                              </div>
-                              <div className="text-xs text-foreground/60">
-                                {selectedSubmission.university} •{" "}
-                                {selectedSubmission.asset} •{" "}
-                                {selectedSubmission.category}
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button
-                                asChild
-                                size="sm"
-                                variant="outline"
-                                className="whitespace-nowrap"
-                              >
-                                <Link
-                                  href={selectedSubmission.submission_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Open in Google Drive
-                                </Link>
-                              </Button>
-                            </div>
-                          </div>
-
-                          <div className="w-full rounded-xl overflow-hidden border border-foreground/10 bg-muted/20">
-                            <iframe
-                              src={selectedSubmission.submission_link}
-                              title={selectedSubmission.name}
-                              className="w-full h-[70vh]"
-                              style={{
-                                border: "none",
-                              }}
-                              allowFullScreen
-                            />
-                          </div>
-                        </div>
-                      )}
                     </>
                   )}
                 </CardContent>
