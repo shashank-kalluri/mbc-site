@@ -57,7 +57,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="block md:inline text-maize hover:text-maize/80 transition-colors no-underline"
           >
-            University of Michigan, Ann Arbor
+            University of Michigan Ross School of Business, Ann Arbor
           </a>
         </p>
 
