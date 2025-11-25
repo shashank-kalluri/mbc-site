@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -42,7 +42,8 @@ const SectionHeader: React.FC<{
   </div>
 );
 
-export default function ProgramsPage() {
+// Inner component that actually uses the navigation hooks
+function ProgramsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -157,5 +158,14 @@ export default function ProgramsPage() {
         </Tabs>
       </div>
     </section>
+  );
+}
+
+// Default export: wrap the hook-using component in Suspense
+export default function ProgramsPage() {
+  return (
+    <Suspense fallback={<div className="pt-24 md:pt-28 pb-10">Loading...</div>}>
+      <ProgramsPageInner />
+    </Suspense>
   );
 }
