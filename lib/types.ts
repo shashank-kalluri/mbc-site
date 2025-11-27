@@ -43,7 +43,7 @@ export type Agenda = {
   location: string | null;
   start: string | null;
   end: string | null; // maps to "end" column
-  sponsor: any | null; // jsonb
+  sponsor: string[] | null; // jsonb
   description: string | null;
-  speakers: any | null; // jsonb
+  speakers: string[] | null; // jsonb
 };
