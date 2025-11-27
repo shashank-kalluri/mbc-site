@@ -46,17 +46,32 @@ type TimelineData = {
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
-
-const normalizeSpeakers = (speakers: any): string[] | undefined => {
+const normalizeSpeakers = (speakers: unknown): string[] | undefined => {
   if (!Array.isArray(speakers)) return undefined;
-  if (typeof speakers[0] === "string") return speakers;
-  return speakers.map((s) => s?.name ?? "").filter(Boolean);
+
+  // Case 1: it's already a string[]
+  if (typeof speakers[0] === "string") {
+    return speakers as string[];
+  }
+
+  // Case 2: array of objects with .name
+  return (speakers as { name?: string | null }[])
+    .map((s) => s?.name ?? "")
+    .filter((name): name is string => Boolean(name));
 };
 
-const normalizeSponsor = (sponsor: any): string | undefined => {
+const normalizeSponsor = (sponsor: unknown): string | undefined => {
   if (!sponsor) return;
+
   if (typeof sponsor === "string") return sponsor;
-  return sponsor.name ?? sponsor.label ?? sponsor.title ?? undefined;
+
+  const obj = sponsor as {
+    name?: string | null;
+    label?: string | null;
+    title?: string | null;
+  };
+
+  return obj.name ?? obj.label ?? obj.title ?? undefined;
 };
 
 const mapRow = (row: AgendaRow): AgendaSession => ({
