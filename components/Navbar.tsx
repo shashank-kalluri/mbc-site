@@ -15,9 +15,10 @@ type NavItem = {
 };
 
 const navLinks: NavItem[] = [
+  { href: "/#agenda", label: "Agenda" },
   { href: "/#speakers", label: "Speakers" },
-  { href: "/programs", label: "Programs" },
   { href: "/#sponsors", label: "Sponsors" },
+  { href: "/programs", label: "Programs" },
   { href: "/#universities", label: "Universities" },
   { href: "/#faq", label: "FAQ" },
 ];

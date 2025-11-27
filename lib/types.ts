@@ -35,3 +35,15 @@ export type ResearchSubmission = {
   category: string;
   created_at: string;
 };
+
+export type Agenda = {
+  id: number;
+  created_at: string;
+  title: string | null;
+  location: string | null;
+  start: string | null;
+  end: string | null; // maps to "end" column
+  sponsor: any | null; // jsonb
+  description: string | null;
+  speakers: any | null; // jsonb
+};
