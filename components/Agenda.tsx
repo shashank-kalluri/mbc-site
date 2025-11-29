@@ -46,6 +46,7 @@ type TimelineData = {
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
+
 const normalizeSpeakers = (speakers: unknown): string[] | undefined => {
   if (!Array.isArray(speakers)) return undefined;
 
@@ -392,9 +393,20 @@ function SessionCard({
 // Session Popover (full details)
 // ---------------------------
 
-function SessionPopover({ session }: { session: AgendaSession }) {
+function SessionPopover({
+  session,
+  placement = "bottom",
+}: {
+  session: AgendaSession;
+  placement?: "top" | "bottom";
+}) {
   const { title, start, end, room, sponsor, speakers, description } = session;
   const timeRange = formatTimeRange(start, end);
+
+  const placementClasses =
+    placement === "top"
+      ? "absolute inset-x-0 bottom-full mb-2"
+      : "absolute inset-x-0 top-full mt-2";
 
   return (
     <div
@@ -402,9 +414,8 @@ function SessionPopover({ session }: { session: AgendaSession }) {
         "pointer-events-none opacity-0",
         "group-hover:opacity-100 group-hover:pointer-events-auto",
         "group-focus-within:opacity-100 group-focus-within:pointer-events-auto",
-        // BELOW the card, matching its width
-        "absolute inset-x-0 top-full mt-2 z-50",
-        "w-full rounded-2xl border border-white/25",
+        placementClasses,
+        "z-50 w-full rounded-2xl border border-white/25",
         "bg-black/90 backdrop-blur-md p-3 shadow-2xl"
       )}
     >
@@ -489,7 +500,7 @@ function AgendaControls({
                   "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs sm:text-sm border",
                   isActive
                     ? "bg-maize text-black border-maize"
-                    : "bg-white/5 text:white/80 border-white/15 hover:bg-white/10"
+                    : "bg-white/5 text-white/80 border-white/15 hover:bg-white/10"
                 )}
               >
                 <span className="font-medium">{day.label}</span>
@@ -743,6 +754,12 @@ export default function AgendaSection({
                               const top = startMin * MINUTE_HEIGHT_PX;
                               const height = durationMin * MINUTE_HEIGHT_PX;
 
+                              // If the center of the block is in the bottom 30% of the timeline,
+                              // show the popover above instead of below.
+                              const sessionCenter = top + height / 2;
+                              const placeAbove =
+                                sessionCenter > timelineHeight * 0.8;
+
                               return (
                                 <div
                                   key={session.id}
@@ -756,7 +773,10 @@ export default function AgendaSection({
                                     session={session}
                                     compact={isShort}
                                   />
-                                  <SessionPopover session={session} />
+                                  <SessionPopover
+                                    session={session}
+                                    placement={placeAbove ? "top" : "bottom"}
+                                  />
                                 </div>
                               );
                             })}
