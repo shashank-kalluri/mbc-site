@@ -68,7 +68,7 @@ export const HackathonProgram: React.FC = () => {
     { label: "Kickoff", datetime: "Sun, Nov 30, 2025" },
     {
       label: "Submission Deadline",
-      datetime: "Fri, Dec 5, 2025 — 11:59 PM ET",
+      datetime: "Fri, Dec 5, 2025 — 05:59 PM ET",
     },
     { label: "In-Person Judging & Demos", datetime: "Sat, Dec 6, 2025" },
     {
