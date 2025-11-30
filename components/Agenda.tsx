@@ -756,10 +756,9 @@ export default function AgendaSection({
 
                               // If the center of the block is in the bottom 30% of the timeline,
                               // show the popover above instead of below.
-                              const sessionCenter = top + height / 2;
+                              const sessionbottom = top + height;
                               const placeAbove =
-                                sessionCenter > timelineHeight * 0.8;
-
+                                sessionbottom > timelineHeight * 0.8;
                               return (
                                 <div
                                   key={session.id}
