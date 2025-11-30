@@ -211,9 +211,31 @@ function buildTimelineData(
     }
   });
 
-  const primaryRooms = Array.from(primaryRoomsSet);
-  const rooms: string[] = [...primaryRooms];
-  if (hasOther) rooms.push(OTHER_ROOM_LABEL);
+  // We want Winter Garden columns to appear second-to-last,
+  // i.e. immediately before "Other Events"
+  const allPrimaryRooms = Array.from(primaryRoomsSet);
+
+  const winterGardenRooms = allPrimaryRooms.filter((r) =>
+    r.trim().toLowerCase().includes("winter garden")
+  );
+  const otherPrimaryRooms = allPrimaryRooms.filter(
+    (r) => !r.trim().toLowerCase().includes("winter garden")
+  );
+
+  const rooms: string[] = [];
+
+  // First: all non–Winter Garden primary rooms
+  rooms.push(...otherPrimaryRooms);
+
+  // Then: all Winter Garden variants
+  rooms.push(...winterGardenRooms);
+
+  // Finally: "Other Events" if we have any non-primary sessions
+  if (hasOther) {
+    rooms.push(OTHER_ROOM_LABEL);
+  }
+
+  // Safety fallback
   if (rooms.length === 0) {
     rooms.push(OTHER_ROOM_LABEL);
   }
