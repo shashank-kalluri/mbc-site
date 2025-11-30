@@ -52,7 +52,7 @@ export const HackathonProgram: React.FC = () => {
   const stats = [
     { label: "Tracks", value: "2 (Solana, Base)" },
     { label: "Finalists", value: "Top 10 (5 per track)" },
-    { label: "Submit By", value: "Dec 5, 11:59 PM ET" },
+    { label: "Submit By", value: "Dec 5, 05:59 PM ET" },
     { label: "Finals", value: "Dec 6 (5 min + 2 min Q&A)" },
   ];
 
@@ -264,13 +264,14 @@ export const HackathonProgram: React.FC = () => {
               </Button>
             ))}
 
-            {/* No submission CTA yet */}
-            <Button
-              disabled
-              className="opacity-60 cursor-not-allowed"
-              title="Submission link coming soon"
-            >
-              Submit (Coming Soon)
+            <Button asChild className="bg-maize text-black hover:bg-maize">
+              <Link
+                href="https://mbc.devpost.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Submit on Devpost
+              </Link>
             </Button>
           </CardContent>
         </Card>
