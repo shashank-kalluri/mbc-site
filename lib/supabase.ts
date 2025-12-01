@@ -113,6 +113,7 @@ export interface ResearchSubmission {
   asset: string;
   category: string;
   created_at: string;
+  status: string;
 }
 
 export interface Agenda {

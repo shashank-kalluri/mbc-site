@@ -17,6 +17,7 @@ type ResearchSubmission = {
   asset: string;
   category: string;
   created_at: string;
+  status: string;
 };
 
 const parseTeamMembers = (raw?: string | null): string[] => {
@@ -49,12 +50,14 @@ export const ResearchSubmissions: React.FC = () => {
       const uni = s.university?.toLowerCase() || "";
       const asset = s.asset?.toLowerCase() || "";
       const category = s.category?.toLowerCase() || "";
+      const status = s.status?.toLowerCase() || "";
 
       return (
         name.includes(q) ||
         uni.includes(q) ||
         asset.includes(q) ||
-        category.includes(q)
+        category.includes(q) ||
+        status.includes(q)
       );
     });
   }, [searchQuery, submissions]);
@@ -131,6 +134,10 @@ export const ResearchSubmissions: React.FC = () => {
                         isSelected
                           ? "border-foreground/40 bg-foreground/5"
                           : "border-foreground/10 hover:border-foreground/30"
+                      } ${
+                        s.status?.toLowerCase() === "finalist"
+                          ? "bg-maize/20 border-maize/60"
+                          : ""
                       }`}
                     >
                       <div className="space-y-1">
@@ -141,6 +148,12 @@ export const ResearchSubmissions: React.FC = () => {
                         <div className="text-xs text-foreground/60 line-clamp-2">
                           {s.university} • {s.category}
                         </div>
+
+                        {s.status?.toLowerCase() === "finalist" && (
+                          <div className="text-[10px] font-semibold text-maize/80 uppercase tracking-wide">
+                            ⭐ Finalist
+                          </div>
+                        )}
 
                         {teamDisplay && (
                           <div className="text-[11px] text-foreground/50 line-clamp-2">
@@ -175,6 +188,11 @@ export const ResearchSubmissions: React.FC = () => {
                             {teamDisplay && (
                               <div className="text-xs text-foreground/60 mt-1">
                                 Team: {teamDisplay}
+                              </div>
+                            )}
+                            {s.status?.toLowerCase() === "finalist" && (
+                              <div className="text-xs font-semibold text-maize/80 uppercase tracking-wide">
+                                ⭐ Finalist
                               </div>
                             )}
                           </div>

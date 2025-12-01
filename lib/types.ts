@@ -34,6 +34,7 @@ export type ResearchSubmission = {
   asset: string;
   category: string;
   created_at: string;
+  status: string;
 };
 
 export type Agenda = {
