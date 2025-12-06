@@ -588,7 +588,7 @@ export default function AgendaSection({
   // Ensure we always have an active day when days are available
   useEffect(() => {
     if (days.length > 0 && !activeDayKey) {
-      setActiveDayKey(days[0].key);
+      setActiveDayKey(days[1].key);
     }
   }, [days, activeDayKey]);
 
