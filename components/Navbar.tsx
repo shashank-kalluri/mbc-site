@@ -1,172 +1,170 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type NavItem = {
-  href: string;
-  label: string;
-  external?: boolean;
-};
-
-const navLinks: NavItem[] = [
-  { href: "/#agenda", label: "Agenda" },
+const navLinks = [
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
   { href: "/programs", label: "Programs" },
-  { href: "/#universities", label: "Universities" },
   { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  const linkClass =
-    "text-foreground hover:text-muted-foreground transition font-sans";
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const isActive = (href: string) => {
-    // Basic active check: exact path or same base path for /programs
-    if (href === "/") return pathname === "/";
-    if (href.startsWith("/programs")) return pathname.startsWith("/programs");
-    // For hash links, highlight when on home
-    if (href.startsWith("/#")) return pathname === "/";
-    return false;
-  };
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
-  const DesktopLinks = useMemo(
-    () =>
-      navLinks.map(({ href, label, external }) =>
-        external ? (
-          <a
-            key={href}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            {label}
-          </a>
-        ) : (
-          <Link
-            key={href}
-            href={href}
-            className={`${linkClass} ${
-              isActive(href) ? "opacity-100" : "opacity-90"
-            }`}
-            aria-current={isActive(href) ? "page" : undefined}
-          >
-            {label}
-          </Link>
-        )
-      ),
-    [pathname]
-  );
-
-  const MobileLinks = useMemo(
-    () =>
-      navLinks.map(({ href, label, external }) =>
-        external ? (
-          <a
-            key={href}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            {label}
-          </a>
-        ) : (
-          <Link
-            key={href}
-            href={href}
-            className={linkClass}
-            onClick={() => setIsOpen(false)}
-          >
-            {label}
-          </Link>
-        )
-      ),
-    []
-  );
+  // Pill is always dark-on-dark; only invert when neither scrolled nor in open state
+  const isDark = true;
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 shadow-md px-6 py-3 flex justify-between items-center transition-all ${
-        isOpen
-          ? "bg-background"
-          : "bg-background/10 backdrop-blur-sm md:bg-background/10 md:backdrop-blur-sm md:top-4 md:left-1/2 md:transform md:-translate-x-1/2 md:w-[90%] md:max-w-5xl md:rounded-lg"
-      }`}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <Link href="/" aria-label="Go to Home">
-          <Image
-            src="/MBC Logo-08-white.png"
-            alt="Midwest Blockchain Conference"
-            width={30}
-            height={30}
-            className="object-contain"
-            priority
-          />
-        </Link>
-      </div>
-
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center space-x-6">
-        {DesktopLinks}
-        <Button asChild className="ml-2">
-          <a
-            href="https://lu.ma/x6apzbr8"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Tickets
-          </a>
-        </Button>
-      </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        className="md:hidden flex items-center justify-center"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle menu"
+    <>
+      <header
+        className={`fixed z-40 transition-all duration-500 ${
+          scrolled
+            ? "top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-4xl rounded-2xl bg-[#1A2A36]/95 backdrop-blur-md border border-white/10 shadow-xl shadow-black/30"
+            : "top-0 left-0 w-full bg-transparent"
+        }`}
       >
-        {isOpen ? (
-          <X size={30} className="text-foreground" />
-        ) : (
-          <Menu size={30} className="text-foreground" />
-        )}
-      </button>
+        <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group" aria-label="Home">
+            <span
+              className={`text-2xl font-black tracking-tight font-[var(--font-zuume)] leading-none transition-colors ${
+                isDark ? "text-white" : "text-[#293C4B]"
+              }`}
+            >
+              UBC
+            </span>
+            <span className={`w-px h-4 transition-colors ${isDark ? "bg-white/20" : "bg-[#293C4B]/20"}`} />
+            <span className="text-2xl font-black tracking-tight font-[var(--font-zuume)] leading-none text-[#EC8644]">
+              2026
+            </span>
+          </Link>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 w-full bg-background shadow-md py-4 flex flex-col items-start space-y-4 md:hidden pl-6 z-40"
-          >
-            {MobileLinks}
-            <Button asChild onClick={() => setIsOpen(false)}>
-              <a
-                href="https://lu.ma/x6apzbr8"
-                target="_blank"
-                rel="noopener noreferrer"
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase transition-colors hover:text-[#EC8644] ${
+                  isDark ? "text-white/60" : "text-[#293C4B]/50"
+                }`}
               >
-                Tickets
-              </a>
-            </Button>
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTA + hamburger */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://lu.ma/x6apzbr8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex bg-[#EC8644] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#D4703A] transition-colors"
+            >
+              Get Tickets
+            </a>
+            <button
+              onClick={() => setOpen(true)}
+              className={`md:hidden p-1 transition-colors ${
+                isDark ? "text-white" : "text-[#293C4B]"
+              }`}
+              aria-label="Open menu"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Full-screen mobile overlay */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 bg-[#1A2A36] flex flex-col"
+          >
+            {/* Close button */}
+            <div className="flex justify-between items-center px-6 h-16">
+              <span className="text-xl font-black tracking-tight font-[var(--font-zuume)] text-white">
+                UBC <span className="text-[#EC8644]">2026</span>
+              </span>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-white/70 hover:text-white transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Links */}
+            <nav className="flex-1 flex flex-col items-center justify-center gap-2">
+              {navLinks.map(({ href, label }, i) => (
+                <motion.div
+                  key={href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Link
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className="block text-5xl font-black font-[var(--font-zuume)] text-white/80 hover:text-[#EC8644] transition-colors tracking-tight py-2"
+                  >
+                    {label.toUpperCase()}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.07 + 0.05, duration: 0.3 }}
+                className="mt-6"
+              >
+                <a
+                  href="https://lu.ma/x6apzbr8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="bg-[#EC8644] text-white font-semibold text-base px-8 py-3 rounded-full hover:bg-[#D4703A] transition-colors"
+                >
+                  Get Tickets →
+                </a>
+              </motion.div>
+            </nav>
+
+            {/* Bottom info */}
+            <div className="px-6 pb-8 text-center">
+              <p className="text-white/30 text-xs tracking-widest uppercase">
+                Nov 20–21, 2026 · UT Austin, TX
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }

@@ -25,9 +25,9 @@ type TimelineTick = {
 };
 
 type DayInfo = {
-  key: string; // YYYY-MM-DD
-  label: string; // "Day 1", "Day 2", ...
-  pretty: string; // "Fri, Dec 5"
+  key: string;
+  label: string;
+  pretty: string;
 };
 
 type TimelineData = {
@@ -49,13 +49,7 @@ function cx(...classes: Array<string | false | null | undefined>) {
 
 const normalizeSpeakers = (speakers: unknown): string[] | undefined => {
   if (!Array.isArray(speakers)) return undefined;
-
-  // Case 1: it's already a string[]
-  if (typeof speakers[0] === "string") {
-    return speakers as string[];
-  }
-
-  // Case 2: array of objects with .name
+  if (typeof speakers[0] === "string") return speakers as string[];
   return (speakers as { name?: string | null }[])
     .map((s) => s?.name ?? "")
     .filter((name): name is string => Boolean(name));
@@ -63,15 +57,8 @@ const normalizeSpeakers = (speakers: unknown): string[] | undefined => {
 
 const normalizeSponsor = (sponsor: unknown): string | undefined => {
   if (!sponsor) return;
-
   if (typeof sponsor === "string") return sponsor;
-
-  const obj = sponsor as {
-    name?: string | null;
-    label?: string | null;
-    title?: string | null;
-  };
-
+  const obj = sponsor as { name?: string | null; label?: string | null; title?: string | null };
   return obj.name ?? obj.label ?? obj.title ?? undefined;
 };
 
@@ -86,7 +73,6 @@ const mapRow = (row: AgendaRow): AgendaSession => ({
   description: row.description ?? undefined,
 });
 
-// Single source of truth for vertical scale: pixels per minute
 const MINUTE_HEIGHT_PX = 2.2;
 
 function toDateSafe(value: string): Date | null {
@@ -98,21 +84,17 @@ function minutesDiff(a: Date, b: Date): number {
   return (b.getTime() - a.getTime()) / (1000 * 60);
 }
 
-// Room bucketing
 const OTHER_ROOM_LABEL = "Other Events";
 
 function isPrimaryRoom(roomRaw: string): boolean {
   const room = roomRaw.trim().toLowerCase();
   if (!room) return false;
-
   if (room.includes("robertson")) return true;
   if (room.startsWith("ross r")) return true;
   if (room.includes("winter garden")) return true;
-
   return false;
 }
 
-// Get YYYY-MM-DD from a date string
 function extractDayKey(dateStr: string): string | null {
   const d = toDateSafe(dateStr);
   if (!d) return null;
@@ -122,61 +104,32 @@ function extractDayKey(dateStr: string): string | null {
   return `${year}-${month}-${day}`;
 }
 
-// Build Day 1 / Day 2 info from sessions
 function buildDays(sessions: AgendaSession[]): DayInfo[] {
   const map = new Map<string, Date>();
-
   sessions.forEach((s) => {
     const key = extractDayKey(s.start);
     const d = toDateSafe(s.start);
     if (!key || !d) return;
     if (!map.has(key)) map.set(key, d);
   });
-
-  const arr = Array.from(map.entries())
+  return Array.from(map.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([key, d], idx) => {
-      const pretty = d.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      });
-      return {
-        key,
-        label: `Day ${idx + 1}`,
-        pretty,
-      };
-    });
-
-  return arr;
+    .map(([key, d], idx) => ({
+      key,
+      label: `Day ${idx + 1}`,
+      pretty: d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
+    }));
 }
 
-function buildTimelineData(
-  sessions: AgendaSession[],
-  query: string
-): TimelineData {
+function buildTimelineData(sessions: AgendaSession[], query: string): TimelineData {
   if (sessions.length === 0) {
-    return {
-      rooms: [],
-      byRoom: {},
-      ticks: [],
-      earliest: null,
-      latest: null,
-      filteredSessions: [],
-    };
+    return { rooms: [], byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions: [] };
   }
 
   const q = query.trim().toLowerCase();
-
   const filteredSessions = sessions.filter((s) => {
     if (!q) return true;
-    const haystack = [
-      s.title,
-      s.room,
-      s.sponsor,
-      s.description,
-      ...(s.speakers ?? []),
-    ]
+    const haystack = [s.title, s.room, s.sponsor, s.description, ...(s.speakers ?? [])]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
@@ -184,102 +137,46 @@ function buildTimelineData(
   });
 
   if (filteredSessions.length === 0) {
-    return {
-      rooms: [],
-      byRoom: {},
-      ticks: [],
-      earliest: null,
-      latest: null,
-      filteredSessions: [],
-    };
+    return { rooms: [], byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions: [] };
   }
 
-  // Sort by start time
-  const sorted = [...filteredSessions].sort(
-    (a, b) => +new Date(a.start) - +new Date(b.start)
-  );
+  const sorted = [...filteredSessions].sort((a, b) => +new Date(a.start) - +new Date(b.start));
 
-  // Determine primary rooms vs "Other Events"
   const primaryRoomsSet = new Set<string>();
   let hasOther = false;
-
   sorted.forEach((s) => {
-    if (isPrimaryRoom(s.room)) {
-      primaryRoomsSet.add(s.room);
-    } else {
-      hasOther = true;
-    }
+    if (isPrimaryRoom(s.room)) primaryRoomsSet.add(s.room);
+    else hasOther = true;
   });
 
-  // We want Winter Garden columns to appear second-to-last,
-  // i.e. immediately before "Other Events"
   const allPrimaryRooms = Array.from(primaryRoomsSet);
+  const winterGardenRooms = allPrimaryRooms.filter((r) => r.trim().toLowerCase().includes("winter garden"));
+  const otherPrimaryRooms = allPrimaryRooms.filter((r) => !r.trim().toLowerCase().includes("winter garden"));
 
-  const winterGardenRooms = allPrimaryRooms.filter((r) =>
-    r.trim().toLowerCase().includes("winter garden")
-  );
-  const otherPrimaryRooms = allPrimaryRooms.filter(
-    (r) => !r.trim().toLowerCase().includes("winter garden")
-  );
+  const rooms: string[] = [...otherPrimaryRooms, ...winterGardenRooms];
+  if (hasOther) rooms.push(OTHER_ROOM_LABEL);
+  if (rooms.length === 0) rooms.push(OTHER_ROOM_LABEL);
 
-  const rooms: string[] = [];
-
-  // First: all non–Winter Garden primary rooms
-  rooms.push(...otherPrimaryRooms);
-
-  // Then: all Winter Garden variants
-  rooms.push(...winterGardenRooms);
-
-  // Finally: "Other Events" if we have any non-primary sessions
-  if (hasOther) {
-    rooms.push(OTHER_ROOM_LABEL);
-  }
-
-  // Safety fallback
-  if (rooms.length === 0) {
-    rooms.push(OTHER_ROOM_LABEL);
-  }
-
-  // Earliest start / latest end (for this filtered set)
   let earliest: Date | null = null;
   let latest: Date | null = null;
-
   sorted.forEach((s) => {
     const sDate = toDateSafe(s.start);
     const eDate = toDateSafe(s.end);
     if (!sDate || !eDate) return;
-
     if (!earliest || sDate < earliest) earliest = sDate;
     if (!latest || eDate > latest) latest = eDate;
   });
 
   if (!earliest || !latest) {
-    return {
-      rooms,
-      byRoom: {},
-      ticks: [],
-      earliest: null,
-      latest: null,
-      filteredSessions,
-    };
+    return { rooms, byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions };
   }
 
-  // Round earliest down and latest up to 30-minute boundaries
   const roundedEarliest = new Date(earliest);
-  roundedEarliest.setMinutes(
-    Math.floor(roundedEarliest.getMinutes() / 30) * 30,
-    0,
-    0
-  );
+  roundedEarliest.setMinutes(Math.floor(roundedEarliest.getMinutes() / 30) * 30, 0, 0);
 
   const roundedLatest = new Date(latest);
-  roundedLatest.setMinutes(
-    Math.ceil(roundedLatest.getMinutes() / 30) * 30,
-    0,
-    0
-  );
+  roundedLatest.setMinutes(Math.ceil(roundedLatest.getMinutes() / 30) * 30, 0, 0);
 
-  // Generate ticks every 30 minutes
   const ticks: TimelineTick[] = [];
   for (
     let t = new Date(roundedEarliest);
@@ -288,81 +185,52 @@ function buildTimelineData(
   ) {
     ticks.push({
       time: new Date(t),
-      label: t.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      }),
+      label: t.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
       minutesFromStart: minutesDiff(roundedEarliest, t),
     });
   }
 
-  // Group sessions by column
   const byRoom: Record<string, AgendaSession[]> = {};
-  rooms.forEach((r) => {
-    byRoom[r] = [];
-  });
-
+  rooms.forEach((r) => { byRoom[r] = []; });
   sorted.forEach((s) => {
     const targetRoom = isPrimaryRoom(s.room) ? s.room : OTHER_ROOM_LABEL;
     if (!byRoom[targetRoom]) byRoom[targetRoom] = [];
     byRoom[targetRoom].push(s);
   });
 
-  return {
-    rooms,
-    byRoom,
-    ticks,
-    earliest: roundedEarliest,
-    latest: roundedLatest,
-    filteredSessions,
-  };
+  return { rooms, byRoom, ticks, earliest: roundedEarliest, latest: roundedLatest, filteredSessions };
 }
 
-// Time label inside cards
 function formatTimeRange(start: string, end: string): string | null {
   const s = toDateSafe(start);
   const e = toDateSafe(end);
   if (!s || !e) return null;
-  const opts: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "2-digit",
-  };
-  return `${s.toLocaleTimeString("en-US", opts)} – ${e.toLocaleTimeString(
-    "en-US",
-    opts
-  )}`;
+  const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit" };
+  return `${s.toLocaleTimeString("en-US", opts)} – ${e.toLocaleTimeString("en-US", opts)}`;
 }
 
 // ---------------------------
-// Session Card (compact / full)
+// Session Card
 // ---------------------------
 
-function SessionCard({
-  session,
-  compact = false,
-}: {
-  session: AgendaSession;
-  compact?: boolean;
-}) {
+function SessionCard({ session, compact = false }: { session: AgendaSession; compact?: boolean }) {
   const { title, room, sponsor, start, end } = session;
   const timeRange = formatTimeRange(start, end);
 
-  // Compact: short sessions → just name, one line, ellipsis
   if (compact) {
     return (
       <article
         tabIndex={0}
         className={cx(
-          "h-full rounded-xl border border-white/10 bg-white/5",
+          "h-full rounded-xl border border-[#293C4B]/10 bg-white",
           "px-2 sm:px-3 py-1.5 sm:py-2",
-          "shadow-sm backdrop-blur",
-          "transition-all duration-150 overflow-hidden",
-          "outline-none focus-visible:ring-2 focus-visible:ring-maize/60",
-          "group-hover:border-white/40 group-hover:bg-white/10 group-hover:shadow-lg group-hover:scale-[1.03]"
+          "shadow-sm transition-all duration-150 overflow-hidden",
+          "outline-none focus-visible:ring-2 focus-visible:ring-[#EC8644]/50",
+          "group-hover:border-[#EC8644]/40 group-hover:bg-[#EC8644]/[0.04] group-hover:shadow-md group-hover:scale-[1.03]"
         )}
       >
         <div className="flex h-full items-center">
-          <h3 className="w-full truncate text-[10px] text-xs sm:text-sm font-semibold tracking-tight text-white">
+          <h3 className="w-full truncate text-[10px] sm:text-xs font-semibold tracking-tight text-[#293C4B]">
             {title}
           </h3>
         </div>
@@ -370,38 +238,36 @@ function SessionCard({
     );
   }
 
-  // Full card: longer sessions keep rich layout
   return (
     <article
       tabIndex={0}
       className={cx(
-        "h-full rounded-xl border border-white/10 bg-white/5",
+        "h-full rounded-xl border border-[#293C4B]/10 bg-white",
         "px-3 py-2 sm:px-3.5 sm:py-2.5",
-        "shadow-sm backdrop-blur",
-        "transition-all duration-150 overflow-hidden",
-        "outline-none focus-visible:ring-2 focus-visible:ring-maize/60",
-        "group-hover:border-white/40 group-hover:bg-white/10 group-hover:shadow-lg group-hover:scale-[1.03]"
+        "shadow-sm transition-all duration-150 overflow-hidden",
+        "outline-none focus-visible:ring-2 focus-visible:ring-[#EC8644]/50",
+        "group-hover:border-[#EC8644]/40 group-hover:bg-[#EC8644]/[0.04] group-hover:shadow-md group-hover:scale-[1.03]"
       )}
     >
       <div className="flex flex-col gap-1.5">
         {timeRange && (
-          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-white/65">
-            <span className="inline-flex items-center rounded-full bg-black/40 px-2 py-0.5 border border-white/15">
+          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-[#293C4B]/55">
+            <span className="inline-flex items-center rounded-full bg-[#293C4B]/[0.06] px-2 py-0.5 border border-[#293C4B]/10">
               {timeRange}
             </span>
           </div>
         )}
 
-        <h3 className="text-xs sm:text-sm font-semibold tracking-tight text-white line-clamp-2">
+        <h3 className="text-xs sm:text-sm font-semibold tracking-tight text-[#293C4B] line-clamp-2">
           {title}
         </h3>
 
-        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] text-white/60">
-          <span className="rounded-full bg-white/5 px-2 py-0.5 border border-white/10">
+        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] text-[#293C4B]/55">
+          <span className="rounded-full bg-[#F4F3EF] px-2 py-0.5 border border-[#293C4B]/10">
             {room || "TBD"}
           </span>
           {sponsor && (
-            <span className="rounded-full bg-maize/10 px-2 py-0.5 text-maize border border-maize/30">
+            <span className="rounded-full bg-[#EC8644]/10 px-2 py-0.5 text-[#EC8644] border border-[#EC8644]/25">
               Sponsored by {sponsor}
             </span>
           )}
@@ -412,7 +278,7 @@ function SessionCard({
 }
 
 // ---------------------------
-// Session Popover (full details)
+// Session Popover
 // ---------------------------
 
 function SessionPopover({
@@ -437,24 +303,22 @@ function SessionPopover({
         "group-hover:opacity-100 group-hover:pointer-events-auto",
         "group-focus-within:opacity-100 group-focus-within:pointer-events-auto",
         placementClasses,
-        "z-50 w-full rounded-2xl border border-white/25",
-        "bg-black/90 backdrop-blur-md p-3 shadow-2xl"
+        "z-50 w-full rounded-2xl border border-[#293C4B]/15",
+        "bg-[#293C4B] p-3 shadow-2xl"
       )}
     >
       {timeRange && (
-        <p className="text-[10px] sm:text-[11px] text-white/70 mb-1">
-          {timeRange}
-        </p>
+        <p className="text-[10px] sm:text-[11px] text-white/60 mb-1">{timeRange}</p>
       )}
 
       <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
 
-      <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] text-white/70 mb-2">
-        <span className="rounded-full bg-white/5 px-2 py-0.5 border border-white/15">
+      <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] mb-2">
+        <span className="rounded-full bg-white/10 px-2 py-0.5 text-white/70 border border-white/15">
           {room || "TBD"}
         </span>
         {sponsor && (
-          <span className="rounded-full bg-maize/10 px-2 py-0.5 text-maize border border-maize/30">
+          <span className="rounded-full bg-[#EC8644]/20 px-2 py-0.5 text-[#EC8644] border border-[#EC8644]/30">
             Sponsored by {sponsor}
           </span>
         )}
@@ -468,14 +332,14 @@ function SessionPopover({
       )}
 
       {description && (
-        <p className="text-[11px] leading-snug text-white/80">{description}</p>
+        <p className="text-[11px] leading-snug text-white/75">{description}</p>
       )}
     </div>
   );
 }
 
 // ---------------------------
-// Controls (search + day toggle)
+// Controls
 // ---------------------------
 
 function AgendaControls({
@@ -493,7 +357,6 @@ function AgendaControls({
 }) {
   return (
     <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-      {/* Search */}
       <div className="flex-1">
         <label className="sr-only" htmlFor="agenda-search">
           Search agenda
@@ -501,14 +364,13 @@ function AgendaControls({
         <input
           id="agenda-search"
           type="text"
-          placeholder="Search by session title, room, speaker, sponsor…"
+          placeholder="Search by session, room, speaker, sponsor…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-maize/60"
+          className="w-full rounded-xl border border-[#293C4B]/12 bg-white shadow-sm px-4 py-2.5 text-sm text-[#293C4B] placeholder-[#9CADB7] outline-none focus:ring-2 focus:ring-[#EC8644]/40 transition"
         />
       </div>
 
-      {/* Day toggle */}
       {days.length > 1 && (
         <div className="flex flex-wrap gap-2">
           {days.map((day) => {
@@ -519,19 +381,14 @@ function AgendaControls({
                 type="button"
                 onClick={() => setActiveDayKey(day.key)}
                 className={cx(
-                  "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs sm:text-sm border",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs sm:text-sm border font-medium transition-colors",
                   isActive
-                    ? "bg-maize text-black border-maize"
-                    : "bg-white/5 text-white/80 border-white/15 hover:bg-white/10"
+                    ? "bg-[#EC8644] text-white border-[#EC8644] shadow-sm"
+                    : "bg-[#F4F3EF] text-[#293C4B]/70 border-[#293C4B]/12 hover:bg-[#E8E7E3]"
                 )}
               >
-                <span className="font-medium">{day.label}</span>
-                <span
-                  className={cx(
-                    "text-[11px] sm:text-xs",
-                    isActive ? "text-black" : "text-white/60"
-                  )}
-                >
+                <span>{day.label}</span>
+                <span className={cx("text-[11px] sm:text-xs", isActive ? "text-white/80" : "text-[#9CADB7]")}>
                   {day.pretty}
                 </span>
               </button>
@@ -561,12 +418,10 @@ export default function AgendaSection({
 
   useEffect(() => {
     let cancelled = false;
-
     (async () => {
       try {
         const rows = await getAgenda();
         if (cancelled) return;
-
         const mapped = (rows || []).map(mapRow);
         setSessions(mapped);
       } catch (err) {
@@ -576,23 +431,17 @@ export default function AgendaSection({
         if (!cancelled) setLoading(false);
       }
     })();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
-  // Build list of days from all sessions
   const days = useMemo(() => buildDays(sessions), [sessions]);
 
-  // Ensure we always have an active day when days are available
   useEffect(() => {
     if (days.length > 0 && !activeDayKey) {
-      setActiveDayKey(days[1].key);
+      setActiveDayKey(days[1]?.key ?? days[0].key);
     }
   }, [days, activeDayKey]);
 
-  // Filter sessions by active day
   const dayFilteredSessions = useMemo(() => {
     if (!activeDayKey) return sessions;
     return sessions.filter((s) => extractDayKey(s.start) === activeDayKey);
@@ -607,29 +456,26 @@ export default function AgendaSection({
     !loading && dayFilteredSessions.length > 0 && filteredSessions.length === 0;
 
   const totalMinutes = earliest && latest ? minutesDiff(earliest, latest) : 0;
-
   const timelineHeight =
-    totalMinutes > 0 ? totalMinutes * MINUTE_HEIGHT_PX : 60 * MINUTE_HEIGHT_PX; // fallback to 1h
+    totalMinutes > 0 ? totalMinutes * MINUTE_HEIGHT_PX : 60 * MINUTE_HEIGHT_PX;
 
   return (
-    <section
-      id="agenda"
-      className="w-full py-16 sm:py-20 bg-background text-white"
-    >
+    <section id="agenda" className="w-full py-16 sm:py-24 bg-[#F4F3EF]">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6">
         {/* Heading */}
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+            <p className="text-[#EC8644] text-xs font-semibold uppercase tracking-widest mb-3">
+              Schedule
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#293C4B]">
               {title}
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-white/70 max-w-prose">
-              {subtitle}
-            </p>
+            <p className="mt-2 text-sm sm:text-base text-[#9CADB7] max-w-prose">{subtitle}</p>
           </div>
         </div>
 
-        {/* Controls (search + day toggle) */}
+        {/* Controls */}
         <AgendaControls
           query={query}
           setQuery={setQuery}
@@ -638,29 +484,27 @@ export default function AgendaSection({
           setActiveDayKey={setActiveDayKey}
         />
 
-        {/* Loading / Empty states */}
+        {/* States */}
         {loading && sessions.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-dashed border-white/10 p-8 text-center text-white/70">
+          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
             Loading agenda…
           </div>
         )}
 
         {!loading && sessions.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-dashed border-white/10 p-8 text-center text-white/70">
+          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
             Agenda coming soon. Check back as we finalize the schedule.
           </div>
         )}
 
-        {!loading &&
-          sessions.length > 0 &&
-          dayFilteredSessions.length === 0 && (
-            <div className="mt-10 rounded-2xl border border-dashed border-white/10 p-8 text-center text-white/70">
-              No sessions scheduled for this day yet.
-            </div>
-          )}
+        {!loading && sessions.length > 0 && dayFilteredSessions.length === 0 && (
+          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
+            No sessions scheduled for this day yet.
+          </div>
+        )}
 
         {isEmptyAfterFilter && (
-          <div className="mt-10 rounded-2xl border border-dashed border-white/10 p-8 text-center text-white/70">
+          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
             No sessions match your search on this day.
           </div>
         )}
@@ -677,18 +521,14 @@ export default function AgendaSection({
                 <div
                   className={cx(
                     "shrink-0 w-16 sm:w-20 lg:w-24",
-                    // Sticky so time stays visible while horizontal scrolling
-                    "sticky left-0 top-0 z-30 bg-background/80 backdrop-blur-lg pr-3"
+                    "sticky left-0 top-0 z-30 bg-[#F4F3EF]/90 backdrop-blur-sm pr-3"
                   )}
                   style={{ height: timelineHeight }}
                 >
-                  <div className="mb-2 text-[11px] uppercase tracking-wide text-white/50">
+                  <div className="mb-2 text-[11px] uppercase tracking-wide text-[#9CADB7]">
                     Time
                   </div>
-                  <div
-                    className="relative overflow-visible"
-                    style={{ height: timelineHeight }}
-                  >
+                  <div className="relative overflow-visible" style={{ height: timelineHeight }}>
                     {ticks.map((tick) => {
                       const top = tick.minutesFromStart * MINUTE_HEIGHT_PX;
                       const isHour = tick.time.getMinutes() === 0;
@@ -699,14 +539,9 @@ export default function AgendaSection({
                           style={{ top }}
                         >
                           <div className="flex items-center gap-1 -translate-y-1/2">
-                            <span
-                              className={cx(
-                                "h-px flex-1",
-                                isHour ? "bg-white/40" : "bg-white/15"
-                              )}
-                            />
+                            <span className={cx("h-px flex-1", isHour ? "bg-[#293C4B]/20" : "bg-[#293C4B]/8")} />
                             {isHour && (
-                              <span className="text-[10px] sm:text-xs text-white/70 whitespace-nowrap">
+                              <span className="text-[10px] sm:text-xs text-[#9CADB7] whitespace-nowrap">
                                 {tick.label}
                               </span>
                             )}
@@ -717,39 +552,33 @@ export default function AgendaSection({
                   </div>
                 </div>
 
-                {/* Rooms timeline */}
+                {/* Room columns */}
                 <div className="min-w-0 flex-1">
                   <div
                     className="grid gap-4"
-                    style={{
-                      gridTemplateColumns: `repeat(${rooms.length}, minmax(200px, 1fr))`,
-                    }}
+                    style={{ gridTemplateColumns: `repeat(${rooms.length}, minmax(200px, 1fr))` }}
                   >
                     {rooms.map((room) => {
                       const roomSessions = byRoom[room] || [];
-
                       return (
                         <div key={room} className="min-w-[200px]">
-                          <div className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wide text-white/60">
+                          <div className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wide text-[#293C4B]/50">
                             {room}
                           </div>
                           <div
-                            className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-visible pt-1 pb-1"
+                            className="relative rounded-2xl border border-[#293C4B]/10 bg-white overflow-visible pt-1 pb-1 shadow-sm"
                             style={{ height: timelineHeight }}
                           >
                             {/* Guidelines */}
                             {ticks.map((tick) => {
-                              const top =
-                                tick.minutesFromStart * MINUTE_HEIGHT_PX;
+                              const top = tick.minutesFromStart * MINUTE_HEIGHT_PX;
                               const isHour = tick.time.getMinutes() === 0;
                               return (
                                 <div
                                   key={tick.time.toISOString()}
                                   className={cx(
                                     "absolute inset-x-0 border-t border-dashed",
-                                    isHour
-                                      ? "border-white/15"
-                                      : "border-white/5"
+                                    isHour ? "border-[#293C4B]/[0.08]" : "border-[#293C4B]/[0.04]"
                                   )}
                                   style={{ top }}
                                 />
@@ -762,38 +591,23 @@ export default function AgendaSection({
                               const eDate = toDateSafe(session.end);
                               if (!sDate || !eDate) return null;
 
-                              const startMin = Math.max(
-                                0,
-                                minutesDiff(earliest, sDate)
-                              );
-                              const endMin = Math.max(
-                                startMin + 1,
-                                minutesDiff(earliest, eDate)
-                              );
+                              const startMin = Math.max(0, minutesDiff(earliest, sDate));
+                              const endMin = Math.max(startMin + 1, minutesDiff(earliest, eDate));
                               const durationMin = endMin - startMin;
                               const isShort = durationMin < 60;
 
                               const top = startMin * MINUTE_HEIGHT_PX;
                               const height = durationMin * MINUTE_HEIGHT_PX;
-
-                              // If the center of the block is in the bottom 30% of the timeline,
-                              // show the popover above instead of below.
                               const sessionbottom = top + height;
-                              const placeAbove =
-                                sessionbottom > timelineHeight * 0.8;
+                              const placeAbove = sessionbottom > timelineHeight * 0.8;
+
                               return (
                                 <div
                                   key={session.id}
                                   className="absolute inset-x-0 group z-10 hover:z-40 focus-within:z-40"
-                                  style={{
-                                    top,
-                                    height,
-                                  }}
+                                  style={{ top, height }}
                                 >
-                                  <SessionCard
-                                    session={session}
-                                    compact={isShort}
-                                  />
+                                  <SessionCard session={session} compact={isShort} />
                                   <SessionPopover
                                     session={session}
                                     placement={placeAbove ? "top" : "bottom"}

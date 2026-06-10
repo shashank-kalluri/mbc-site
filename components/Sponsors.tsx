@@ -1,243 +1,150 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-/* --- TYPES --- */
 export type Partnership = {
   id: number;
   slug: string;
   name: string;
   website_url: string | null;
   logo_url: string;
-  logo_url_dark?: string | null;
-  tier: number; // 1=Presenting, 2=Ecosystem, 3=Scale, 4=Brand
+  tier: number;
   status: "active" | "pending" | "inactive";
   created_at: string;
   updated_at: string;
 };
 
-const byTierAscThenName = (a: Partnership, b: Partnership): number => {
-  if (a.tier !== b.tier) return a.tier - b.tier; // 1,2,3,4
-  return a.name.localeCompare(b.name);
+const byTierAscThenName = (a: Partnership, b: Partnership) =>
+  a.tier !== b.tier ? a.tier - b.tier : a.name.localeCompare(b.name);
+
+const tierConfig: Record<number, { label: string; logoH: number; opacity: string }> = {
+  1: { label: "Presenting", logoH: 48, opacity: "opacity-90" },
+  2: { label: "Ecosystem", logoH: 36, opacity: "opacity-70" },
+  3: { label: "Scale & Brand", logoH: 28, opacity: "opacity-60" },
+  4: { label: "Scale & Brand", logoH: 28, opacity: "opacity-60" },
 };
 
-/* --- PARTNER CARD --- */
-const PartnerCard: React.FC<{
-  partner: Partnership;
-  size: "sm" | "md" | "lg";
-}> = ({ partner, size }) => {
-  const isPresenting = partner.tier === 1;
-  const src = partner.logo_url_dark || partner.logo_url; // prefer dark variant
-
-  const baseClasses =
-    "group relative transition duration-300 hover:scale-[1.03] flex items-center justify-center p-3 rounded-2xl border border-transparent hover:border-foreground/10";
-  const sizeClasses =
-    size === "lg"
-      ? "w-full max-w-[280px] h-full"
-      : size === "md"
-      ? "w-full max-w-[180px] h-full"
-      : "w-full max-w-[140px] h-full";
-  const cardClasses = `${baseClasses} ${sizeClasses}`;
-
-  const CardContent = (
-    <>
-      <div className="relative mx-auto w-full aspect-[4/2.5]">
-        <Image
-          src={src}
-          alt={partner.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className={`object-contain transition duration-300 ${
-            isPresenting
-              ? "p-1 opacity-80 group-hover:opacity-100"
-              : "p-2 lg:p-1 opacity-60 group-hover:opacity-100"
-          }`}
-          unoptimized
-        />
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 rounded-2xl ring-0 transition group-hover:ring-1 group-hover:ring-foreground/10" />
-
-      {/* name (mobile only) */}
-      <div className="mt-1 text-left text-[11px] text-foreground/60 lg:hidden">
-        {partner.name}
-      </div>
-    </>
-  );
-
-  return partner.website_url ? (
-    <Link
-      href={partner.website_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={partner.name}
-      title={partner.name}
-      className={cardClasses}
-      style={{ display: "inline-block" }}
-    >
-      {CardContent}
-    </Link>
-  ) : (
+function PartnerLogo({ p }: { p: Partnership }) {
+  const cfg = tierConfig[p.tier] ?? tierConfig[3];
+  const inner = (
     <div
-      role="img"
-      aria-label={partner.name}
-      title={partner.name}
-      className={cardClasses}
-      style={{ display: "inline-block" }}
+      className={`relative transition-all duration-200 hover:opacity-100 ${cfg.opacity} group`}
+      style={{ height: cfg.logoH }}
     >
-      {CardContent}
+      <Image
+        src={p.logo_url}
+        alt={p.name}
+        width={160}
+        height={cfg.logoH}
+        className="object-contain h-full w-auto"
+        unoptimized
+      />
     </div>
   );
-};
+  return p.website_url ? (
+    <a href={p.website_url} target="_blank" rel="noopener noreferrer" title={p.name}>
+      {inner}
+    </a>
+  ) : (
+    <div title={p.name}>{inner}</div>
+  );
+}
 
-/* --- MAIN VIEW --- */
-
-const tierNames: Record<number, string> = {
-  1: "Presenting",
-  2: "Ecosystem",
-  3: "Scale",
-  4: "Brand",
-};
-
-const Sponsors: React.FC<{
-  /** Optional: override merged (3+4) section title */
-  mergedTitle?: string;
-}> = ({ mergedTitle }) => {
+export default function Sponsors() {
   const [partners, setPartners] = useState<Partnership[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  // 1) Fetch
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const { data, error: fetchError } = await supabase
-        .from("partnerships")
-        .select(
-          "id, slug, name, website_url, logo_url, logo_url_dark, tier, status, created_at, updated_at"
-        )
-        .eq("status", "active");
-
-      if (fetchError) {
-        setError(fetchError.message);
-        setPartners(null);
-      } else {
-        setPartners((data as Partnership[]).sort(byTierAscThenName));
-      }
-      setIsLoading(false);
-    })();
+    supabase
+      .from("partnerships")
+      .select("id, slug, name, website_url, logo_url, tier, status, created_at, updated_at")
+      .eq("status", "active")
+      .then(({ data, error }) => {
+        if (!error && data) {
+          setPartners((data as Partnership[]).sort(byTierAscThenName));
+        }
+        setLoading(false);
+      });
   }, []);
 
-  // 2) Group + special merged (3 & 4)
-  const { tier1Group, tier2Group, merged34 } = useMemo(() => {
+  const groups = useMemo(() => {
+    if (!partners) return [];
     const map = new Map<number, Partnership[]>();
-    (partners ?? []).forEach((p) => {
+    partners.forEach((p) => {
       const arr = map.get(p.tier) ?? [];
       arr.push(p);
       map.set(p.tier, arr);
     });
-
-    const t1 = map.get(1);
-    const t2 = map.get(2);
+    // Merge tiers 3+4
     const t3 = map.get(3) ?? [];
     const t4 = map.get(4) ?? [];
+    const merged34 = [...t3, ...t4].sort(byTierAscThenName);
 
-    // merged 3 & 4, keep stable order by tier then name
-    const merged = [...t3, ...t4].sort(byTierAscThenName);
-
-    return {
-      tier1Group: t1 ? { tier: 1, items: t1 } : undefined,
-      tier2Group: t2 ? { tier: 2, items: t2 } : undefined,
-      merged34: merged.length ? merged : undefined,
-    };
+    const result: { tier: number; label: string; items: Partnership[] }[] = [];
+    if (map.has(1)) result.push({ tier: 1, label: "Presenting", items: map.get(1)! });
+    if (map.has(2)) result.push({ tier: 2, label: "Ecosystem", items: map.get(2)! });
+    if (merged34.length) result.push({ tier: 3, label: "Scale & Brand", items: merged34 });
+    return result;
   }, [partners]);
 
-  // 3) UI states
-  if (isLoading) {
-    return (
-      <section className="py-10 text-center text-lg text-foreground/50">
-        Loading partners...
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="py-10 text-center text-lg text-red-500">
-        Error loading partners: {error}
-      </section>
-    );
-  }
-
-  if (!partners || partners.length === 0) {
-    return (
-      <section className="py-10 text-center text-lg text-foreground/50">
-        Check back soon for our official partners!
-      </section>
-    );
-  }
-
   return (
-    <section className="w-full py-10 md:py-24">
-      {/* TweetBoard-style alignment container */}
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6">
-        {/* Heading (left-aligned) */}
-        <div className="flex flex-col mb-10 md:mb-16 px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-            Our Amazing Partners
-          </h2>
+    <section id="sponsors" className="bg-white py-16 sm:py-24">
+      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-3">
+          <span className="block w-6 h-[2px] bg-[#EC8644]" />
+          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
+            Partners
+          </span>
         </div>
+        <h2
+          className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-16"
+          style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
+        >
+          Our Sponsors
+        </h2>
 
-        {/* Stack tiers with natural spacing */}
-        <div className="space-y-12">
-          {/* Tier 1 — Presenting (prominent grid) */}
-          {tier1Group && (
-            <div className="border-l border-white/10 pl-6 ml-4 sm:ml-6">
-              <h3 className="text-left text-lg font-bold uppercase tracking-widest text-maize mb-6">
-                {tierNames[1]}
-              </h3>
-              <div className="flex flex-wrap justify-start gap-x-8 gap-y-8">
-                {tier1Group.items.map((partner) => (
-                  <PartnerCard key={partner.id} partner={partner} size="lg" />
-                ))}
-              </div>
-            </div>
-          )}
+        {loading && (
+          <p className="text-[#9CADB7] text-sm">Loading partners…</p>
+        )}
 
-          {/* Tier 2 — Ecosystem */}
-          {tier2Group && (
-            <div className="border-l border-white/10 pl-6 ml-4 sm:ml-6">
-              <h3 className="text-left text-xl font-bold mb-6 text-foreground/80">
-                {tierNames[2]}
-              </h3>
-              <div className="flex flex-wrap justify-start gap-x-6 gap-y-8">
-                {tier2Group.items.map((partner) => (
-                  <PartnerCard key={partner.id} partner={partner} size="md" />
-                ))}
-              </div>
-            </div>
-          )}
+        {!loading && groups.length === 0 && (
+          <p className="text-[#9CADB7] text-sm">Partners announced soon.</p>
+        )}
 
-          {/* Merged — Scale & Brand */}
-          {merged34 && (
-            <div className="border-l border-white/10 pl-6 ml-4 sm:ml-6">
-              <h3 className="text-left text-xl font-bold mb-4 text-foreground/80">
-                {mergedTitle ?? "Scale & Brand"}
-              </h3>
-              <div className="flex flex-wrap justify-start gap-x-4 gap-y-6">
-                {merged34.map((partner) => (
-                  <PartnerCard key={partner.id} partner={partner} size="sm" />
-                ))}
+        {!loading && groups.length > 0 && (
+          <div className="space-y-16">
+            {groups.map(({ tier, label, items }) => (
+              <div key={tier}>
+                {/* Tier label */}
+                <div className="flex items-center gap-4 mb-8">
+                  <span
+                    className={`text-xs font-semibold uppercase tracking-[0.18em] ${
+                      tier === 1 ? "text-[#EC8644]" : "text-[#9CADB7]"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  <div className="flex-1 h-px bg-[#293C4B]/8" />
+                </div>
+                {/* Logos */}
+                <div
+                  className={`flex flex-wrap items-center gap-x-10 gap-y-8 ${
+                    tier === 1 ? "gap-x-14" : ""
+                  }`}
+                >
+                  {items.map((p) => (
+                    <PartnerLogo key={p.id} p={p} />
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
-};
-
-export default Sponsors;
+}

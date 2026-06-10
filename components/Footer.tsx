@@ -1,134 +1,130 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Instagram, Twitter, Linkedin } from "lucide-react";
 
-const Footer = () => {
-  // Split into internal vs external/mailto for correct Link/anchor usage
-  const navigationLinks = [
-    { href: "/", label: "Home", internal: true },
-    { href: "/#about", label: "About", internal: true },
-    { href: "/programs", label: "Programs", internal: true }, // ← NEW
-    { href: "https://college.xyz", label: "College.xyz", internal: false },
-    {
-      href: "mailto:blockchain@umich.edu?subject=MBC%20Inquiry&body=Hi%20MBC%20Team",
-      label: "Contact",
-      internal: false,
-    },
-    { href: "/privacy", label: "Privacy Policy", internal: true },
-    { href: "/terms", label: "Terms of Service", internal: true },
-  ];
+const navLinks = [
+  { href: "/#speakers", label: "Speakers" },
+  { href: "/#sponsors", label: "Sponsors" },
+  { href: "/programs", label: "Programs" },
+  { href: "/#faq", label: "FAQ" },
+  {
+    href: "mailto:blockchain@umich.edu?subject=UBC%20Inquiry",
+    label: "Contact",
+    external: true,
+  },
+];
 
-  const socialLinks = [
-    {
-      href: "https://www.facebook.com/michiganblockchain",
-      icon: <Facebook className="h-5 w-5" />,
-      alt: "Facebook",
-    },
-    {
-      href: "https://www.instagram.com/college.xyz/",
-      icon: <Instagram className="h-5 w-5" />,
-      alt: "Instagram",
-    },
-    {
-      href: "https://x.com/MBC_Conference",
-      icon: <Twitter className="h-5 w-5" />,
-      alt: "Twitter",
-    },
-    {
-      href: "https://www.linkedin.com/company/midwest-blockchain-conference/about/",
-      icon: <Linkedin className="h-5 w-5" />,
-      alt: "LinkedIn",
-    },
-  ];
+const socialLinks = [
+  { href: "https://www.instagram.com/college.xyz/", Icon: Instagram, label: "Instagram" },
+  { href: "https://x.com/MBC_Conference", Icon: Twitter, label: "X / Twitter" },
+  { href: "https://www.linkedin.com/company/midwest-blockchain-conference/", Icon: Linkedin, label: "LinkedIn" },
+];
 
-  const renderLink = (link: (typeof navigationLinks)[number]) => {
-    const cls = "text-muted-foreground hover:text-foreground transition";
-    if (link.internal) {
-      return (
-        <Link key={link.href} href={link.href} className={cls}>
-          {link.label}
-        </Link>
-      );
-    }
-    return (
-      <a
-        key={link.href}
-        href={link.href}
-        className={cls}
-        target={link.href.startsWith("http") ? "_blank" : undefined}
-        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-      >
-        {link.label}
-      </a>
-    );
-  };
-
+export default function Footer() {
   return (
-    <footer className="bg-background py-12 text-foreground">
-      <div className="container mx-auto px-6">
-        <div className="md:flex md:justify-between md:items-start lg:items-center border-b border-muted pb-8 mb-8">
-          {/* Logo Area */}
-          <div className="mb-6 md:mb-0">
-            <Link href="/" className="block">
-              <Image
-                src="/MBC Logo-07-white.png"
-                alt="Midwest Blockchain Conference"
-                width={150}
-                height={50}
-                className="object-contain"
-                priority
-              />
+    <footer className="bg-[#1A2A36]">
+      {/* CTA strip */}
+      <div className="border-b border-white/8">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div>
+            <h3
+              className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-none"
+              style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
+            >
+              Ready to Build the Future?
+            </h3>
+            <p className="text-white/40 text-sm mt-2">
+              Nov 20–21, 2026 · UT Austin, Texas
+            </p>
+          </div>
+          <a
+            href="https://lu.ma/x6apzbr8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 bg-[#EC8644] text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
+          >
+            Get Tickets →
+          </a>
+        </div>
+      </div>
+
+      {/* Main footer */}
+      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 py-12">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-10">
+          {/* Brand */}
+          <div>
+            <Link href="/" className="inline-flex items-baseline gap-1 mb-4">
+              <span className="text-2xl font-black font-[var(--font-zuume)] text-white tracking-tight">
+                UBC
+              </span>
+              <span className="text-2xl font-black font-[var(--font-zuume)] text-[#EC8644] tracking-tight">
+                2026
+              </span>
             </Link>
+            <p className="text-white/30 text-xs max-w-[200px] leading-relaxed">
+              The premier student-run blockchain conference. Built by students, for the industry.
+            </p>
           </div>
 
-          {/* Navigation Links */}
-          <div className="grid grid-cols-2 gap-4 md:gap-6 lg:gap-8 md:grid-cols-3 lg:grid-cols-4">
-            <div>
-              <h6 className="font-semibold mb-2">Explore</h6>
-              <ul className="space-y-2">
-                {navigationLinks.slice(0, 3).map((link) => (
-                  <li key={link.href}>{renderLink(link)}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h6 className="font-semibold mb-2">More</h6>
-              <ul className="space-y-2">
-                {navigationLinks.slice(3).map((link) => (
-                  <li key={link.href}>{renderLink(link)}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Social Icons */}
-          <div className="mt-6 md:mt-0">
-            <h6 className="font-semibold mb-2">Connect</h6>
-            <div className="flex space-x-4">
-              {socialLinks.map((link) => (
+          {/* Nav */}
+          <nav className="flex flex-wrap gap-x-10 gap-y-4 sm:gap-x-14">
+            {navLinks.map(({ href, label, external }) =>
+              external ? (
                 <a
-                  key={link.alt}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition"
-                  aria-label={link.alt}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={label}
+                  href={href}
+                  className="text-white/40 hover:text-white/70 text-sm transition-colors self-start"
                 >
-                  {link.icon}
+                  {label}
                 </a>
-              ))}
-            </div>
+              ) : (
+                <Link
+                  key={label}
+                  href={href}
+                  className="text-white/40 hover:text-white/70 text-sm transition-colors self-start"
+                >
+                  {label}
+                </Link>
+              )
+            )}
+          </nav>
+
+          {/* Social */}
+          <div className="flex items-center gap-3">
+            {socialLinks.map(({ href, Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/25 transition-colors"
+              >
+                <Icon size={15} />
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="py-4 text-center text-muted-foreground text-sm">
-          &copy; {new Date().getFullYear()} Midwest Blockchain Conference. All
-          rights reserved.
+        {/* Bottom */}
+        <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <p className="text-white/20 text-xs">
+            © {new Date().getFullYear()} University Blockchain Conference. All rights reserved.
+          </p>
+          <p className="text-white/20 text-xs">
+            Built with ♥ in Austin, TX
+          </p>
         </div>
+      </div>
+
+      {/* Full-bleed floor wordmark */}
+      <div className="overflow-hidden pointer-events-none select-none px-4 sm:px-6">
+        <p
+          className="font-[var(--font-zuume)] font-black text-white/[0.04] leading-none tracking-tight whitespace-nowrap -mb-[0.14em]"
+          style={{ fontSize: "clamp(72px, 20vw, 300px)" }}
+        >
+          UNIVERSITY BLOCKCHAIN
+        </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

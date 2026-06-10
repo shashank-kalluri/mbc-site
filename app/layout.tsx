@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
-// import {
-//   Geist,
-//   Geist_Mono,
-//   Inter,
-//   Roboto,
-//   Roboto_Mono,
-// } from "next/font/google";
-import { Roboto_Mono } from "next/font/google";
+import { Roboto_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -14,14 +7,9 @@ import Footer from "@/components/Footer";
 import { ReactLenis } from "@/lib/lenis";
 import { Analytics } from "@vercel/analytics/next";
 
-// const inter = Inter({
-//   variable: "--font-inter",
-//   subsets: ["latin"],
-// });
-
 export const metadata: Metadata = {
-  title: "MBC 2025",
-  description: "The student blockchain conference",
+  title: "UBC 2026",
+  description: "The University Blockchain Conference — November 20–21, 2026 @ UT Austin",
   robots: {
     index: true,
     follow: true,
@@ -45,7 +33,7 @@ export const metadata: Metadata = {
     url: "https://midwestblockchain.org/",
     images: [
       {
-        url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png", // Must be an absolute URL
+        url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
         width: 3001,
         height: 3000,
       },
@@ -55,24 +43,28 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "https://midwestblockchain.org/",
-    description: "The student blockchain conference",
+    title: "UBC 2026",
+    description: "The University Blockchain Conference — November 20–21, 2026 @ UT Austin",
     creator: "@MBC_Conference",
     creatorId: "1805686542125744129",
     images: [
       "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
-    ], // Must be an absolute URL
+    ],
   },
 };
 
-// const roboto = Roboto({
-//   variable: "--font-roboto",
-//   subsets: ["latin"],
-// });
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+});
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 const zuume = localFont({
@@ -167,15 +159,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <ReactLenis root>
         <body
-          className={`${robotoMono.variable} ${zuume.variable} antialiased`}
+          className={`${inter.variable} ${robotoMono.variable} ${zuume.variable} antialiased`}
         >
           <Analytics />
-          <Navbar></Navbar>
+          <Navbar />
           {children}
-          <Footer></Footer>
+          <Footer />
         </body>
       </ReactLenis>
     </html>

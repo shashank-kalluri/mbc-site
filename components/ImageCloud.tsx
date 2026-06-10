@@ -5,7 +5,6 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Billboard, Html, TrackballControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import universitiesData from "@/data/universities";
-import { Button } from "@/components/ui/button";
 
 interface University {
   name: string;
@@ -52,7 +51,6 @@ function LogoBillboard({
         <planeGeometry args={[4, 4]} />
         <meshBasicMaterial map={texture} transparent />
       </mesh>
-
       <Html>
         <a
           href={link}
@@ -129,40 +127,67 @@ function RotatingGroup() {
 export default function ImageCloud() {
   return (
     <section
+      id="about"
       className="relative w-full flex flex-col md:flex-row-reverse items-center justify-between
-                 py-16 md:py-24 px-4 md:px-10 lg:px-16 gap-10 bg-background text-foreground"
+                 py-16 md:py-24 px-6 md:px-10 lg:px-16 gap-10 bg-[#F4F3EF]"
     >
-      {/* Text Side */}
-      <div className="relative z-10 w-full md:w-1/2 flex flex-col items-start justify-center mb-10 md:mb-0">
-        <h2 className="text-5xl font-mono font-bold italic md:text-6xl tracking-tight text-foreground mb-4">
+      {/* Text side */}
+      <div className="relative z-10 w-full md:w-1/2 flex flex-col items-start justify-center mb-6 md:mb-0">
+        <p className="text-[#EC8644] text-xs font-semibold uppercase tracking-widest mb-4">
+          Our Community
+        </p>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-[var(--font-zuume)] font-bold text-[#293C4B] tracking-tight mb-5 leading-tight">
           Access the Inaccessible
         </h2>
-        <p className="text-muted-foreground text-lg mb-6">
-          700+ students representing over a 50 Universities, 30+ companies
-          pioneering the onchain future, and over 50+ speakers delivering demos,
-          workshops, and presentations.
+        <p className="text-[#9CADB7] text-base sm:text-lg mb-8 max-w-md leading-relaxed">
+          700+ students representing 50+ universities, 30+ companies pioneering
+          the onchain future, and 50+ speakers delivering demos, workshops, and
+          deep-dive sessions.
         </p>
-        <div className="flex flex-wrap sm:flex-row gap-4">
-          <Button variant="default">
-            <a href="/programs">Build at MBC</a>
-          </Button>
-          <Button asChild variant="secondary">
-            <a
-              href="https://lu.ma/x6apzbr8"
-              target="_blank"
-              rel="noopener noreferrer"
+
+        {/* Stat pills */}
+        <div className="flex flex-wrap gap-3 mb-8">
+          {[
+            { value: "700+", label: "Students" },
+            { value: "50+", label: "Universities" },
+            { value: "30+", label: "Sponsors" },
+          ].map(({ value, label }) => (
+            <div
+              key={label}
+              className="bg-white rounded-2xl px-4 py-3 shadow-sm border border-[#293C4B]/8 text-center"
             >
-              Get Tickets
-            </a>
-          </Button>
-          <Button variant="outline">
-            <a href="#">Agenda</a>
-          </Button>
+              <div className="text-xl font-bold text-[#EC8644]">{value}</div>
+              <div className="text-xs text-[#9CADB7] font-medium">{label}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <a
+            href="/programs"
+            className="bg-[#EC8644] text-white font-semibold text-sm px-6 py-2.5 rounded-full hover:bg-[#D4703A] transition-colors shadow-sm"
+          >
+            Build at UBC
+          </a>
+          <a
+            href="https://lu.ma/x6apzbr8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white text-[#293C4B] font-semibold text-sm px-6 py-2.5 rounded-full border border-[#293C4B]/10 hover:shadow-md transition-all"
+          >
+            Get Tickets
+          </a>
+          <a
+            href="#agenda"
+            className="text-[#293C4B]/60 font-medium text-sm px-4 py-2.5 rounded-full border border-[#293C4B]/10 hover:text-[#293C4B] hover:bg-white transition-all"
+          >
+            View Agenda
+          </a>
         </div>
       </div>
 
-      {/* Cloud Side */}
-      <div className="w-full md:w-1/2 h-[500px] md:h-[600px] relative">
+      {/* Cloud side */}
+      <div className="w-full md:w-1/2 h-[420px] md:h-[580px] relative">
         <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 35], fov: 75 }}>
           <Suspense fallback={null}>
             <RotatingGroup />

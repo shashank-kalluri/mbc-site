@@ -1,93 +1,137 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
-const Hero = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+const fadeUp = {
+  hidden: { opacity: 0, y: 48 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.error("Autoplay prevented:", error);
-      });
-    }
-  }, []);
-
+export default function Hero() {
   return (
-    <section className="relative h-[calc(100vh-theme(spacing.16))] md:h-screen overflow-hidden flex items-center justify-center bg-background">
-      {/* Video Background */}
-      <video
-        ref={videoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-      >
-        <source
-          src="https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/video.mp4?t=1"
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
+    <section className="relative min-h-screen bg-[#1A2A36] flex flex-col justify-between overflow-hidden">
+      {/* Subtle diagonal stripe texture */}
+      <div
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(-55deg, #fff 0, #fff 1px, transparent 0, transparent 18px)",
+        }}
+      />
 
-      {/* Overlay to make text readable */}
-      <div className="absolute top-0 left-0 w-full h-full bg-background/60 dark:bg-background/80 z-10" />
+      {/* Orange accent — top-right corner glow */}
+      <div
+        className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.07]"
+        style={{
+          background: "radial-gradient(circle, #EC8644 0%, transparent 70%)",
+        }}
+      />
 
-      {/* Content Stack */}
-      <div className="relative z-20 text-center px-6 md:px-12 lg:px-24">
-        {/* Big Logo */}
-        <div className="mb-8">
-          <img
-            src={`https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site/public/images/strikeoutanimation.gif?t=${Date.now()}`}
-            alt="MBC 2025 Animation"
-            className="mx-auto max-w-full h-auto"
-            style={{ width: "100%", maxWidth: "600px" }}
-          />
+      {/* Main content */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-28 pb-8">
+        {/* Eyebrow */}
+        <motion.div
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          className="flex items-center gap-3 mb-8 sm:mb-12"
+        >
+          <span className="block w-8 h-[2px] bg-[#EC8644]" />
+          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
+            University Blockchain Conference
+          </span>
+        </motion.div>
+
+        {/* The three-word typographic statement */}
+        <div className="overflow-hidden">
+          {(
+            [
+              { word: "UNIVERSITY", color: "text-white" },
+              { word: "BLOCKCHAIN", color: "text-[#EC8644]" },
+              { word: "CONFERENCE", color: "text-white" },
+            ] as const
+          ).map(({ word, color }, i) => (
+            <div key={word} className="overflow-hidden">
+              <motion.h1
+                custom={i + 1}
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                className={`block font-[var(--font-zuume)] font-black leading-[0.85] tracking-[-0.01em] whitespace-nowrap ${color}`}
+                style={{ fontSize: "clamp(52px, 16.5vw, 260px)" }}
+              >
+                {word}
+              </motion.h1>
+            </div>
+          ))}
         </div>
 
-        {/* Date & Location */}
-        <p className="text-muted-foreground text-sm md:text-base font-medium mb-6">
-          <span className="block md:inline">December 5–6, 2025</span>
-          <span className="hidden md:inline"> · </span>
-          <a
-            href="https://maps.google.com/?q=701+Tappan+Ave,+Ann+Arbor,+MI+48109"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block md:inline text-maize hover:text-maize/80 transition-colors no-underline"
-          >
-            University of Michigan Ross School of Business, Ann Arbor
-          </a>
-        </p>
-
-        {/* Buttons */}
-        <div className="max-w-3xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {/* Tickets */}
+        {/* Date, location, CTAs */}
+        <motion.div
+          custom={4}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          className="mt-10 sm:mt-14 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8"
+        >
+          <p className="text-white/40 text-sm font-medium tracking-[0.12em] uppercase">
+            Nov 20–21, 2026 &nbsp;·&nbsp; UT Austin, Texas
+          </p>
+          <div className="flex items-center gap-3">
             <a
               href="https://lu.ma/x6apzbr8"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-primary text-primary-foreground font-semibold rounded-full py-3 px-10 text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+              className="bg-[#EC8644] text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
             >
               Get Tickets →
             </a>
-
-            {/* Programs */}
             <Link
               href="/programs"
-              className="bg-secondary text-secondary-foreground font-semibold rounded-full py-3 px-10 text-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
+              className="text-white/60 text-sm font-medium border border-white/15 px-6 py-2.5 rounded-full hover:border-white/35 hover:text-white/90 transition-colors"
             >
-              Build at MBC
+              Learn More
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-b from-transparent to-background backdrop-blur-sm z-20 pointer-events-none" />
+      {/* Stats bar pinned to bottom */}
+      <motion.div
+        custom={5}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="relative z-10 border-t border-white/8"
+      >
+        <div className="px-6 sm:px-10 lg:px-16 py-5 flex flex-wrap gap-x-8 gap-y-3">
+          {[
+            { value: "700+", label: "Students" },
+            { value: "50+", label: "Universities" },
+            { value: "30+", label: "Companies" },
+            { value: "2", label: "Days" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex items-baseline gap-2">
+              <span className="text-white font-bold text-lg font-[var(--font-zuume)]">
+                {value}
+              </span>
+              <span className="text-white/35 text-xs font-medium uppercase tracking-wide">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
-};
-
-export default Hero;
+}
