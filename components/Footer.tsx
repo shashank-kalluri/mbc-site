@@ -1,13 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 
 const navLinks = [
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
-  { href: "/programs", label: "Programs" },
+  { href: "/programs", label: "Programs", disabled: true },
   { href: "/#faq", label: "FAQ" },
   {
-    href: "mailto:blockchain@umich.edu?subject=UBC%20Inquiry",
+    href: "mailto:uniblockchainconferences@gmail.com?subject=UBC%20Inquiry",
     label: "Contact",
     external: true,
   },
@@ -52,13 +53,14 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row sm:justify-between gap-10">
           {/* Brand */}
           <div>
-            <Link href="/" className="inline-flex items-baseline gap-1 mb-4">
-              <span className="text-2xl font-black font-[var(--font-zuume)] text-white tracking-tight">
-                UBC
-              </span>
-              <span className="text-2xl font-black font-[var(--font-zuume)] text-[#EC8644] tracking-tight">
-                2026
-              </span>
+            <Link href="/" className="inline-flex mb-4">
+              <Image
+                src="/navlogo.png"
+                alt="UBC Logo"
+                width={120}
+                height={40}
+                className="object-contain h-12 w-auto"
+              />
             </Link>
             <p className="text-white/30 text-xs max-w-[200px] leading-relaxed">
               The premier student-run blockchain conference. Built by students, for the industry.
@@ -67,8 +69,15 @@ export default function Footer() {
 
           {/* Nav */}
           <nav className="flex flex-wrap gap-x-10 gap-y-4 sm:gap-x-14">
-            {navLinks.map(({ href, label, external }) =>
-              external ? (
+            {navLinks.map(({ href, label, external, disabled }) =>
+              disabled ? (
+                <span
+                  key={label}
+                  className="text-white/20 text-sm select-none self-start"
+                >
+                  {label}
+                </span>
+              ) : external ? (
                 <a
                   key={label}
                   href={href}
@@ -111,7 +120,7 @@ export default function Footer() {
             © {new Date().getFullYear()} University Blockchain Conference. All rights reserved.
           </p>
           <p className="text-white/20 text-xs">
-            Built with ♥ in Austin, TX
+            Built with ♥ in Ann Arbor, MI
           </p>
         </div>
       </div>

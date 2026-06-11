@@ -97,15 +97,16 @@ export default function Sponsors() {
         <div className="flex items-center gap-3 mb-3">
           <span className="block w-6 h-[2px] bg-[#EC8644]" />
           <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-            Partners
+            2025 Partners
           </span>
         </div>
         <h2
-          className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-16"
+          className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-3"
           style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
         >
-          Our Sponsors
+          Past Sponsors
         </h2>
+        <p className="text-[#9CADB7] text-sm mb-16">Proud supporters of UBC 2025. Interested in sponsoring UBC 2026? <a href="mailto:skalluri123@hotmail.com" className="text-[#EC8644] hover:underline">Get in touch.</a></p>
 
         {loading && (
           <p className="text-[#9CADB7] text-sm">Loading partners…</p>

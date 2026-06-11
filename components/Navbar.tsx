@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "/#speakers", label: "Speakers" },
-  { href: "/#sponsors", label: "Sponsors" },
-  { href: "/programs", label: "Programs" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/#speakers", label: "Speakers", disabled: false },
+  { href: "/#sponsors", label: "Sponsors", disabled: false },
+  { href: "/programs", label: "Programs", disabled: true },
+  { href: "/#faq", label: "FAQ", disabled: false },
 ];
 
 export default function Navbar() {
@@ -19,7 +20,10 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => {
+      if (window.scrollY > 80) setScrolled(true);
+      else if (window.scrollY < 20) setScrolled(false);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -44,33 +48,41 @@ export default function Navbar() {
       >
         <div className="px-5 sm:px-8 h-14 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="Home">
-            <span
-              className={`text-2xl font-black tracking-tight font-[var(--font-zuume)] leading-none transition-colors ${
-                isDark ? "text-white" : "text-[#293C4B]"
-              }`}
-            >
-              UBC
-            </span>
-            <span className={`w-px h-4 transition-colors ${isDark ? "bg-white/20" : "bg-[#293C4B]/20"}`} />
-            <span className="text-2xl font-black tracking-tight font-[var(--font-zuume)] leading-none text-[#EC8644]">
-              2026
-            </span>
+          <Link href="/" className="flex items-center group" aria-label="Home">
+            <Image
+              src="/navlogo.png"
+              alt="UBC Logo"
+              width={120}
+              height={40}
+              className="object-contain h-8 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase transition-colors hover:text-[#EC8644] ${
-                  isDark ? "text-white/60" : "text-[#293C4B]/50"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
+            {navLinks.map(({ href, label, disabled }) =>
+              disabled ? (
+                <span
+                  key={label}
+                  className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase select-none ${
+                    isDark ? "text-white/25" : "text-[#293C4B]/25"
+                  }`}
+                >
+                  {label}
+                </span>
+              ) : (
+                <Link
+                  key={label}
+                  href={href}
+                  className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase transition-colors hover:text-[#EC8644] ${
+                    isDark ? "text-white/60" : "text-[#293C4B]/50"
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            )}
           </nav>
 
           {/* CTA + hamburger */}
@@ -108,9 +120,13 @@ export default function Navbar() {
           >
             {/* Close button */}
             <div className="flex justify-between items-center px-6 h-16">
-              <span className="text-xl font-black tracking-tight font-[var(--font-zuume)] text-white">
-                UBC <span className="text-[#EC8644]">2026</span>
-              </span>
+              <Image
+                src="/navlogo.png"
+                alt="UBC Logo"
+                width={100}
+                height={34}
+                className="object-contain h-7 w-auto"
+              />
               <button
                 onClick={() => setOpen(false)}
                 className="text-white/70 hover:text-white transition-colors"
@@ -122,20 +138,26 @@ export default function Navbar() {
 
             {/* Links */}
             <nav className="flex-1 flex flex-col items-center justify-center gap-2">
-              {navLinks.map(({ href, label }, i) => (
+              {navLinks.map(({ href, label, disabled }, i) => (
                 <motion.div
-                  key={href}
+                  key={label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link
-                    href={href}
-                    onClick={() => setOpen(false)}
-                    className="block text-5xl font-black font-[var(--font-zuume)] text-white/80 hover:text-[#EC8644] transition-colors tracking-tight py-2"
-                  >
-                    {label.toUpperCase()}
-                  </Link>
+                  {disabled ? (
+                    <span className="block text-5xl font-black font-[var(--font-zuume)] text-white/25 select-none tracking-tight py-2">
+                      {label.toUpperCase()}
+                    </span>
+                  ) : (
+                    <Link
+                      href={href}
+                      onClick={() => setOpen(false)}
+                      className="block text-5xl font-black font-[var(--font-zuume)] text-white/80 hover:text-[#EC8644] transition-colors tracking-tight py-2"
+                    >
+                      {label.toUpperCase()}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
               <motion.div

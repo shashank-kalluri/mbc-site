@@ -52,8 +52,8 @@ export const HackathonProgram: React.FC = () => {
   const stats = [
     { label: "Tracks", value: "2 (Solana, Base)" },
     { label: "Finalists", value: "Top 10 (5 per track)" },
-    { label: "Submit By", value: "Dec 5, 05:59 PM ET" },
-    { label: "Finals", value: "Dec 6 (5 min + 2 min Q&A)" },
+    { label: "Submit By", value: "TBD" },
+    { label: "Finals", value: "Nov 20–21, 2026" },
   ];
 
   const prizes: Prize[] = [
@@ -65,15 +65,15 @@ export const HackathonProgram: React.FC = () => {
   ];
 
   const timeline: TimelineItem[] = [
-    { label: "Kickoff", datetime: "Sun, Nov 30, 2025" },
+    { label: "Kickoff", datetime: "TBD — Nov 2026" },
     {
       label: "Submission Deadline",
-      datetime: "Fri, Dec 5, 2025 — 05:59 PM ET",
+      datetime: "TBD — Nov 2026",
     },
-    { label: "In-Person Judging & Demos", datetime: "Sat, Dec 6, 2025" },
+    { label: "In-Person Judging & Demos", datetime: "Nov 20–21, 2026" },
     {
       label: "Final Presentations",
-      datetime: "Sat, Dec 6, 2025",
+      datetime: "Nov 20–21, 2026",
       note: "Top 10 teams (5/track). 5-min pitch + 2-min Q&A. Winners announced at closing ceremony.",
     },
   ];
@@ -120,7 +120,7 @@ export const HackathonProgram: React.FC = () => {
         <Card className="rounded-2xl border-foreground/10">
           <CardHeader>
             <CardTitle className="text-2xl flex items-center gap-2">
-              💻 MBC 2025 Hackathon
+              💻 UBC 2026 Hackathon
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -266,7 +266,7 @@ export const HackathonProgram: React.FC = () => {
 
             <Button asChild className="bg-maize text-black hover:bg-maize">
               <Link
-                href="https://mbc.devpost.com/"
+                href="https://ubc2026.devpost.com/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

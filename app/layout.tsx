@@ -25,12 +25,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "./favicon.ico",
-    shortcut: "/MBC Logo-08-white.png",
-    apple: "/MBC Logo-08-white.png",
+    shortcut: "/navlogo.png",
+    apple: "/navlogo.png",
   },
   openGraph: {
-    siteName: "https://midwestblockchain.org/",
-    url: "https://midwestblockchain.org/",
+    siteName: "University Blockchain Conference",
+    url: "https://ubcconference.org/",
     images: [
       {
         url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",

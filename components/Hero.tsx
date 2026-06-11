@@ -19,22 +19,24 @@ const fadeUp = {
 export default function Hero() {
   return (
     <section className="relative min-h-screen bg-[#1A2A36] flex flex-col justify-between overflow-hidden">
-      {/* Subtle diagonal stripe texture */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(-55deg, #fff 0, #fff 1px, transparent 0, transparent 18px)",
-        }}
-      />
-
-      {/* Orange accent — top-right corner glow */}
-      <div
-        className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.07]"
-        style={{
-          background: "radial-gradient(circle, #EC8644 0%, transparent 70%)",
-        }}
-      />
+      {/* Decorative elements clipped to section bounds */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Subtle diagonal stripe texture */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(-55deg, #fff 0, #fff 1px, transparent 0, transparent 18px)",
+          }}
+        />
+        {/* Orange accent — top-right corner glow */}
+        <div
+          className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-[0.07]"
+          style={{
+            background: "radial-gradient(circle, #EC8644 0%, transparent 70%)",
+          }}
+        />
+      </div>
 
       {/* Main content */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-28 pb-8">
@@ -67,8 +69,8 @@ export default function Hero() {
                 variants={fadeUp}
                 initial="hidden"
                 animate="show"
-                className={`block font-[var(--font-zuume)] font-black leading-[0.85] tracking-[-0.01em] whitespace-nowrap ${color}`}
-                style={{ fontSize: "clamp(52px, 16.5vw, 260px)" }}
+                className={`block font-[var(--font-zuume)] font-black leading-[0.85] tracking-[-0.01em] ${color}`}
+                style={{ fontSize: "clamp(46px, 13.2vw, 210px)" }}
               >
                 {word}
               </motion.h1>
@@ -96,12 +98,9 @@ export default function Hero() {
             >
               Get Tickets →
             </a>
-            <Link
-              href="/programs"
-              className="text-white/60 text-sm font-medium border border-white/15 px-6 py-2.5 rounded-full hover:border-white/35 hover:text-white/90 transition-colors"
-            >
+            <span className="text-white/30 text-sm font-medium border border-white/10 px-6 py-2.5 rounded-full cursor-not-allowed">
               Learn More
-            </Link>
+            </span>
           </div>
         </motion.div>
       </div>

@@ -31,7 +31,7 @@ export const SessionsCalendar: React.FC = () => {
           <div className="w-full rounded-xl overflow-hidden border border-foreground/10">
             <iframe
               src="https://luma.com/embed/calendar/cal-HBogrD0yphRdekG/events"
-              title="MBC 2025 Sessions — Luma"
+              title="UBC 2026 Sessions — Luma"
               className="w-full h-[80vh]"
               style={{
                 border: "1px solid #bfcbda88",

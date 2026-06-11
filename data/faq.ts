@@ -1,13 +1,13 @@
 export const faqItems = [
   {
-    question: "Where is MBC being hosted?",
+    question: "Where is UBC being hosted?",
     answer:
-      "The Midwest Blockchain Conference is being hosted in the Ross School of Business at the University of Michigan -  701 Tappan Ave, Ann Arbor, MI 48109",
+      "The University Blockchain Conference is being hosted at UT Austin in Austin, Texas. Exact venue details coming soon.",
   },
   {
-    question: "When is the MBC conference?",
+    question: "When is UBC 2026?",
     answer:
-      "The Midwest Blockchain Conference will kickoff on Friday Dec 5th and close out on Saturday Dec 6th",
+      "UBC 2026 will kick off on Friday, November 20th and close out on Saturday, November 21st, 2026.",
   },
 
   // Add more FAQ items here

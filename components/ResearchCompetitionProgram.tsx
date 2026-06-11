@@ -80,39 +80,39 @@ export const ResearchCompetitionProgram: React.FC = () => {
   ];
 
   const timeline: TimelineItem[] = [
-    { label: "Sign-Up Opens", datetime: "Nov 9, 2025" },
-    { label: "Start / FT Kick-off Call", datetime: "Nov 13, 2025" },
+    { label: "Sign-Up Opens", datetime: "TBD — Nov 2026" },
+    { label: "Start / FT Kick-off Call", datetime: "TBD — Nov 2026" },
     {
       label: "Messari + Artemis Demo Calls",
-      datetime: "Nov 13–17, 2025",
+      datetime: "TBD — Nov 2026",
       note: "TBA",
     },
-    { label: "Written Report Deadline", datetime: "Nov 23, 2025 — 11:59 PM" },
-    { label: "Judging (Written Reports)", datetime: "Nov 24 – Dec 1, 2025" },
-    { label: "Finalists Notified", datetime: "Dec 1, 2025" },
+    { label: "Written Report Deadline", datetime: "TBD — Nov 2026" },
+    { label: "Judging (Written Reports)", datetime: "TBD — Nov 2026" },
+    { label: "Finalists Notified", datetime: "TBD — Nov 2026" },
     {
-      label: "Live Pitch @ MBC",
-      datetime: "Dec 6, 2025",
+      label: "Live Pitch @ UBC",
+      datetime: "Nov 20–21, 2026",
       note: "10 minutes total",
     },
   ];
 
   const eligibility = [
     "Teams of 1–4 students (3 recommended).",
-    "Only MBC attendees can participate.",
+    "Only UBC attendees can participate.",
     "Multiple teams per university allowed.",
   ];
 
   const rules = [
     "Report length: 3–5 pages (exclude title page, appendix, references).",
     "Suggested structure: title page; executive summary (0.5–1p); project overview; investment proposal (long/short, horizon, target); conclusion; references.",
-    "Submit via Google Form by Nov 23 (link in memo / MBC Telegram).",
+    "Submit via Google Form by Nov 23 (link in memo / UBC Telegram).",
     "Final pitch must match the written thesis; bring a slide deck.",
   ];
 
   const faqs = [
     { q: "Team size?", a: "1–4 students; one report per team." },
-    { q: "Eligibility?", a: "MBC attendees only." },
+    { q: "Eligibility?", a: "UBC attendees only." },
     {
       q: "Tools?",
       a: "Artemis toolkit; Messari & Artemis demo calls run Nov 13–17.",
@@ -144,7 +144,7 @@ export const ResearchCompetitionProgram: React.FC = () => {
             <p className="text-foreground/70 leading-relaxed">
               Work individually or in a team to submit a concise research thesis
               using the Messari and Artemis toolkit, then pitch in person at
-              MBC. Sponsored by Franklin Templeton!
+              UBC. Sponsored by Franklin Templeton!
             </p>
 
             {/* Tracks */}
