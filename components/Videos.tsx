@@ -4,13 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 
 const episodes = [
-  { id: "ZPfEsIBZUS4", episode: "Episode 01", title: "", comingSoon: false },
-  { id: "7z48yaaV-xs", episode: "Episode 02", title: "", comingSoon: false },
-  { id: null,          episode: "Episode 03", title: "Coming Soon", comingSoon: true },
+  { id: "ZPfEsIBZUS4", episode: "Episode 01", title: "", comingSoon: false, widescreen: true },
+  { id: "7z48yaaV-xs", episode: "Episode 02", title: "", comingSoon: false, widescreen: true },
+  { id: "ifz_9FkFwrw", episode: "Episode 03", title: "", comingSoon: false, widescreen: false },
 ];
 
-function EpisodeCard({ id, episode, title, comingSoon }: typeof episodes[number]) {
+function EpisodeCard({ id, episode, title, comingSoon, widescreen }: typeof episodes[number]) {
   const [playing, setPlaying] = useState(false);
+  const [thumbSrc, setThumbSrc] = useState(`https://img.youtube.com/vi/${id}/maxresdefault.jpg`);
 
   if (comingSoon) {
     return (
@@ -54,11 +55,12 @@ function EpisodeCard({ id, episode, title, comingSoon }: typeof episodes[number]
         ) : (
           <>
             <Image
-              src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`}
+              src={thumbSrc}
               alt={episode}
               fill
-              className="object-cover"
+              className={`object-cover transition-transform duration-0 ${widescreen ? "scale-[1.35]" : ""}`}
               unoptimized
+              onError={() => setThumbSrc(`https://img.youtube.com/vi/${id}/hqdefault.jpg`)}
             />
             {/* dark scrim */}
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-200" />
