@@ -1,9 +1,9 @@
 import ImageSlider from "./ImageSlider";
 
 const stats = [
-  { value: "700+", label: "Students" },
-  { value: "50+", label: "Universities" },
-  { value: "30+", label: "Companies" },
+  { value: "1000+", label: "Students" },
+  { value: "100+", label: "Universities" },
+  { value: "50+", label: "Companies" },
   { value: "2", label: "Days" },
 ];
 
@@ -47,7 +47,7 @@ export default function SocialProof() {
               <p className="text-white/50 text-sm leading-relaxed mb-4">
                 UBC started as a bet — that students could put on a conference
                 serious enough for the industry to show up. Two years later,
-                we've hosted over 700 attendees from 50+ universities, brought
+                we've hosted over 1,000 attendees from 100+ universities, brought
                 in speakers from the top protocols, VCs, and research labs, and
                 built a community that extends well past the two days.
               </p>
