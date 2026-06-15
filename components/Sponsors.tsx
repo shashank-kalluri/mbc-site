@@ -75,7 +75,7 @@ export default function Sponsors() {
         </h2>
         <p className="text-[#9CADB7] text-sm mb-16">
           Proud supporters of UBC 2025. Interested in sponsoring UBC 2026?{" "}
-          <a href="mailto:skalluri123@hotmail.com" className="text-[#EC8644] hover:underline">
+          <a href="mailto:uniblockchainconferences@gmail.com" className="text-[#EC8644] hover:underline">
             Get in touch.
           </a>
         </p>
