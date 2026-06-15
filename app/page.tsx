@@ -15,9 +15,9 @@ export default function Home() {
       <Hero />
       <SocialProof />
       <Countdown eventDate="2026-11-20T10:00:00" />
-      <Videos />
       <Speakers />
       <Sponsors />
+      <Videos />
       <TweetBoard />
       <FAQ items={faqItems} />
       <SpeedInsights />
