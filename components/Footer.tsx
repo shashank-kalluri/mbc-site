@@ -22,7 +22,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1A2A36]">
+    <footer className="bg-[#1A2A36] overflow-x-hidden">
       {/* CTA strip */}
       <div className="border-b border-white/8">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
@@ -125,15 +125,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Full-bleed floor wordmark */}
-      <div className="overflow-hidden pointer-events-none select-none px-4 sm:px-6">
-        <p
-          className="font-[var(--font-zuume)] font-black text-white/[0.04] leading-none tracking-tight whitespace-nowrap -mb-[0.14em]"
-          style={{ fontSize: "clamp(72px, 20vw, 300px)" }}
-        >
-          UNIVERSITY BLOCKCHAIN
-        </p>
-      </div>
     </footer>
   );
 }

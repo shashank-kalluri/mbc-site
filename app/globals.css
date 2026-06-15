@@ -118,6 +118,20 @@
   --sidebar-ring: #EC8644;
 }
 
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@theme inline {
+  --animate-scroll-left: scroll-left 40s linear infinite;
+  --animate-scroll-right: scroll-right 40s linear infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

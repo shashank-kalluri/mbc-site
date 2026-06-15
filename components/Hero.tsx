@@ -105,32 +105,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Stats bar pinned to bottom */}
-      <motion.div
-        custom={5}
-        variants={fadeUp}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 border-t border-white/8"
-      >
-        <div className="px-6 sm:px-10 lg:px-16 py-5 flex flex-wrap gap-x-8 gap-y-3">
-          {[
-            { value: "700+", label: "Students" },
-            { value: "50+", label: "Universities" },
-            { value: "30+", label: "Companies" },
-            { value: "2", label: "Days" },
-          ].map(({ value, label }) => (
-            <div key={label} className="flex items-baseline gap-2">
-              <span className="text-white font-bold text-lg font-[var(--font-zuume)]">
-                {value}
-              </span>
-              <span className="text-white/35 text-xs font-medium uppercase tracking-wide">
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </motion.div>
     </section>
   );
 }

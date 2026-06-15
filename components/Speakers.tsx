@@ -73,7 +73,7 @@ export default function Speakers() {
   }, []);
 
   return (
-    <section id="speakers" className="bg-[#1A2A36] py-16 sm:py-24">
+    <section id="speakers" className="bg-[#F4F3EF] py-16 sm:py-24">
       <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
         {/* Header */}
         <div className="flex items-end justify-between mb-12">
@@ -85,20 +85,20 @@ export default function Speakers() {
               </span>
             </div>
             <h2
-              className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-none"
+              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
               style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
             >
               Past Speakers
             </h2>
-            <p className="text-white/40 text-sm mt-3">Featured speakers from UBC 2025. 2026 lineup coming soon.</p>
+            <p className="text-[#9CADB7] text-sm mt-3">Featured speakers from UBC 2025. 2026 lineup coming soon.</p>
           </div>
         </div>
 
         {/* Grid */}
         {loading ? (
-          <p className="text-white/30 text-sm">Loading speakers…</p>
+          <p className="text-[#9CADB7] text-sm">Loading speakers…</p>
         ) : speakers.length === 0 ? (
-          <p className="text-white/30 text-sm">Speaker lineup announced soon.</p>
+          <p className="text-[#9CADB7] text-sm">Speaker lineup announced soon.</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {speakers.map((s) => (
@@ -111,7 +111,7 @@ export default function Speakers() {
         <div className="mt-8 sm:hidden">
           <Link
             href="/programs"
-            className="text-white/40 hover:text-white/70 text-sm font-medium transition-colors"
+            className="text-[#9CADB7] hover:text-[#293C4B] text-sm font-medium transition-colors"
           >
             See all programs →
           </Link>

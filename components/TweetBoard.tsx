@@ -1,16 +1,10 @@
-import React from "react";
 import { getTweet, type Tweet as TweetData } from "react-tweet/api";
-import { EmbeddedTweet, TweetNotFound } from "react-tweet";
 import { tweetUrls } from "@/data/tweets";
+import ScrollingTweets, { type TweetCard } from "./ScrollingTweets";
 
 function normalizeEntities(obj: { entities?: TweetData["entities"] | null }) {
   if (!obj.entities) {
-    (obj as TweetData).entities = {
-      hashtags: [],
-      urls: [],
-      user_mentions: [],
-      symbols: [],
-    };
+    (obj as TweetData).entities = { hashtags: [], urls: [], user_mentions: [], symbols: [] };
   } else {
     const e = obj.entities;
     if (!e.hashtags) e.hashtags = [];
@@ -38,79 +32,60 @@ async function fetchAllTweets(): Promise<(TweetData | undefined)[]> {
   );
 }
 
+function stripTrailingUrls(text: string): string {
+  return text.replace(/https:\/\/t\.co\/\S+$/g, "").trim();
+}
+
 export default async function TweetBoard() {
-  const tweets = (await fetchAllTweets()).filter(
-    (t): t is TweetData => t !== undefined
-  );
+  const raw = await fetchAllTweets();
+  const tweets: TweetCard[] = raw
+    .filter((t): t is TweetData => t !== undefined)
+    .map((t) => ({
+      id: t.id_str,
+      text: stripTrailingUrls(t.text),
+      name: t.user.name,
+      handle: t.user.screen_name,
+      avatar: t.user.profile_image_url_https,
+      images: t.mediaDetails
+        ?.filter((m) => m.type === "photo")
+        .map((m) => m.media_url_https),
+    }));
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-white">
-      <div className="max-w-screen-xl mx-auto px-6">
-        {/* Heading */}
-        <div className="flex flex-wrap items-end justify-between gap-y-4 mb-10">
-          <div>
-            <p className="text-[#EC8644] text-xs font-semibold uppercase tracking-widest mb-3">
-              Social Buzz
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#293C4B] tracking-tight">
-              What people are saying
-            </h2>
-            <p className="mt-1 text-[#9CADB7] text-sm">about UBC 2024</p>
-          </div>
+    <section id="buzz" className="py-16 sm:py-24 bg-[#F4F3EF] overflow-hidden">
+      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 mb-12">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="block w-6 h-[2px] bg-[#EC8644]" />
+          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
+            Social Buzz
+          </span>
+        </div>
+        <div className="flex items-end justify-between gap-6">
+          <h2
+            className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
+            style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
+          >
+            What people are saying
+          </h2>
           <a
-            href="https://x.com/MBC_Conference"
+            href="https://x.com/UBC_Conference"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#293C4B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#1A2834] transition-colors shadow-sm"
+            className="shrink-0 inline-flex items-center gap-2 text-[#293C4B] text-sm font-semibold border border-[#293C4B]/20 px-5 py-2.5 rounded-full hover:bg-[#293C4B] hover:text-white transition-colors"
           >
-            Explore highlights →
+            Follow us →
           </a>
         </div>
-
-        {/* Mobile carousel */}
-        <div className="block md:hidden overflow-x-auto -mx-6 px-6">
-          <div className="flex gap-4 pb-2">
-            {tweets.map((t, idx) => (
-              <div
-                key={idx}
-                className="min-w-[78vw] shrink-0 scale-[0.92] origin-top"
-              >
-                {t ? (
-                  <div data-theme="light">
-                    <EmbeddedTweet tweet={t} />
-                  </div>
-                ) : (
-                  <div className="p-4 text-center text-[#9CADB7]">
-                    <TweetNotFound />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Desktop masonry */}
-        <div className="hidden md:block">
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
-            {tweets.map((t, idx) => (
-              <div
-                key={idx}
-                className="break-inside-avoid overflow-hidden scale-[0.94] hover:scale-[0.97] origin-top transition-transform duration-200 mb-2"
-              >
-                {t ? (
-                  <div data-theme="light">
-                    <EmbeddedTweet tweet={t} />
-                  </div>
-                ) : (
-                  <div className="p-4 text-center text-[#9CADB7]">
-                    <TweetNotFound />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <p className="text-[#9CADB7] text-sm mt-2">Highlights from UBC 2025</p>
       </div>
+
+      {tweets.length > 0 ? (
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <ScrollingTweets tweets={tweets} />
+        </div>
+      ) : (
+        <p className="text-center text-[#9CADB7] text-sm">Highlights coming soon.</p>
+      )}
     </section>
   );
 }

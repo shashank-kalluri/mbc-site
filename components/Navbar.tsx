@@ -65,7 +65,7 @@ export default function Navbar() {
               disabled ? (
                 <span
                   key={label}
-                  className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase select-none ${
+                  className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase select-none ${
                     isDark ? "text-white/25" : "text-[#293C4B]/25"
                   }`}
                 >
@@ -75,7 +75,7 @@ export default function Navbar() {
                 <Link
                   key={label}
                   href={href}
-                  className={`text-[13px] font-black font-[var(--font-zuume)] tracking-[0.12em] uppercase transition-colors hover:text-[#EC8644] ${
+                  className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] ${
                     isDark ? "text-white/60" : "text-[#293C4B]/50"
                   }`}
                 >
