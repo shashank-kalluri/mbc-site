@@ -18,7 +18,7 @@ const photos = [
 
 export default function SocialProof() {
   return (
-    <section className="bg-[#1A2A36] py-16 sm:py-20 overflow-hidden">
+    <section id="about" className="bg-[#1A2A36] py-16 sm:py-20 overflow-hidden">
       <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
         {/* Label */}
         <div className="flex items-center gap-3 mb-8">

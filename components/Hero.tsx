@@ -44,20 +44,6 @@ export default function Hero() {
 
       {/* Main content */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-28 pb-8">
-        {/* Eyebrow */}
-        <motion.div
-          custom={0}
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          className="flex items-center gap-3 mb-8 sm:mb-12"
-        >
-          <span className="block w-8 h-[2px] bg-[#EC8644]" />
-          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-            University Blockchain Conference
-          </span>
-        </motion.div>
-
         {/* Logo */}
         <motion.div
           custom={1}
@@ -83,21 +69,24 @@ export default function Hero() {
           animate="show"
           className="mt-10 sm:mt-14 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8"
         >
-          <p className="text-white/40 text-sm font-medium tracking-[0.12em] uppercase">
+          <p className="text-white/80 text-base sm:text-lg font-semibold tracking-[0.12em] uppercase">
             Nov 20–21, 2026 &nbsp;·&nbsp; UT Austin, Texas
           </p>
           <div className="flex items-center gap-3">
             <a
-              href="https://lu.ma/x6apzbr8"
+              href="https://luma.com/n4ad0k9m"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#EC8644] text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
+              className="bg-[#EC8644] text-white text-base font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
             >
               Get Tickets →
             </a>
-            <span className="text-white/30 text-sm font-medium border border-white/10 px-6 py-2.5 rounded-full cursor-not-allowed">
+            <a
+              href="#about"
+              className="text-white/70 text-base font-medium border border-white/20 px-7 py-3 rounded-full hover:bg-white/10 transition-colors"
+            >
               Learn More
-            </span>
+            </a>
           </div>
         </motion.div>
       </div>

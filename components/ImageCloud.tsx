@@ -170,7 +170,7 @@ export default function ImageCloud() {
             Build at UBC
           </a>
           <a
-            href="https://lu.ma/x6apzbr8"
+            href="https://luma.com/n4ad0k9m"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white text-[#293C4B] font-semibold text-sm px-6 py-2.5 rounded-full border border-[#293C4B]/10 hover:shadow-md transition-all"

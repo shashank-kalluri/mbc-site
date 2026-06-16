@@ -83,7 +83,7 @@ export default function Countdown({ eventDate }: CountdownProps) {
         {/* CTA row */}
         <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 border-t border-white/8 pt-8">
           <a
-            href="https://lu.ma/x6apzbr8"
+            href="https://luma.com/n4ad0k9m"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center bg-[#EC8644] text-white text-sm font-bold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors self-start shadow-lg shadow-[#EC8644]/25"

@@ -32,7 +32,7 @@ const ContentRight = () => {
           </Button>
           <Button asChild variant="secondary">
             <a
-              href="https://lu.ma/x6apzbr8"
+              href="https://luma.com/n4ad0k9m"
               target="_blank"
               rel="noopener noreferrer"
             >

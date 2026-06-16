@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 
 const navLinks = [
+  { href: "/#about", label: "About" },
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
   { href: "/programs", label: "Programs", disabled: true },
@@ -16,7 +17,7 @@ const navLinks = [
 
 const socialLinks = [
   { href: "https://www.instagram.com/college.xyz/", Icon: Instagram, label: "Instagram" },
-  { href: "https://x.com/MBC_Conference", Icon: Twitter, label: "X / Twitter" },
+  { href: "https://x.com/UBC_Conference", Icon: Twitter, label: "X / Twitter" },
   { href: "https://www.linkedin.com/company/midwest-blockchain-conference/", Icon: Linkedin, label: "LinkedIn" },
 ];
 
@@ -38,7 +39,7 @@ export default function Footer() {
             </p>
           </div>
           <a
-            href="https://lu.ma/x6apzbr8"
+            href="https://luma.com/n4ad0k9m"
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 bg-[#EC8644] text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"

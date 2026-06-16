@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
+  { href: "/#about", label: "About", disabled: false },
   { href: "/#speakers", label: "Speakers", disabled: false },
   { href: "/#sponsors", label: "Sponsors", disabled: false },
   { href: "/programs", label: "Programs", disabled: true },
@@ -88,7 +89,7 @@ export default function Navbar() {
           {/* CTA + hamburger */}
           <div className="flex items-center gap-4">
             <a
-              href="https://lu.ma/x6apzbr8"
+              href="https://luma.com/n4ad0k9m"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:inline-flex bg-[#EC8644] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#D4703A] transition-colors"
@@ -167,7 +168,7 @@ export default function Navbar() {
                 className="mt-6"
               >
                 <a
-                  href="https://lu.ma/x6apzbr8"
+                  href="https://luma.com/n4ad0k9m"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
