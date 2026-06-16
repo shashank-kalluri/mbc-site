@@ -25,7 +25,7 @@ export default function ImageSlider({ photos }: { photos: { src: string; alt: st
           className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
           style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 2 : i === prev ? 1 : 0 }}
         >
-          <Image src={photo.src} alt={photo.alt} fill className="object-cover" unoptimized />
+          <Image src={photo.src} alt={photo.alt} fill className="object-cover" sizes="(min-width: 1024px) 50vw, 100vw" />
         </div>
       ))}
 

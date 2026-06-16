@@ -8,6 +8,7 @@ import { ReactLenis } from "@/lib/lenis";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://universityblockchain.org"),
   title: "UBC 2026",
   description: "The University Blockchain Conference — November 20–21, 2026 @ UT Austin",
   robots: {
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     siteName: "University Blockchain Conference",
-    url: "https://ubcconference.org/",
+    url: "https://universityblockchain.org/",
     images: [
       {
         url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
@@ -45,8 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "UBC 2026",
     description: "The University Blockchain Conference — November 20–21, 2026 @ UT Austin",
-    creator: "@MBC_Conference",
-    creatorId: "1805686542125744129",
+    creator: "@UBC_Conference",
     images: [
       "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
     ],
