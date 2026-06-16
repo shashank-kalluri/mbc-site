@@ -91,7 +91,7 @@ export default function Countdown({ eventDate }: CountdownProps) {
             Secure Your Spot →
           </a>
           <p className="text-white/70 text-base font-semibold tracking-wide">
-            November 20–21, 2026 · Doors open 10:00 AM · UT Austin
+            November 20–21, 2026 · Doors open 9:00 AM · UT Austin
           </p>
         </div>
       </div>

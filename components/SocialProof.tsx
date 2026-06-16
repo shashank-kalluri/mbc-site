@@ -44,14 +44,14 @@ export default function SocialProof() {
               >
                 Built by students
               </h2>
-              <p className="text-white/50 text-sm leading-relaxed mb-4">
+              <p className="text-white/70 text-sm sm:text-base leading-relaxed mb-4">
                 UBC started as a bet — that students could put on a conference
                 serious enough for the industry to show up. Two years later,
                 we've hosted over 1,000 attendees from 100+ universities, brought
                 in speakers from the top protocols, VCs, and research labs, and
                 built a community that extends well past the two days.
               </p>
-              <p className="text-white/35 text-sm leading-relaxed">
+              <p className="text-white/70 text-sm sm:text-base leading-relaxed">
                 UBC 2026 returns to Austin this November. Bigger stage, better
                 lineup, same energy.
               </p>

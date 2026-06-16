@@ -101,9 +101,6 @@ export default function Videos() {
           >
             The UBC Sitcom
           </h2>
-          <p className="text-[#9CADB7] text-sm hidden sm:block pb-1">
-            A student-produced original series
-          </p>
         </div>
 
         {/* Episodes */}
