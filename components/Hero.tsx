@@ -50,13 +50,22 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
+          className="relative"
         >
+          {/* Vignette to lift the logo off a busy video frame */}
+          <div
+            className="absolute -inset-x-10 -inset-y-16 -z-10 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 65% at center, rgba(8,13,17,0.65) 0%, rgba(8,13,17,0) 75%)",
+            }}
+          />
           <Image
-            src="/navlogo.png"
+            src="/university_blockchain_conference_logo.svg"
             alt="University Blockchain Conference"
-            width={1200}
-            height={400}
-            className="w-full max-w-[clamp(340px,95vw,1300px)] h-auto"
+            width={2048}
+            height={608}
+            className="w-full max-w-[clamp(340px,95vw,1300px)] h-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
             priority
           />
         </motion.div>
@@ -90,7 +99,6 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
-
     </section>
   );
 }
