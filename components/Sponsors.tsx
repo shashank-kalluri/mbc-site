@@ -91,7 +91,9 @@ export default function Sponsors() {
             {partners.map((p) => (
               <PartnerLogo key={p.id} p={p} />
             ))}
-            <span className="text-[#9CADB7] text-sm font-medium">and more</span>
+            <span className="text-[#293C4B] text-lg font-[var(--font-zuume)] font-black tracking-tight">
+              ... and more!
+            </span>
           </div>
         )}
       </div>

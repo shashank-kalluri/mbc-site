@@ -81,26 +81,26 @@ export default function Hero() {
           <p className="text-white/80 text-base sm:text-lg font-semibold tracking-[0.12em] uppercase">
             Nov 20–21, 2026 &nbsp;·&nbsp; UT Austin, Texas
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <a
               href="https://luma.com/n4ad0k9m"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#EC8644] text-white text-base font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
+              className="shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
             >
               Get Tickets →
             </a>
             <a
-              href="#about"
-              className="text-white/70 text-base font-medium border border-white/20 px-7 py-3 rounded-full hover:bg-white/10 transition-colors"
-            >
-              Learn More
-            </a>
-            <a
               href="mailto:uniblockchainconferences@gmail.com?subject=UBC%20Inquiry"
-              className="text-white/70 text-base font-medium border border-white/20 px-7 py-3 rounded-full hover:bg-white/10 transition-colors"
+              className="shrink-0 whitespace-nowrap bg-gradient-to-r from-[#EC8644]/50 to-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:from-[#EC8644]/65 hover:to-white/20 hover:border-white/60 transition-colors"
             >
               Get in Touch
+            </a>
+            <a
+              href="#about"
+              className="shrink-0 whitespace-nowrap bg-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
+            >
+              Learn More
             </a>
           </div>
         </motion.div>
