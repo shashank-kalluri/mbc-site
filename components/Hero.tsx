@@ -17,7 +17,7 @@ const fadeUp = {
 };
 
 const VIDEO_SRC =
-  "https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site@a205534/public/video.mp4";
+  "https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site@7000a75/public/video.mp4";
 
 export default function Hero() {
   return (
