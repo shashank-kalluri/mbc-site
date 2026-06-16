@@ -96,6 +96,12 @@ export default function Hero() {
             >
               Learn More
             </a>
+            <a
+              href="mailto:uniblockchainconferences@gmail.com?subject=UBC%20Inquiry"
+              className="text-white/70 text-base font-medium border border-white/20 px-7 py-3 rounded-full hover:bg-white/10 transition-colors"
+            >
+              Get in Touch
+            </a>
           </div>
         </motion.div>
       </div>
