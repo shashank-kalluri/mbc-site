@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://raw.githubusercontent.com/shashank-kalluri/mbc-site/refs/heads/main/public/opengraph.png",
-        width: 3001,
-        height: 3000,
+        width: 1254,
+        height: 1254,
       },
     ],
     locale: "en_US",
