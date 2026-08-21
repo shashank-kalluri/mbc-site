@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import BadgeLink from "./BadgeLink";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 48 },
@@ -102,6 +103,12 @@ export default function Hero() {
             >
               Learn More
             </a>
+            <BadgeLink
+              className="shrink-0 whitespace-nowrap bg-gradient-to-r from-[#9CADB7]/30 to-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:from-[#9CADB7]/45 hover:to-white/20 hover:border-white/60 transition-colors"
+              tooltipOffsetClass="-top-10"
+            >
+              Get Your Badge
+            </BadgeLink>
           </div>
         </motion.div>
       </div>

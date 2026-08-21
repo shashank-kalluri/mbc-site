@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import BadgeLink from "./BadgeLink";
 
 const navLinks = [
   { href: "/#about", label: "About", disabled: false },
@@ -84,6 +85,13 @@ export default function Navbar() {
                 </Link>
               )
             )}
+            <BadgeLink
+              className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] ${
+                isDark ? "text-white/60" : "text-[#293C4B]/50"
+              }`}
+            >
+              Badge
+            </BadgeLink>
           </nav>
 
           {/* CTA + hamburger */}
@@ -161,6 +169,18 @@ export default function Navbar() {
                   )}
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.07, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <BadgeLink
+                  className="block text-5xl font-black font-[var(--font-zuume)] text-white/80 hover:text-[#EC8644] transition-colors tracking-tight py-2"
+                  tooltipOffsetClass="-top-10"
+                >
+                  BADGE
+                </BadgeLink>
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

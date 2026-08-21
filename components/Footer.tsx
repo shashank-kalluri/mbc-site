@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
+import BadgeLink from "./BadgeLink";
 
 const navLinks = [
   { href: "/#about", label: "About" },
@@ -96,6 +97,9 @@ export default function Footer() {
                 </Link>
               )
             )}
+            <BadgeLink className="text-white/40 hover:text-white/70 text-sm transition-colors self-start">
+              Badge
+            </BadgeLink>
           </nav>
 
           {/* Social */}
