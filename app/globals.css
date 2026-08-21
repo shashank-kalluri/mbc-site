@@ -126,10 +126,16 @@
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 @theme inline {
   --animate-scroll-left: scroll-left 40s linear infinite;
   --animate-scroll-right: scroll-right 40s linear infinite;
+  --animate-gradient-shift: gradient-shift 5s ease infinite;
 }
 
 @layer base {
