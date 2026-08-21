@@ -106,11 +106,7 @@ export default function Hero() {
               href="https://badge.universityblockchain.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 whitespace-nowrap text-white text-sm sm:text-base font-semibold px-5 sm:px-7 py-2.5 sm:py-3 rounded-full transition-transform hover:scale-105 shadow-lg shadow-black/30 bg-[length:300%_300%] animate-gradient-shift"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, #EC8644, #F4599B, #9B5DE5, #4C7EF3, #4FD1C5, #EC8644)",
-              }}
+              className="hero-badge shrink-0 whitespace-nowrap bg-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-lg shadow-black/30"
             >
               Get Your Badge
             </a>
