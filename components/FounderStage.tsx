@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   ArrowUpRight,
+  FileText,
   CalendarDays,
   MapPin,
   Ticket,
@@ -17,6 +18,9 @@ const APPLY_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSewc37--a2CqI6O31s5bP2Jg1wK4s6bL2G9t-BF65aVLvjaMA/viewform?usp=dialog";
 const REFER_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfhDVAOVA48f7_IdDdolLdWxZIyKk0NqCcEYNf-7aZs0bYREg/viewform?usp=header";
+/** Full program write-up: tracks, selection, grant, and timeline. */
+const PROGRAM_DOC =
+  "https://docs.google.com/document/d/1w_K86czLPHDXaNDyFLPB1o5SgVP8JKSP8wwuWMwG1IU/edit?usp=sharing";
 
 const HERO_IMAGE = "/G8VBLXpaUAAVJOe.jpeg";
 
@@ -219,6 +223,14 @@ export default function FounderStage() {
               Apply to pitch <ArrowUpRight size={17} />
             </a>
             <a
+              href={PROGRAM_DOC}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white text-[#293C4B] text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/90 transition-colors shadow-lg shadow-black/20"
+            >
+              <FileText size={17} /> Read the program
+            </a>
+            <a
               href={REFER_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -243,45 +255,51 @@ export default function FounderStage() {
       {/* ---------- Why ---------- */}
       <section className="py-16 sm:py-24">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>Why we&rsquo;re building it</Eyebrow>
-            <h2
-              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.92] mb-10 max-w-3xl"
-              style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
-            >
-              The Founder Stage is how we scale UBC
-            </h2>
-          </Reveal>
-
-          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-stretch">
-            <Reveal i={1}>
-              <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5">
-                <p className="text-[#5A6B78] text-[15px] leading-relaxed">
+          {/* Headline sits with the copy it introduces, in one readable column,
+              with the photo carrying the other half of the row. */}
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <Reveal>
+              <Eyebrow>Why we&rsquo;re building it</Eyebrow>
+              <h2
+                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] mb-6"
+                style={{ fontSize: "clamp(32px, 4vw, 54px)" }}
+              >
+                The Founder Stage is how we scale UBC
+              </h2>
+              <div className="space-y-4 max-w-xl">
+                <p className="text-[#5A6B78] text-base leading-relaxed">
                   College.xyz is a 501(c)(3) nonprofit working to close the gap between talented
                   students and frontier tech. Every year we host the University Blockchain
                   Conference, which brings together top talent from over 100 universities and puts
                   them in front of companies like Coinbase, Solana, Polymarket, Gemini, and Ledger.
                 </p>
-                <p className="text-[#5A6B78] text-[15px] leading-relaxed">
+                <p className="text-[#5A6B78] text-base leading-relaxed">
                   Since UBC launched in 2024, attendees have gone on to join Y Combinator, a16z
                   Speedrun, Alliance, and Colosseum, and to raise venture funding. At UBC 2026,
                   founders under 25 will pitch the accelerators, investors, mentors, and builders
                   who actually back young teams.
                 </p>
               </div>
+              <a
+                href={PROGRAM_DOC}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-8 bg-[#293C4B] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-[#1A2A36] transition-colors"
+              >
+                <FileText size={16} /> Read the full program
+              </a>
             </Reveal>
 
-            <Reveal i={2} className="lg:h-full">
-              {/* Keeps a ratio while stacked; matches the text column's height at lg. */}
-              <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full rounded-3xl overflow-hidden">
+            <Reveal i={1}>
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
                 <Image
                   src="/HIFVvbZXQAAq6Q1.jpeg"
                   alt="University Blockchain Conference"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A36]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A36]/50 to-transparent" />
               </div>
             </Reveal>
           </div>
@@ -523,6 +541,14 @@ export default function FounderStage() {
                     className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
                   >
                     Founders: apply here <ArrowUpRight size={17} />
+                  </a>
+                  <a
+                    href={PROGRAM_DOC}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white text-[#293C4B] text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/90 transition-colors"
+                  >
+                    <FileText size={17} /> Read the program
                   </a>
                   <a
                     href={REFER_URL}
