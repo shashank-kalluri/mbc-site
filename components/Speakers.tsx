@@ -81,16 +81,16 @@ export default function Speakers() {
             <div className="flex items-center gap-3 mb-3">
               <span className="block w-6 h-[2px] bg-[#EC8644]" />
               <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-                2025 Lineup
+                2026 Lineup
               </span>
             </div>
             <h2
               className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
               style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
             >
-              Past Speakers
+              Our Speakers
             </h2>
-            <p className="text-[#9CADB7] text-sm mt-3">Featured speakers from UBC 2025. 2026 lineup coming soon.</p>
+            <p className="text-[#9CADB7] text-sm mt-3">Featured speakers for UBC 2026.</p>
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 48 },
@@ -96,12 +97,12 @@ export default function Hero() {
             >
               Get in Touch
             </a>
-            <a
-              href="#about"
+            <Link
+              href="/programs"
               className="shrink-0 whitespace-nowrap bg-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
             >
-              Learn More
-            </a>
+              Programs
+            </Link>
             <a
               href="https://badge.universityblockchain.org"
               target="_blank"

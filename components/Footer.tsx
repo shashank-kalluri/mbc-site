@@ -2,12 +2,26 @@ import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Twitter, Linkedin } from "lucide-react";
 
-const navLinks = [
+type NavLink = {
+  href: string;
+  label: string;
+  external?: boolean;
+  newTab?: boolean;
+  disabled?: boolean;
+};
+
+const navLinks: NavLink[] = [
   { href: "/#about", label: "About" },
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
-  { href: "/programs", label: "Programs", disabled: true },
+  { href: "/programs", label: "Programs" },
   { href: "/#faq", label: "FAQ" },
+  {
+    href: "https://drive.google.com/drive/folders/1Nv_ch6OgDnempbADFcZhKxVgM8JyxCB_?usp=drive_link",
+    label: "Data Room",
+    external: true,
+    newTab: true,
+  },
   {
     href: "mailto:uniblockchainconferences@gmail.com?subject=UBC%20Inquiry",
     label: "Contact",
@@ -70,7 +84,7 @@ export default function Footer() {
 
           {/* Nav */}
           <nav className="flex flex-wrap gap-x-10 gap-y-4 sm:gap-x-14">
-            {navLinks.map(({ href, label, external, disabled }) =>
+            {navLinks.map(({ href, label, external, newTab, disabled }) =>
               disabled ? (
                 <span
                   key={label}
@@ -82,6 +96,7 @@ export default function Footer() {
                 <a
                   key={label}
                   href={href}
+                  {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="text-white/40 hover:text-white/70 text-sm transition-colors self-start"
                 >
                   {label}

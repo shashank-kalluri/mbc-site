@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface FAQItem {
   question: string;
   answer: string;
+  link?: { href: string; label: string };
 }
 
 interface FAQProps {
@@ -44,9 +45,22 @@ function FAQRow({ item, index }: { item: FAQItem; index: number }) {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-6 pl-10 text-[#9CADB7] text-sm sm:text-base leading-relaxed">
-              {item.answer}
-            </p>
+            <div className="pb-6 pl-10">
+              <p className="text-[#9CADB7] text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                {item.answer}
+              </p>
+              {item.link && (
+                <a
+                  href={item.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 mt-3 text-[#EC8644] text-sm font-medium hover:underline"
+                >
+                  {item.link.label}
+                  <ArrowUpRight size={15} />
+                </a>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

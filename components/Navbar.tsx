@@ -11,7 +11,7 @@ const navLinks = [
   { href: "/#about", label: "About", disabled: false },
   { href: "/#speakers", label: "Speakers", disabled: false },
   { href: "/#sponsors", label: "Sponsors", disabled: false },
-  { href: "/programs", label: "Programs", disabled: true },
+  { href: "/programs", label: "Programs", disabled: false },
   { href: "/#faq", label: "FAQ", disabled: false },
 ];
 
