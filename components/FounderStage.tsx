@@ -20,21 +20,14 @@ const REFER_URL =
 
 const HERO_IMAGE = "/G8VBLXpaUAAVJOe.jpeg";
 
-const STATS = [
-  { value: "80+", label: "Students placed in frontier tech" },
-  { value: "100+", label: "Universities represented" },
-  { value: "~20", label: "Companies on the stage" },
-  { value: "<25", label: "Founder age cap" },
-];
-
-const INVESTORS = [
-  "Y Combinator",
-  "Colosseum",
-  "Portal Ventures",
-  "Castle Island Ventures",
-  "No Limit Holdings",
-  "Multicoin Capital",
-  "USC VanEck Digital Asset Initiative",
+const INVESTORS: { name: string; href?: string }[] = [
+  { name: "Y Combinator", href: "https://www.ycombinator.com/" },
+  { name: "Colosseum", href: "https://www.colosseum.org" },
+  { name: "Portal Ventures", href: "https://portal.vc/" },
+  { name: "Castle Island Ventures", href: "https://castleisland.vc/" },
+  { name: "No Limit Holdings", href: "https://nlh.xyz/" },
+  { name: "Multicoin Capital", href: "https://multicoin.capital/" },
+  { name: "USC VanEck Digital Asset Initiative" },
 ];
 
 const SPONSORS = ["Coinbase", "Solana", "Gemini", "Ripple", "MoonPay", "Ledger"];
@@ -42,13 +35,13 @@ const SPONSORS = ["Coinbase", "Solana", "Gemini", "Ripple", "MoonPay", "Ledger"]
 const TRACKS = [
   {
     n: "01",
-    title: "Proven companies",
-    body: "Teams who've raised initial capital from YC, Speedrun, and venture firms — ready to showcase their product, share their story, inspire student builders, and raise subsequent funding.",
+    title: "Already backed",
+    body: "You've raised initial capital from YC, Speedrun, or a venture firm. Show your product, tell your story, and raise your next round.",
   },
   {
     n: "02",
-    title: "Emerging teams",
-    body: "Teams raising their first capital, ready to meet the investors who'll back them. These teams are also eligible for a non-dilutive grant from College.xyz.",
+    title: "Raising your first",
+    body: "You're raising your first capital and ready to meet the investors who'll back you. You're also eligible for a non-dilutive grant from College.xyz.",
   },
 ];
 
@@ -74,7 +67,7 @@ const BENEFITS = [
   {
     n: "01",
     title: "A speaking slot",
-    body: "Showcase your product to top investors, accelerators, and talent at UBC 2026.",
+    body: "Present your product to the investors, accelerators, and talent at UBC 2026.",
   },
   {
     n: "02",
@@ -89,7 +82,7 @@ const BENEFITS = [
   {
     n: "04",
     title: "A non-dilutive grant",
-    body: "A shot at a cash grant from College.xyz, judged live by the investors in the audience.",
+    body: "A cash grant from College.xyz, judged live by the investors in the audience.",
   },
   {
     n: "05",
@@ -244,27 +237,6 @@ export default function FounderStage() {
             Nov 20–21, 2026 · UT Austin, TX · Applications close Oct 25
           </motion.p>
         </div>
-
-        {/* Stat band */}
-        <div className="relative z-10 border-t border-white/10">
-          <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-white/10">
-              {STATS.map((s, i) => (
-                <Reveal key={s.label} i={i} className="px-1 py-7 sm:py-9 first:pl-0 lg:px-8 lg:first:pl-0">
-                  <div
-                    className="font-[var(--font-zuume)] font-black text-[#EC8644] leading-none tracking-tight"
-                    style={{ fontSize: "clamp(32px, 4.5vw, 54px)" }}
-                  >
-                    {s.value}
-                  </div>
-                  <p className="text-white/45 text-xs sm:text-sm mt-2 leading-snug max-w-[190px]">
-                    {s.label}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ---------- Why ---------- */}
@@ -276,7 +248,7 @@ export default function FounderStage() {
               className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.92] mb-10 max-w-3xl"
               style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
             >
-              The Founder Stage is how we scale this
+              The Founder Stage is how we scale UBC
             </h2>
           </Reveal>
 
@@ -284,18 +256,16 @@ export default function FounderStage() {
             <Reveal i={1}>
               <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5">
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed">
-                  College.xyz, a 501(c)(3) nonprofit, exists to close the gap between talented
-                  students and frontier tech industries. Within this, we host the University
-                  Blockchain Conference — an annual conference bringing together top talent from
-                  over 100 universities globally and connecting them with leading companies
-                  including Coinbase, Solana, Polymarket, Gemini, and Ledger.
+                  College.xyz is a 501(c)(3) nonprofit working to close the gap between talented
+                  students and frontier tech. Every year we host the University Blockchain
+                  Conference, which brings together top talent from over 100 universities and puts
+                  them in front of companies like Coinbase, Solana, Polymarket, Gemini, and Ledger.
                 </p>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed">
-                  Since UBC launched in 2024, several attendees have gone on to join top
-                  accelerators including Y Combinator, a16z Speedrun, Alliance, and Colosseum, and
-                  to raise venture funding. At UBC 2026, select founders under 25 will present to
-                  the accelerators, investors, mentors, and builders who can take a young founding
-                  team to the next level.
+                  Since UBC launched in 2024, attendees have gone on to join Y Combinator, a16z
+                  Speedrun, Alliance, and Colosseum, and to raise venture funding. At UBC 2026,
+                  founders under 25 will pitch the accelerators, investors, mentors, and builders
+                  who actually back young teams.
                 </p>
               </div>
             </Reveal>
@@ -329,22 +299,39 @@ export default function FounderStage() {
                 Early investor commitments
               </h3>
               <p className="text-[#9CADB7] text-sm mb-8 max-w-2xl">
-                The full investor audience will be announced later. Early commitments include:
+                We&rsquo;ll announce the full audience later. Committed so far:
               </p>
               <div className="flex flex-wrap gap-2.5">
-                {INVESTORS.map((name, i) => (
-                  <motion.span
-                    key={name}
-                    custom={i}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="rounded-full border border-[#293C4B]/12 bg-[#F4F3EF] px-4 py-2 text-sm font-medium text-[#293C4B] hover:border-[#EC8644]/50 hover:text-[#EC8644] transition-colors"
-                  >
-                    {name}
-                  </motion.span>
-                ))}
+                {INVESTORS.map((inv, i) =>
+                  inv.href ? (
+                    <motion.a
+                      key={inv.name}
+                      href={inv.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      custom={i}
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true }}
+                      className="rounded-full border border-[#293C4B]/12 bg-[#F4F3EF] px-4 py-2 text-sm font-medium text-[#293C4B] hover:border-[#EC8644]/50 hover:text-[#EC8644] transition-colors"
+                    >
+                      {inv.name}
+                    </motion.a>
+                  ) : (
+                    <motion.span
+                      key={inv.name}
+                      custom={i}
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true }}
+                      className="rounded-full border border-[#293C4B]/12 bg-[#F4F3EF] px-4 py-2 text-sm font-medium text-[#293C4B]"
+                    >
+                      {inv.name}
+                    </motion.span>
+                  )
+                )}
               </div>
 
               <div className="mt-9 pt-8 border-t border-[#293C4B]/8">
@@ -377,12 +364,12 @@ export default function FounderStage() {
               className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-4"
               style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
             >
-              ~20 companies, two tracks
+              You take the stage
             </h2>
             <p className="text-[#9CADB7] text-sm mb-10 max-w-2xl">
-              This demo day is not crypto-specific. We&rsquo;re looking for impressive founders
-              building in and around frontier tech — including but not limited to crypto, AI, and
-              hard tech.
+              We&rsquo;ll pick around 20 founders across two tracks. This demo day is not
+              crypto-specific. We want founders building anywhere in frontier tech: crypto, AI,
+              hard tech, and whatever comes next.
             </p>
           </Reveal>
 
@@ -511,8 +498,7 @@ export default function FounderStage() {
                   Serious founders and builders only
                 </h2>
                 <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-2xl mt-5">
-                  This opportunity is application based. Applications are reviewed on a rolling
-                  basis and will close on October 25.
+                  We read applications as they come in. They close on October 25.
                 </p>
                 <div className="flex flex-wrap items-center gap-3 mt-9">
                   <a

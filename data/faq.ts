@@ -14,63 +14,24 @@ export const faqItems = [
     answer:
       "UBC 2026 will kick off on Friday, November 20th and close out on Saturday, November 21st, 2026.",
   },
-
-  // ---- Travel Grant Program ----
   {
     question: "Is there a travel grant to help me get to Austin?",
     answer:
-      "Yes. We believe cost shouldn't determine who can attend UBC. Eligible students traveling to Austin can be reimbursed for travel and lodging through the UBC Travel Grant Program. Maximum grants are $250 if you're traveling from within the US, Canada, or Mexico, and $500 if you're traveling from outside those countries.\n\nGrants are not competitive — any student who applies by the deadline and meets the eligibility requirements may receive reimbursement, up to their grant maximum and documented eligible expenses.",
-    link: { href: TRAVEL_GRANT_DOC, label: "Read the full Travel Grant Program details" },
+      "Yes. We believe cost shouldn't determine who can attend UBC. Eligible students can be reimbursed for travel and lodging — up to $250 traveling from within the US, Canada, or Mexico, and up to $500 from outside those countries. Competing in the hackathon or research competition raises your cap, and referring students who attend adds to it on top.\n\nGrants are not competitive: any student who applies by the deadline and meets the requirements may receive reimbursement.",
+    link: { href: TRAVEL_GRANT_DOC, label: "Full Travel Grant Program details" },
   },
   {
-    question: "How is my travel grant amount calculated?",
+    question: "Will I receive the full grant amount I qualify for?",
     answer:
-      "Grants are sized on where you're traveling from and whether you compete. Checking in is worth $150 for both tiers. Submitting a qualifying entry to the research competition or hackathon adds $100 domestic or $350 international — bringing the maximums to $250 and $500 respectively.\n\nYou receive the lesser of your documented eligible expenses or your maximum grant. For example, if you qualify for a $250 maximum but only have $180 in eligible expenses, you'll receive $180.",
-    link: { href: TRAVEL_GRANT_DOC, label: "See the full grant tier breakdown" },
+      "Not necessarily — those are maximums, not payouts. After the conference you'll submit documentation of your eligible travel and lodging expenses, and you'll receive the lesser of your documented expenses or your maximum grant. If you qualify for $250 but have $180 in eligible expenses, you'll receive $180.\n\nFlights, trains, buses, lodging, and gas count. Food, local rides within Austin, and other personal expenses do not.",
+    link: { href: TRAVEL_GRANT_DOC, label: "See tiers and eligible expenses" },
   },
   {
-    question: "How do I apply, and when is the deadline?",
+    question: "How do I apply for a travel grant?",
     answer:
-      "You must purchase a student ticket via Luma and submit the Travel Grant Application by November 13, 2026. The registration and referral window closes that day — students can still register for UBC afterward, but won't be eligible for a travel grant or count toward referral rewards.\n\nAfter the conference, applicants receive a separate reimbursement form to submit documentation such as flight itineraries and lodging receipts. That form is due December 12, 2026, and grants are paid within 60 days of the conference (by January 21, 2027).",
-    link: { href: TRAVEL_GRANT_DOC, label: "Travel Grant Program application details" },
+      "Purchase a student ticket via Luma and submit the Travel Grant Application by November 13, 2026 — that's when the application and referral window closes. You must also check in on-site on Day 1 or Day 2.\n\nAfterward you'll get a reimbursement form for your receipts, due December 12, 2026. Grants are paid in USDC to the Solana wallet address you provide, within 60 days of the conference.",
+    link: { href: TRAVEL_GRANT_DOC, label: "Eligibility, referrals, and fine print" },
   },
-  {
-    question: "Which expenses can I be reimbursed for?",
-    answer:
-      "Eligible: flights, train or bus tickets, hotels or other paid lodging, and gas if you drive to Austin.\n\nNot eligible: food and meals, Ubers, Lyfts, taxis or other local transportation within Austin (including trips to and from the airport), entertainment, and other personal or miscellaneous expenses.",
-  },
-  {
-    question: "Can I drive to UBC instead of flying?",
-    answer:
-      "Yes. Grants are based on where you're traveling from, not how you get here. If you're driving to Austin from another part of the US, you qualify for the domestic tier and can submit your gas expenses on the reimbursement form. Students traveling from within the Austin metro area — UT Austin students, for example — are not eligible for a travel grant.",
-  },
-  {
-    question: "I'm an international student at a US university. Which tier am I?",
-    answer:
-      "Whichever one matches your trip itinerary. If you're flying to Austin from your US campus, you're domestic. If you're flying in from outside the US, Canada, or Mexico, you're international. Students who can't verify travel from outside those countries are still eligible for the domestic grant.",
-  },
-  {
-    question: "How do referral rewards work?",
-    answer:
-      "Refer students who ultimately attend and you earn on top of your existing grant cap: $25 for 3–5 referrals, $50 for 6–9, $100 for 10 or more, and $350 for the top referrer.\n\nA qualified referral means the person registers and names you on the Luma form, is a currently enrolled student with a valid university email, checks in on-site at UBC 2026, and lists only your name as referrer — and you check in on-site too. Rewards are incremental to your travel grant cap, so they're only paid out if you have eligible expenses to cover on top of your base grant. Being referred does not reduce anyone's own grant.",
-    link: { href: TRAVEL_GRANT_DOC, label: "Full referral rules and fine print" },
-  },
-  {
-    question: "Can I enter both the research competition and the hackathon?",
-    answer:
-      "Of course. You only need to participate in one to reach the maximum grant tier, but you're highly encouraged to enter as many competitions as you're interested in.",
-  },
-  {
-    question: "How are grants and rewards paid out?",
-    answer:
-      "Travel grants and referral rewards are denominated in USD and paid in USDC to the Solana wallet address you submit. You must check in on-site on Day 1 or Day 2 to verify attendance.",
-  },
-  {
-    question: "What if I still can't afford to get there, even with the grant?",
-    answer:
-      "Email us at uniblockchainconferences@gmail.com. Our goal is to make UBC accessible to everyone regardless of financial background, and we hope the travel grant program helps as many students as possible join us.",
-  },
-
   {
     question: "Where can I find more information about UBC?",
     answer:

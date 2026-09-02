@@ -57,6 +57,34 @@ function SpeakerCard({ s }: { s: Speaker }) {
   return inner;
 }
 
+/** Trailing tile signalling the lineup isn't final. placeholder.png is a white
+ *  silhouette on transparency, so it sits on the same dark card as a real photo. */
+function MoreSpeakersCard() {
+  return (
+    <article className="relative overflow-hidden rounded-2xl bg-[#2C3B4B]">
+      <div className="relative aspect-[3/4] overflow-hidden">
+        <Image
+          src="/speakers/placeholder.png"
+          alt=""
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-cover opacity-25 scale-[0.78] -translate-y-[8%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#EC8644]" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-white font-bold text-base sm:text-lg leading-tight font-[var(--font-zuume)] tracking-tight">
+            &hellip; and more!
+          </h3>
+          <p className="text-white/55 text-xs mt-0.5 line-clamp-1 font-medium">
+            Full 2026 lineup announced soon
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function Speakers() {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +94,7 @@ export default function Speakers() {
       .then((data) => {
         const all = (data ?? []) as Speaker[];
         const featured = all.filter((s) => s.featured);
-        setSpeakers(featured.length >= 3 ? featured.slice(0, 8) : all.slice(0, 8));
+        setSpeakers(featured.length >= 3 ? featured.slice(0, 11) : all.slice(0, 11));
       })
       .catch(() => setSpeakers([]))
       .finally(() => setLoading(false));
@@ -104,6 +132,7 @@ export default function Speakers() {
             {speakers.map((s) => (
               <SpeakerCard key={s.id} s={s} />
             ))}
+            <MoreSpeakersCard />
           </div>
         )}
 
