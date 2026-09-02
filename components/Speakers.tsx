@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getSpeakers } from "@/lib/api/speakers";
 
@@ -104,7 +103,7 @@ export default function Speakers() {
     <section id="speakers" className="bg-[#F4F3EF] py-16 sm:py-24">
       <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
         {/* Header */}
-        <div className="flex items-end justify-between mb-12">
+        <div className="mb-12">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="block w-6 h-[2px] bg-[#EC8644]" />
@@ -135,16 +134,6 @@ export default function Speakers() {
             <MoreSpeakersCard />
           </div>
         )}
-
-        {/* Mobile link */}
-        <div className="mt-8 sm:hidden">
-          <Link
-            href="/programs"
-            className="text-[#9CADB7] hover:text-[#293C4B] text-sm font-medium transition-colors"
-          >
-            See all programs →
-          </Link>
-        </div>
       </div>
     </section>
   );

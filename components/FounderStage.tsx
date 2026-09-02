@@ -148,6 +148,7 @@ function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?:
 export default function FounderStage() {
   return (
     <div className="bg-[#F4F3EF] overflow-x-hidden">
+
       {/* ---------- Hero ---------- */}
       <section className="relative bg-[#1A2A36] overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -252,7 +253,7 @@ export default function FounderStage() {
             </h2>
           </Reveal>
 
-          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-start">
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-stretch">
             <Reveal i={1}>
               <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5">
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed">
@@ -270,8 +271,9 @@ export default function FounderStage() {
               </div>
             </Reveal>
 
-            <Reveal i={2}>
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+            <Reveal i={2} className="lg:h-full">
+              {/* Keeps a ratio while stacked; matches the text column's height at lg. */}
+              <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full rounded-3xl overflow-hidden">
                 <Image
                   src="/HIFVvbZXQAAq6Q1.jpeg"
                   alt="University Blockchain Conference"
@@ -282,6 +284,114 @@ export default function FounderStage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A36]/60 to-transparent" />
               </div>
             </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Who takes the stage ---------- */}
+      <section className="pb-16 sm:pb-24">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <Reveal>
+            <Eyebrow>Who takes the stage</Eyebrow>
+            <h2
+              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-4"
+              style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
+            >
+              You take the stage
+            </h2>
+            <p className="text-[#5A6B78] text-[15px] leading-relaxed mb-12 max-w-2xl">
+              We&rsquo;ll pick around 20 founders to present at UBC 2026. This demo day is not
+              crypto-specific. We want founders building anywhere in frontier tech: crypto, AI,
+              hard tech, and whatever comes next.
+            </p>
+          </Reveal>
+
+          {/* Gate: are you eligible at all */}
+          <Reveal>
+            <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight mb-1">
+              First, the bar
+            </h3>
+            <p className="text-[#9CADB7] text-sm mb-6 max-w-2xl">
+              Three things we check on every application.
+            </p>
+          </Reveal>
+          <div className="grid sm:grid-cols-3 gap-4 mb-16">
+            {CRITERIA.map((c, i) => (
+              <Reveal key={c.title} i={i}>
+                <div className="h-full bg-white rounded-2xl p-7 sm:p-8">
+                  <div className="w-11 h-11 rounded-full bg-[#EC8644]/10 flex items-center justify-center mb-5">
+                    <c.Icon size={19} className="text-[#EC8644]" />
+                  </div>
+                  <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight mb-2">
+                    {c.title}
+                  </h3>
+                  <p className="text-[#5A6B78] text-sm leading-relaxed">{c.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Then: which track, and why there are two */}
+          <Reveal>
+            <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight mb-1">
+              Then, pick your track
+            </h3>
+            <p className="text-[#5A6B78] text-[15px] leading-relaxed mb-6 max-w-2xl">
+              A founder six months from their first check and one coming off a seed round need
+              different things from a demo day, and it isn&rsquo;t fair to judge them against each
+              other. So we run two tracks and review them separately. Apply to the one that matches
+              where you are today.
+            </p>
+          </Reveal>
+          <div className="grid md:grid-cols-2 gap-4">
+            {TRACKS.map((t, i) => (
+              <Reveal key={t.title} i={i}>
+                <div className="group h-full bg-white rounded-3xl p-8 sm:p-10 border border-transparent hover:border-[#EC8644]/35 transition-colors">
+                  <div className="flex items-baseline gap-4 mb-4">
+                    <span
+                      className="font-[var(--font-zuume)] font-black text-[#EC8644]/20 leading-none group-hover:text-[#EC8644]/40 transition-colors"
+                      style={{ fontSize: "clamp(42px, 5vw, 64px)" }}
+                    >
+                      {t.n}
+                    </span>
+                    <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight">
+                      {t.title}
+                    </h3>
+                  </div>
+                  <p className="text-[#5A6B78] text-[15px] leading-relaxed">{t.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- What you get ---------- */}
+      <section className="pb-16 sm:pb-24">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <Reveal>
+            <Eyebrow>What you get</Eyebrow>
+            <h2
+              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-10"
+              style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
+            >
+              What&rsquo;s on the table
+            </h2>
+          </Reveal>
+          <div className="border-t border-[#293C4B]/10">
+            {BENEFITS.map((b, i) => (
+              <Reveal key={b.n} i={i}>
+                <div className="group flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-8 py-6 sm:py-7 border-b border-[#293C4B]/10 hover:bg-white/60 transition-colors sm:px-2">
+                  <span className="text-[#EC8644] font-[var(--font-zuume)] font-black text-base w-8 shrink-0">
+                    {b.n}
+                  </span>
+                  <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight sm:w-80 shrink-0">
+                    {b.title}
+                  </h3>
+                  <p className="text-[#5A6B78] text-[15px] leading-relaxed">{b.body}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -352,101 +462,6 @@ export default function FounderStage() {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* ---------- Tracks ---------- */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>Who takes the stage</Eyebrow>
-            <h2
-              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-4"
-              style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
-            >
-              You take the stage
-            </h2>
-            <p className="text-[#9CADB7] text-sm mb-10 max-w-2xl">
-              We&rsquo;ll pick around 20 founders across two tracks. This demo day is not
-              crypto-specific. We want founders building anywhere in frontier tech: crypto, AI,
-              hard tech, and whatever comes next.
-            </p>
-          </Reveal>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {TRACKS.map((t, i) => (
-              <Reveal key={t.title} i={i}>
-                <div className="group h-full bg-white rounded-3xl p-8 sm:p-10 border border-transparent hover:border-[#EC8644]/35 transition-colors">
-                  <div className="flex items-baseline gap-4 mb-4">
-                    <span
-                      className="font-[var(--font-zuume)] font-black text-[#EC8644]/20 leading-none group-hover:text-[#EC8644]/40 transition-colors"
-                      style={{ fontSize: "clamp(42px, 5vw, 64px)" }}
-                    >
-                      {t.n}
-                    </span>
-                    <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight">
-                      {t.title}
-                    </h3>
-                  </div>
-                  <p className="text-[#5A6B78] text-[15px] leading-relaxed">{t.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- Who should apply ---------- */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>Who should apply</Eyebrow>
-          </Reveal>
-          <div className="grid sm:grid-cols-3 gap-4 mt-6">
-            {CRITERIA.map((c, i) => (
-              <Reveal key={c.title} i={i}>
-                <div className="h-full bg-white rounded-2xl p-7 sm:p-8">
-                  <div className="w-11 h-11 rounded-full bg-[#EC8644]/10 flex items-center justify-center mb-5">
-                    <c.Icon size={19} className="text-[#EC8644]" />
-                  </div>
-                  <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight mb-2">
-                    {c.title}
-                  </h3>
-                  <p className="text-[#5A6B78] text-sm leading-relaxed">{c.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- What you get ---------- */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>What you get</Eyebrow>
-            <h2
-              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-10"
-              style={{ fontSize: "clamp(34px, 5.2vw, 68px)" }}
-            >
-              What&rsquo;s on the table
-            </h2>
-          </Reveal>
-          <div className="border-t border-[#293C4B]/10">
-            {BENEFITS.map((b, i) => (
-              <Reveal key={b.n} i={i}>
-                <div className="group flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-8 py-6 sm:py-7 border-b border-[#293C4B]/10 hover:bg-white/60 transition-colors sm:px-2">
-                  <span className="text-[#EC8644] font-[var(--font-zuume)] font-black text-base w-8 shrink-0">
-                    {b.n}
-                  </span>
-                  <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight sm:w-80 shrink-0">
-                    {b.title}
-                  </h3>
-                  <p className="text-[#5A6B78] text-[15px] leading-relaxed">{b.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
