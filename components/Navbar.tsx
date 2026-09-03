@@ -42,8 +42,11 @@ const linkClass =
 const itemClass =
   "block whitespace-nowrap px-3.5 py-2.5 rounded-xl text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/65 hover:text-white hover:bg-white/[0.07] transition-colors";
 
-/** Desktop dropdown. Opens on hover and on keyboard focus; the panel is padded
- *  above so the cursor can cross the gap without the menu closing.
+/** Desktop dropdown. Opens on hover and on keyboard focus.
+ *
+ *  The trigger's wrapper is the full height of the header row, so `top-full`
+ *  puts the panel flush against the bar's bottom edge in both nav states, with
+ *  nothing to cross on the way down.
  *
  *  The panel takes on the header's own material: frosted glass while the nav is
  *  transparent over the hero, and the solid pill surface once the nav condenses,
@@ -61,7 +64,7 @@ function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolea
 
   return (
     <div
-      className="relative"
+      className="relative flex h-14 items-center"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}
@@ -86,14 +89,12 @@ function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolea
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: "top right" }}
-            // The bridge padding also has to clear the condensed pill, whose
-            // bottom edge sits well below the trigger's own box.
-            className={`absolute right-0 top-full ${scrolled ? "pt-7" : "pt-3.5"}`}
+            className="absolute right-0 top-full"
           >
             <div
               className={`relative min-w-[190px] overflow-hidden rounded-2xl border p-1.5 shadow-[0_22px_50px_-24px_rgba(26,42,54,0.75)] ${panelClass}`}
