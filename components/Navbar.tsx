@@ -2,23 +2,111 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-const navLinks = [
-  { href: "/#about", label: "About", disabled: false },
-  { href: "/#speakers", label: "Speakers", disabled: false },
-  { href: "/#sponsors", label: "Sponsors", disabled: false },
-  { href: "/programs", label: "Programs", disabled: false },
-  { href: "/#faq", label: "FAQ", disabled: false },
+type NavItem = {
+  href: string;
+  label: string;
+  disabled?: boolean;
+  external?: boolean;
+};
+
+type NavEntry = NavItem & { children?: NavItem[] };
+
+const navLinks: NavEntry[] = [
+  { href: "/#about", label: "About" },
+  { href: "/#speakers", label: "Speakers" },
+  { href: "/#sponsors", label: "Sponsors" },
+  { href: "/programs", label: "Programs" },
+  {
+    href: "#",
+    label: "Resources",
+    children: [
+      { href: "/#faq", label: "FAQ" },
+      { href: "https://badge.universityblockchain.org", label: "Badge", external: true },
+    ],
+  },
 ];
+
+const linkClass =
+  "text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] text-white/60";
+
+/** Desktop dropdown. Opens on hover and on keyboard focus; the panel is padded
+ *  above so the cursor can cross the gap without the menu closing. */
+function ResourcesMenu({ items }: { items: NavItem[] }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen((v) => !v)}
+        className={`${linkClass} flex items-center gap-1.5 ${open ? "text-[#EC8644]" : ""}`}
+      >
+        Resources
+        <ChevronDown
+          size={14}
+          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-1/2 -translate-x-1/2 top-full pt-4"
+          >
+            <div className="min-w-[160px] rounded-xl bg-[#1A2A36] border border-white/10 shadow-xl shadow-black/40 p-1.5">
+              {items.map(({ href, label, external }) =>
+                external ? (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    key={label}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                  >
+                    {label}
+                  </Link>
+                )
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const [mobileGroup, setMobileGroup] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -35,8 +123,10 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  // Pill is always dark-on-dark; only invert when neither scrolled nor in open state
-  const isDark = true;
+  // Collapse any expanded group once the overlay closes
+  useEffect(() => {
+    if (!open) setMobileGroup(null);
+  }, [open]);
 
   return (
     <>
@@ -62,38 +152,22 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map(({ href, label, disabled }) =>
-              disabled ? (
+            {navLinks.map(({ href, label, disabled, children }) =>
+              children ? (
+                <ResourcesMenu key={label} items={children} />
+              ) : disabled ? (
                 <span
                   key={label}
-                  className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase select-none ${
-                    isDark ? "text-white/25" : "text-[#293C4B]/25"
-                  }`}
+                  className="text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase select-none text-white/25"
                 >
                   {label}
                 </span>
               ) : (
-                <Link
-                  key={label}
-                  href={href}
-                  className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] ${
-                    isDark ? "text-white/60" : "text-[#293C4B]/50"
-                  }`}
-                >
+                <Link key={label} href={href} className={linkClass}>
                   {label}
                 </Link>
               )
             )}
-            <a
-              href="https://badge.universityblockchain.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] ${
-                isDark ? "text-white/60" : "text-[#293C4B]/50"
-              }`}
-            >
-              Badge
-            </a>
           </nav>
 
           {/* CTA + hamburger */}
@@ -108,9 +182,7 @@ export default function Navbar() {
             </a>
             <button
               onClick={() => setOpen(true)}
-              className={`md:hidden p-1 transition-colors ${
-                isDark ? "text-white" : "text-[#293C4B]"
-              }`}
+              className="md:hidden p-1 text-white transition-colors"
               aria-label="Open menu"
             >
               <Menu size={24} />
@@ -130,7 +202,7 @@ export default function Navbar() {
             className="fixed inset-0 z-50 bg-[#1A2A36] flex flex-col"
           >
             {/* Close button */}
-            <div className="flex justify-between items-center px-6 h-16">
+            <div className="flex justify-between items-center px-6 h-16 shrink-0">
               <Image
                 src="/navlogo.png"
                 alt="UBC Logo"
@@ -148,15 +220,75 @@ export default function Navbar() {
             </div>
 
             {/* Links */}
-            <nav className="flex-1 flex flex-col items-center justify-center gap-2">
-              {navLinks.map(({ href, label, disabled }, i) => (
+            <nav className="flex-1 overflow-y-auto flex flex-col items-center justify-center gap-2 py-8">
+              {navLinks.map(({ href, label, disabled, children }, i) => (
                 <motion.div
                   key={label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col items-center"
                 >
-                  {disabled ? (
+                  {children ? (
+                    <>
+                      <button
+                        type="button"
+                        aria-expanded={mobileGroup === label}
+                        onClick={() =>
+                          setMobileGroup((g) => (g === label ? null : label))
+                        }
+                        className={`flex items-center gap-3 text-5xl font-black font-[var(--font-zuume)] transition-colors tracking-tight py-2 ${
+                          mobileGroup === label ? "text-[#EC8644]" : "text-white/80"
+                        }`}
+                      >
+                        {label.toUpperCase()}
+                        <ChevronDown
+                          size={28}
+                          strokeWidth={3}
+                          className={`transition-transform duration-200 ${
+                            mobileGroup === label ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {mobileGroup === label && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                            className="overflow-hidden w-full"
+                          >
+                            <div className="flex flex-col items-center gap-1 pt-1 pb-2">
+                              {children.map((child) =>
+                                child.external ? (
+                                  <a
+                                    key={child.label}
+                                    href={child.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setOpen(false)}
+                                    className="block text-2xl font-black font-[var(--font-zuume)] text-white/50 hover:text-[#EC8644] transition-colors tracking-tight py-1.5"
+                                  >
+                                    {child.label.toUpperCase()}
+                                  </a>
+                                ) : (
+                                  <Link
+                                    key={child.label}
+                                    href={child.href}
+                                    onClick={() => setOpen(false)}
+                                    className="block text-2xl font-black font-[var(--font-zuume)] text-white/50 hover:text-[#EC8644] transition-colors tracking-tight py-1.5"
+                                  >
+                                    {child.label.toUpperCase()}
+                                  </Link>
+                                )
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : disabled ? (
                     <span className="block text-5xl font-black font-[var(--font-zuume)] text-white/25 select-none tracking-tight py-2">
                       {label.toUpperCase()}
                     </span>
@@ -171,21 +303,6 @@ export default function Navbar() {
                   )}
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.07, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <a
-                  href="https://badge.universityblockchain.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="block text-5xl font-black font-[var(--font-zuume)] text-white/80 hover:text-[#EC8644] transition-colors tracking-tight py-2"
-                >
-                  BADGE
-                </a>
-              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -205,7 +322,7 @@ export default function Navbar() {
             </nav>
 
             {/* Bottom info */}
-            <div className="px-6 pb-8 text-center">
+            <div className="px-6 pb-8 text-center shrink-0">
               <p className="text-white/30 text-xs tracking-widest uppercase">
                 Nov 20–21, 2026 · UT Austin, TX
               </p>
