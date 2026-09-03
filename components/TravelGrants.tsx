@@ -7,7 +7,6 @@ import {
   FileText,
   Check,
   X,
-  Plane,
   Users,
   Wallet,
 } from "lucide-react";
@@ -498,22 +497,18 @@ export default function TravelGrants() {
             </div>
           </Reveal>
 
-          {/* Tier definitions */}
-          <div className="grid sm:grid-cols-2 gap-4 mt-4">
-            {TIERS.map((t, i) => (
-              <Reveal key={t.label} i={i}>
-                <div className="h-full bg-white rounded-2xl p-6 sm:p-7">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <Plane size={16} className="text-[#EC8644]" />
-                    <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase">
-                      {t.label}
-                    </p>
-                  </div>
-                  <p className="text-[#293C4B] text-sm leading-relaxed">{t.blurb}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* Tier definitions, as footnotes to the table above. */}
+          <Reveal i={2}>
+            <div className="mt-5 space-y-1.5">
+              {TIERS.map((t) => (
+                <p key={t.label} className="text-[#9CADB7] text-[13px] leading-relaxed">
+                  <span className="text-[#5A6B78] font-semibold">{t.label}</span>
+                  {" \u00b7 "}
+                  {t.blurb}
+                </p>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
