@@ -1,4 +1,11 @@
-@import "tailwindcss";
+/* Scan only the source directories. Auto-detection walks the whole project,
+   including public/, where a stray binary (a .zip, a partial .crdownload)
+   gets read as text and emits garbage utilities that break the CSS parse. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
+@source "../data";
+@source "../lib";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));

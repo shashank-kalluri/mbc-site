@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   ArrowUpRight,
   FileText,
@@ -9,7 +10,6 @@ import {
   Plane,
   Users,
   Wallet,
-  CalendarClock,
 } from "lucide-react";
 import FAQ from "@/components/FAQ";
 
@@ -20,6 +20,9 @@ const APPLY_URL =
 const PROGRAM_DOC =
   "https://docs.google.com/document/d/1CSF9Ke9l7cx5l7_44koVhXQcmsfsX4uq_rHFrDxuVZE/edit?usp=sharing";
 const TICKETS_URL = "https://luma.com/n4ad0k9m";
+/** Last year's room, and the students who filled it. */
+const HERO_IMAGE = "/G8EWzYPWAAMYuWb.jpeg";
+const REFERRAL_IMAGE = "/HIFVwUtWsAAx6RQ.jpeg";
 const CONTACT = "mailto:uniblockchainconferences@gmail.com?subject=UBC%202026%20Travel%20Grant";
 
 const TIERS = [
@@ -266,13 +269,29 @@ export default function TravelGrants() {
     <div className="bg-[#F4F3EF] overflow-x-hidden">
       {/* ---------- Hero ---------- */}
       <section className="relative bg-[#1A2A36] overflow-hidden">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 80% at 80% 10%, rgba(236,134,68,0.20) 0%, rgba(236,134,68,0) 70%)",
-          }}
-        />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={HERO_IMAGE}
+            alt=""
+            fill
+            priority
+            className="object-cover object-center opacity-40"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(26,42,54,0.78) 0%, rgba(26,42,54,0.84) 45%, rgba(26,42,54,0.97) 85%, #1A2A36 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 80% at 80% 10%, rgba(236,134,68,0.22) 0%, rgba(236,134,68,0) 70%)",
+            }}
+          />
+        </div>
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 pt-32 pb-14 sm:pt-44 sm:pb-20">
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-end">
             <div>
@@ -365,10 +384,10 @@ export default function TravelGrants() {
               {TIERS.map((t) => (
                 <div
                   key={t.label}
-                  className={`rounded-2xl p-5 sm:p-6 border ${
+                  className={`rounded-2xl p-5 sm:p-6 border backdrop-blur-md ${
                     t.highlight
-                      ? "bg-[#EC8644]/10 border-[#EC8644]/30"
-                      : "bg-white/5 border-white/10"
+                      ? "bg-[#EC8644]/[0.14] border-[#EC8644]/35"
+                      : "bg-white/[0.07] border-white/15"
                   }`}
                 >
                   <p className="text-white/40 text-[11px] font-medium tracking-[0.18em] uppercase">
@@ -575,29 +594,32 @@ export default function TravelGrants() {
             <Eyebrow>How to apply</Eyebrow>
             <SectionTitle>Four steps</SectionTitle>
           </Reveal>
-          <div className="mt-8 border-t border-[#293C4B]/10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
             {STEPS.map((s, i) => (
               <Reveal key={s.n} i={i}>
-                <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-8 py-6 sm:py-7 border-b border-[#293C4B]/10 hover:bg-white/60 transition-colors sm:px-2">
-                  <span className="text-[#EC8644] font-[var(--font-zuume)] font-black text-base w-8 shrink-0">
+                <div className="group relative h-full overflow-hidden bg-white rounded-2xl p-7 pt-8">
+                  {/* Watermark numeral: structure without another line of text. */}
+                  <span
+                    className="pointer-events-none absolute -top-3 right-3 font-[var(--font-zuume)] font-black leading-none text-[#293C4B]/[0.06] select-none"
+                    style={{ fontSize: "96px" }}
+                  >
                     {s.n}
                   </span>
-                  <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight sm:w-72 shrink-0">
+                  <span className="block w-8 h-[3px] bg-[#EC8644] mb-5 transition-all duration-300 group-hover:w-12" />
+                  <h3 className="relative font-[var(--font-zuume)] font-black text-[#293C4B] text-xl tracking-tight leading-tight">
                     {s.title}
                   </h3>
-                  <div>
-                    <p className="text-[#5A6B78] text-[15px] leading-relaxed">{s.body}</p>
-                    {s.link && (
-                      <a
-                        href={s.link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 mt-2 text-[#EC8644] text-sm font-medium hover:underline"
-                      >
-                        {s.link.label} <ArrowUpRight size={15} />
-                      </a>
-                    )}
-                  </div>
+                  <p className="relative text-[#5A6B78] text-[14px] leading-relaxed mt-3">{s.body}</p>
+                  {s.link && (
+                    <a
+                      href={s.link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative inline-flex items-center gap-1 mt-3 text-[#EC8644] text-sm font-medium hover:underline"
+                    >
+                      {s.link.label} <ArrowUpRight size={15} />
+                    </a>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -619,65 +641,80 @@ export default function TravelGrants() {
       <section className="pb-16 sm:pb-24">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <Reveal>
-            <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-14">
-              <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-                <div>
-                  <Eyebrow>Referrals</Eyebrow>
-                  <SectionTitle>Bring your friends, raise your cap</SectionTitle>
-                  <p className="text-[#5A6B78] text-base leading-relaxed mt-5">
-                    Referral rewards stack on top of your existing maximum. If you qualify for $250
-                    and refer four people, you can be reimbursed up to $275.
-                  </p>
+            <div className="relative overflow-hidden rounded-3xl bg-[#1A2A36]">
+              <Image
+                src={REFERRAL_IMAGE}
+                alt=""
+                fill
+                sizes="100vw"
+                className="object-cover object-center opacity-[0.22]"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(115deg, rgba(26,42,54,0.97) 0%, rgba(26,42,54,0.9) 45%, rgba(26,42,54,0.72) 100%)",
+                }}
+              />
+              <div className="relative p-8 sm:p-12 lg:p-14">
+                <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+                  <div>
+                    <Eyebrow>Referrals</Eyebrow>
+                    <h2
+                      className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95]"
+                      style={{ fontSize: "clamp(30px, 4vw, 52px)" }}
+                    >
+                      Bring your friends, raise your cap
+                    </h2>
+                    <p className="text-white/55 text-base leading-relaxed mt-5">
+                      Referral rewards stack on top of your existing maximum. If you qualify for
+                      $250 and refer four people, you can be reimbursed up to $275.
+                    </p>
 
-                  <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-9 mb-4">
-                    A qualified referral
-                  </p>
-                  <ul className="space-y-3">
-                    {REFERRAL_RULES.map((r) => (
-                      <li key={r} className="flex items-start gap-3">
-                        <Check size={16} className="text-[#EC8644] mt-0.5 shrink-0" />
-                        <span className="text-[#293C4B] text-sm leading-relaxed">{r}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase mt-9 mb-4">
+                      A qualified referral
+                    </p>
+                    <ul className="space-y-3">
+                      {REFERRAL_RULES.map((r) => (
+                        <li key={r} className="flex items-start gap-3">
+                          <Check size={16} className="text-[#EC8644] mt-0.5 shrink-0" />
+                          <span className="text-white/75 text-sm leading-relaxed">{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                <div className="lg:pt-2">
-                  <div className="flex items-center gap-2.5 mb-5">
-                    <Users size={16} className="text-[#EC8644]" />
-                    <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase">
-                      Rewards
+                  <div className="lg:pt-2">
+                    <div className="flex items-center gap-2.5 mb-5">
+                      <Users size={16} className="text-[#EC8644]" />
+                      <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase">
+                        Rewards
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 overflow-hidden backdrop-blur-sm">
+                      {REFERRAL_REWARDS.map((r, i) => (
+                        <div
+                          key={r.count}
+                          className={`flex items-center justify-between gap-4 px-5 sm:px-7 py-5 ${
+                            i > 0 ? "border-t border-white/10" : ""
+                          } ${r.highlight ? "bg-[#EC8644]/[0.14]" : "bg-white/[0.06]"}`}
+                        >
+                          <span className="text-white/80 text-sm font-semibold">{r.count}</span>
+                          <span
+                            className={`font-[var(--font-zuume)] font-black text-2xl sm:text-3xl tracking-tight ${
+                              r.highlight ? "text-[#EC8644]" : "text-white"
+                            }`}
+                          >
+                            {r.reward}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-white/35 text-xs leading-relaxed mt-4">
+                      Rewards are paid only against eligible expenses on top of your base grant, and
+                      the referral window closes November 13, 2026.
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-[#293C4B]/10 overflow-hidden">
-                    {REFERRAL_REWARDS.map((r, i) => (
-                      <div
-                        key={r.count}
-                        className={`flex items-center justify-between gap-4 px-5 sm:px-7 py-5 ${
-                          i > 0 ? "border-t border-[#293C4B]/10" : ""
-                        } ${r.highlight ? "bg-[#293C4B]" : "bg-[#F4F3EF]"}`}
-                      >
-                        <span
-                          className={`text-sm font-semibold ${
-                            r.highlight ? "text-white" : "text-[#293C4B]"
-                          }`}
-                        >
-                          {r.count}
-                        </span>
-                        <span
-                          className={`font-[var(--font-zuume)] font-black text-2xl sm:text-3xl tracking-tight ${
-                            r.highlight ? "text-[#EC8644]" : "text-[#293C4B]"
-                          }`}
-                        >
-                          {r.reward}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-[#9CADB7] text-xs leading-relaxed mt-4">
-                    Rewards are paid only against eligible expenses on top of your base grant, and
-                    the referral window closes November 13, 2026.
-                  </p>
                 </div>
               </div>
             </div>
@@ -692,24 +729,39 @@ export default function TravelGrants() {
             <Eyebrow>Timeline</Eyebrow>
             <SectionTitle>Dates that matter</SectionTitle>
           </Reveal>
-          <div className="mt-8 border-t border-[#293C4B]/10">
+          <div className="relative mt-10 pl-7 sm:pl-9">
+            {/* Rail. It fades in from the first marker and out past the last. */}
+            <div
+              className="absolute left-[5px] sm:left-[7px] top-3 bottom-3 w-[2px] rounded-full"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(41,60,75,0) 0%, rgba(41,60,75,0.16) 8%, rgba(41,60,75,0.16) 92%, rgba(41,60,75,0) 100%)",
+              }}
+            />
             {TIMELINE.map((t, i) => (
               <Reveal key={t.event} i={Math.min(i, 4)}>
-                <div className="flex flex-col sm:flex-row sm:gap-8 gap-1 py-5 sm:py-6 border-b border-[#293C4B]/10 sm:px-2">
-                  <div className="sm:w-56 shrink-0 flex items-center gap-2.5">
-                    <CalendarClock
-                      size={15}
-                      className={t.key ? "text-[#EC8644]" : "text-[#9CADB7]"}
-                    />
-                    <span
-                      className={`text-sm font-semibold ${
-                        t.key ? "text-[#EC8644]" : "text-[#9CADB7]"
-                      }`}
-                    >
-                      {t.date}
-                    </span>
-                  </div>
-                  <p className="text-[#293C4B] text-[15px] leading-relaxed sm:pl-0 pl-[25px]">
+                {/* Each row is its own Reveal, so a `last:` variant would match
+                    every one of them. Index the final row instead. */}
+                <div className={`relative ${i === TIMELINE.length - 1 ? "pb-0" : "pb-10"}`}>
+                  <span
+                    className={`absolute top-[5px] rounded-full ${
+                      t.key
+                        ? "-left-7 sm:-left-9 w-4 h-4 bg-[#EC8644] ring-4 ring-[#EC8644]/15"
+                        : "-left-[26px] sm:-left-[34px] w-3 h-3 bg-[#F4F3EF] border-2 border-[#9CADB7]"
+                    }`}
+                  />
+                  <p
+                    className={`text-sm font-semibold ${
+                      t.key ? "text-[#EC8644]" : "text-[#9CADB7]"
+                    }`}
+                  >
+                    {t.date}
+                  </p>
+                  <p
+                    className={`text-[15px] leading-relaxed mt-1.5 max-w-2xl ${
+                      t.key ? "text-[#293C4B]" : "text-[#5A6B78]"
+                    }`}
+                  >
                     {t.event}
                   </p>
                 </div>
@@ -726,16 +778,21 @@ export default function TravelGrants() {
             <Eyebrow>Fine print</Eyebrow>
             <SectionTitle>Rules</SectionTitle>
           </Reveal>
-          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5 mt-8">
-            {RULES.map(([title, body], i) => (
-              <Reveal key={title} i={Math.min(i, 4)}>
-                <p className="text-[15px] leading-relaxed">
-                  <span className="text-[#293C4B] font-semibold">{title}</span>{" "}
-                  <span className="text-[#5A6B78]">{body}</span>
-                </p>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal>
+            <div className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 mt-10">
+              <div className="grid sm:grid-cols-2 gap-x-12 gap-y-7">
+                {RULES.map(([title, body]) => (
+                  <div key={title} className="flex gap-3.5">
+                    <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-[#EC8644] shrink-0" />
+                    <p className="text-[15px] leading-relaxed">
+                      <span className="text-[#293C4B] font-semibold">{title}</span>{" "}
+                      <span className="text-[#5A6B78]">{body}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
