@@ -94,7 +94,7 @@ const STEPS: { n: string; title: string; body: string; link?: { href: string; la
 ];
 
 const TIMELINE = [
-  { date: "TBA", event: "Registration and the Travel Grant Form go live" },
+  { date: "September 1, 2026", event: "Registration and the Travel Grant Form go live" },
   { date: "TBA", event: "Last day to register a hackathon team" },
   { date: "TBA", event: "Franklin Templeton Research Competition submissions close" },
   {

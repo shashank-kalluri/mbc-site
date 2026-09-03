@@ -20,12 +20,17 @@ const navLinks: NavEntry[] = [
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
   { href: "/programs", label: "Programs" },
+  { href: "/#faq", label: "FAQ" },
   {
     href: "#",
     label: "Resources",
     children: [
       { href: "/travel-grants", label: "Travel Grants" },
-      { href: "/#faq", label: "FAQ" },
+      {
+        href: "https://drive.google.com/drive/folders/1Nv_ch6OgDnempbADFcZhKxVgM8JyxCB_?usp=drive_link",
+        label: "Data Room",
+        external: true,
+      },
       { href: "https://badge.universityblockchain.org", label: "Badge", external: true },
     ],
   },
@@ -52,7 +57,7 @@ function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolea
   // while the nav itself has no surface of its own.
   const panelClass = scrolled
     ? "bg-[#1A2A36]/95 backdrop-blur-md border-white/10"
-    : "bg-[#293C4B]/88 backdrop-blur-xl border-white/12";
+    : "bg-[#293C4B]/30 backdrop-blur-2xl border-white/15";
 
   return (
     <div
@@ -85,8 +90,8 @@ function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolea
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.97 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformOrigin: "top center" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full pt-3.5"
+            style={{ transformOrigin: "top right" }}
+            className="absolute right-0 top-full pt-3.5"
           >
             <div
               className={`relative min-w-[190px] overflow-hidden rounded-2xl border p-1.5 shadow-[0_22px_50px_-24px_rgba(26,42,54,0.75)] ${panelClass}`}
