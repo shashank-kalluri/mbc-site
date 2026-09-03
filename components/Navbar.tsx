@@ -91,7 +91,9 @@ function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolea
             exit={{ opacity: 0, y: -8, scale: 0.97 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: "top right" }}
-            className="absolute right-0 top-full pt-3.5"
+            // The bridge padding also has to clear the condensed pill, whose
+            // bottom edge sits well below the trigger's own box.
+            className={`absolute right-0 top-full ${scrolled ? "pt-7" : "pt-3.5"}`}
           >
             <div
               className={`relative min-w-[190px] overflow-hidden rounded-2xl border p-1.5 shadow-[0_22px_50px_-24px_rgba(26,42,54,0.75)] ${panelClass}`}
@@ -264,15 +266,17 @@ export default function Navbar() {
                         onClick={() =>
                           setMobileGroup((g) => (g === label ? null : label))
                         }
-                        className={`flex items-center gap-3 text-5xl font-black font-[var(--font-zuume)] transition-colors tracking-tight py-2 ${
+                        className={`relative text-5xl font-black font-[var(--font-zuume)] transition-colors tracking-tight py-2 ${
                           mobileGroup === label ? "text-[#EC8644]" : "text-white/80"
                         }`}
                       >
                         {label.toUpperCase()}
+                        {/* Out of flow, so the label stays centred with the
+                            single-line items above it. */}
                         <ChevronDown
                           size={28}
                           strokeWidth={3}
-                          className={`transition-transform duration-200 ${
+                          className={`absolute left-full top-1/2 ml-3 -translate-y-1/2 transition-transform duration-200 ${
                             mobileGroup === label ? "rotate-180" : ""
                           }`}
                         />
