@@ -34,10 +34,25 @@ const navLinks: NavEntry[] = [
 const linkClass =
   "text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase transition-colors hover:text-[#EC8644] text-white/60";
 
+const itemClass =
+  "block whitespace-nowrap px-3.5 py-2.5 rounded-xl text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/65 hover:text-white hover:bg-white/[0.07] transition-colors";
+
 /** Desktop dropdown. Opens on hover and on keyboard focus; the panel is padded
- *  above so the cursor can cross the gap without the menu closing. */
-function ResourcesMenu({ items }: { items: NavItem[] }) {
+ *  above so the cursor can cross the gap without the menu closing.
+ *
+ *  The panel takes on the header's own material: frosted glass while the nav is
+ *  transparent over the hero, and the solid pill surface once the nav condenses,
+ *  so it never reads as a slab pasted over the page. */
+function ResourcesMenu({ items, scrolled }: { items: NavItem[]; scrolled: boolean }) {
   const [open, setOpen] = useState(false);
+
+  // The panel always overhangs onto the page, so it stays dark enough to carry
+  // white text over the cream background. What changes is its relationship to
+  // the header: the condensed pill's exact material, or a lighter navy glass
+  // while the nav itself has no surface of its own.
+  const panelClass = scrolled
+    ? "bg-[#1A2A36]/95 backdrop-blur-md border-white/10"
+    : "bg-[#293C4B]/88 backdrop-blur-xl border-white/12";
 
   return (
     <div
@@ -66,13 +81,19 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 -translate-x-1/2 top-full pt-4"
+            initial={{ opacity: 0, y: -8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformOrigin: "top center" }}
+            className="absolute left-1/2 -translate-x-1/2 top-full pt-3.5"
           >
-            <div className="min-w-[190px] rounded-xl bg-[#1A2A36] border border-white/10 shadow-xl shadow-black/40 p-1.5">
+            <div
+              className={`relative min-w-[190px] overflow-hidden rounded-2xl border p-1.5 shadow-[0_22px_50px_-24px_rgba(26,42,54,0.75)] ${panelClass}`}
+            >
+              {/* Soft top-edge highlight so the panel reads as a lit surface
+                  rather than a cut-out block. */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.07] to-transparent" />
               {items.map(({ href, label, external }) =>
                 external ? (
                   <a
@@ -81,7 +102,7 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="block whitespace-nowrap px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                    className={`relative ${itemClass}`}
                   >
                     {label}
                   </a>
@@ -90,7 +111,7 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
                     key={label}
                     href={href}
                     onClick={() => setOpen(false)}
-                    className="block whitespace-nowrap px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                    className={`relative ${itemClass}`}
                   >
                     {label}
                   </Link>
@@ -155,7 +176,7 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map(({ href, label, disabled, children }) =>
               children ? (
-                <ResourcesMenu key={label} items={children} />
+                <ResourcesMenu key={label} items={children} scrolled={scrolled} />
               ) : disabled ? (
                 <span
                   key={label}
