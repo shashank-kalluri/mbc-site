@@ -163,7 +163,7 @@ export default function Navbar() {
       <header
         className={`fixed z-40 transition-all duration-500 ${
           scrolled
-            ? "top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-4xl rounded-2xl bg-[#1A2A36]/95 backdrop-blur-md border border-white/10 shadow-xl shadow-black/30"
+            ? "top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-5xl rounded-2xl bg-[#1A2A36]/95 backdrop-blur-md border border-white/10 shadow-xl shadow-black/30"
             : "top-0 left-0 w-full bg-transparent"
         }`}
       >
@@ -181,7 +181,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map(({ href, label, disabled, children }) =>
               children ? (
                 <ResourcesMenu key={label} items={children} scrolled={scrolled} />
@@ -206,13 +206,13 @@ export default function Navbar() {
               href="https://luma.com/n4ad0k9m"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline-flex bg-[#EC8644] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#D4703A] transition-colors"
+              className="hidden lg:inline-flex bg-[#EC8644] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#D4703A] transition-colors"
             >
               Get Tickets
             </a>
             <button
               onClick={() => setOpen(true)}
-              className="md:hidden p-1 text-white transition-colors"
+              className="lg:hidden p-1 text-white transition-colors"
               aria-label="Open menu"
             >
               <Menu size={24} />

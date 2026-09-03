@@ -339,7 +339,7 @@ export default function TravelGrants() {
                   rel="noopener noreferrer"
                   className="shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
                 >
-                  Get a ticket
+                  Get tickets
                 </a>
               </motion.div>
 
