@@ -24,6 +24,7 @@ const navLinks: NavEntry[] = [
     href: "#",
     label: "Resources",
     children: [
+      { href: "/travel-grants", label: "Travel Grants" },
       { href: "/#faq", label: "FAQ" },
       { href: "https://badge.universityblockchain.org", label: "Badge", external: true },
     ],
@@ -71,7 +72,7 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="absolute left-1/2 -translate-x-1/2 top-full pt-4"
           >
-            <div className="min-w-[160px] rounded-xl bg-[#1A2A36] border border-white/10 shadow-xl shadow-black/40 p-1.5">
+            <div className="min-w-[190px] rounded-xl bg-[#1A2A36] border border-white/10 shadow-xl shadow-black/40 p-1.5">
               {items.map(({ href, label, external }) =>
                 external ? (
                   <a
@@ -80,7 +81,7 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="block px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                    className="block whitespace-nowrap px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
                   >
                     {label}
                   </a>
@@ -89,7 +90,7 @@ function ResourcesMenu({ items }: { items: NavItem[] }) {
                     key={label}
                     href={href}
                     onClick={() => setOpen(false)}
-                    className="block px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
+                    className="block whitespace-nowrap px-3 py-2 rounded-lg text-[13px] font-bold font-[var(--font-zuume)] tracking-[0.08em] uppercase text-white/70 hover:text-[#EC8644] hover:bg-white/5 transition-colors"
                   >
                     {label}
                   </Link>
