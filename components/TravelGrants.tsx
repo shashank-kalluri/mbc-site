@@ -19,9 +19,9 @@ const APPLY_URL =
 const PROGRAM_DOC =
   "https://docs.google.com/document/d/1CSF9Ke9l7cx5l7_44koVhXQcmsfsX4uq_rHFrDxuVZE/edit?usp=sharing";
 const TICKETS_URL = "https://luma.com/n4ad0k9m";
-/** UBC 2025. Arrival at the venue, and the hallway between sessions. */
-const HERO_IMAGE = "/photos/arrival.jpg";
-const REFERRAL_IMAGE = "/photos/networking.jpg";
+/** UBC 2025. The venue mid-conference, and four students in a full room. */
+const HERO_IMAGE = "/photos/atrium.jpg";
+const REFERRAL_IMAGE = "/photos/friends.jpg";
 const CONTACT = "mailto:uniblockchainconferences@gmail.com?subject=UBC%202026%20Travel%20Grant";
 
 const TIERS = [
@@ -642,13 +642,15 @@ export default function TravelGrants() {
                 alt=""
                 fill
                 sizes="100vw"
-                className="object-cover object-center opacity-[0.22]"
+                className="object-cover object-center opacity-[0.55]"
               />
+              {/* Heavy enough on the left to carry the headline, light on the
+                  right so the room behind it still reads. */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(115deg, rgba(26,42,54,0.97) 0%, rgba(26,42,54,0.9) 45%, rgba(26,42,54,0.72) 100%)",
+                    "linear-gradient(105deg, rgba(26,42,54,0.94) 0%, rgba(26,42,54,0.82) 42%, rgba(26,42,54,0.5) 100%)",
                 }}
               />
               <div className="relative p-8 sm:p-12 lg:p-14">
@@ -666,7 +668,7 @@ export default function TravelGrants() {
                       $250 and refer four people, you can be reimbursed up to $275.
                     </p>
 
-                    <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase mt-9 mb-4">
+                    <p className="text-white/50 text-[11px] font-medium tracking-[0.18em] uppercase mt-9 mb-4">
                       A qualified referral
                     </p>
                     <ul className="space-y-3">
@@ -686,13 +688,13 @@ export default function TravelGrants() {
                         Rewards
                       </p>
                     </div>
-                    <div className="rounded-2xl border border-white/10 overflow-hidden backdrop-blur-sm">
+                    <div className="rounded-2xl border border-white/15 overflow-hidden backdrop-blur-md">
                       {REFERRAL_REWARDS.map((r, i) => (
                         <div
                           key={r.count}
                           className={`flex items-center justify-between gap-4 px-5 sm:px-7 py-5 ${
                             i > 0 ? "border-t border-white/10" : ""
-                          } ${r.highlight ? "bg-[#EC8644]/[0.14]" : "bg-white/[0.06]"}`}
+                          } ${r.highlight ? "bg-[#EC8644]/25" : "bg-[#1A2A36]/55"}`}
                         >
                           <span className="text-white/80 text-sm font-semibold">{r.count}</span>
                           <span
@@ -705,7 +707,7 @@ export default function TravelGrants() {
                         </div>
                       ))}
                     </div>
-                    <p className="text-white/35 text-xs leading-relaxed mt-4">
+                    <p className="text-white/55 text-xs leading-relaxed mt-4">
                       Rewards are paid only against eligible expenses on top of your base grant, and
                       the referral window closes November 13, 2026.
                     </p>
