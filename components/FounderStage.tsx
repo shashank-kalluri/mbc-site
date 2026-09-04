@@ -22,7 +22,7 @@ const REFER_URL =
 const PROGRAM_DOC =
   "https://docs.google.com/document/d/1w_K86czLPHDXaNDyFLPB1o5SgVP8JKSP8wwuWMwG1IU/edit?usp=sharing";
 
-const HERO_IMAGE = "/G8VBLXpaUAAVJOe.jpeg";
+const HERO_IMAGE = "/photos/main-stage.jpg";
 
 const INVESTORS: { name: string; href?: string }[] = [
   { name: "Y Combinator", href: "https://www.ycombinator.com/" },
@@ -293,7 +293,7 @@ export default function FounderStage() {
             <Reveal i={1}>
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
                 <Image
-                  src="/HIFVvbZXQAAq6Q1.jpeg"
+                  src="/photos/panel.jpg"
                   alt="University Blockchain Conference"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"

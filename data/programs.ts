@@ -27,7 +27,7 @@ export const programs: ProgramMeta[] = [
     description:
       "Select founders under 25 present to accelerators, investors, mentors, and builders at UBC 2026 — with a shot at a non-dilutive grant from College.xyz.",
     detail: "Applications close Oct 25",
-    image: "/G8VBLXpaUAAVJOe.jpeg",
+    image: "/photos/keynote.jpg",
     status: "live",
   },
   {
@@ -37,7 +37,7 @@ export const programs: ProgramMeta[] = [
     description:
       "Ship something real over the course of UBC 2026 and compete for prizes from our partners.",
     detail: "Details coming soon",
-    image: "/G8EWzYPWAAMYuWb.jpeg",
+    image: "/photos/workspace.jpg",
     status: "coming-soon",
   },
   {
@@ -47,7 +47,7 @@ export const programs: ProgramMeta[] = [
     description:
       "Submit original research and present your findings to industry judges at UBC 2026.",
     detail: "Details coming soon",
-    image: "/HIFVvbZXQAAq6Q1.jpeg",
+    image: "/photos/research-talk.jpg",
     status: "coming-soon",
   },
 ];
