@@ -19,9 +19,9 @@ const APPLY_URL =
 const PROGRAM_DOC =
   "https://docs.google.com/document/d/1CSF9Ke9l7cx5l7_44koVhXQcmsfsX4uq_rHFrDxuVZE/edit?usp=sharing";
 const TICKETS_URL = "https://luma.com/n4ad0k9m";
-/** UBC 2025. The venue mid-conference, and four students in a full room. */
+/** UBC 2025. The venue mid-conference, and students trading contacts. */
 const HERO_IMAGE = "/photos/atrium.jpg";
-const REFERRAL_IMAGE = "/photos/friends.jpg";
+const REFERRAL_IMAGE = "/photos/swapping-contacts.jpg";
 const CONTACT = "mailto:uniblockchainconferences@gmail.com?subject=UBC%202026%20Travel%20Grant";
 
 const TIERS = [
