@@ -25,6 +25,7 @@ const navLinks: NavEntry[] = [
     href: "#",
     label: "Resources",
     children: [
+      { href: "/speak", label: "Speak at UBC" },
       { href: "/travel-grants", label: "Travel Grants" },
       {
         href: "https://drive.google.com/drive/folders/1Nv_ch6OgDnempbADFcZhKxVgM8JyxCB_?usp=drive_link",

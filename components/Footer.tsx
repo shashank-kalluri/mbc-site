@@ -16,6 +16,7 @@ const navLinks: NavLink[] = [
   { href: "/#sponsors", label: "Sponsors" },
   { href: "/programs", label: "Programs" },
   { href: "/travel-grants", label: "Travel Grants" },
+  { href: "/speak", label: "Speak at UBC" },
   { href: "/#faq", label: "FAQ" },
   {
     href: "https://drive.google.com/drive/folders/1Nv_ch6OgDnempbADFcZhKxVgM8JyxCB_?usp=drive_link",
