@@ -5,7 +5,8 @@ import { ArrowUpRight, Lock } from "lucide-react";
 import { programs, type ProgramMeta } from "@/data/programs";
 
 export const metadata: Metadata = {
-  title: "Programs · UBC 2026",
+  alternates: { canonical: "/programs" },
+  title: "Programs",
   description:
     "Competitions and stages at the University Blockchain Conference 2026 — November 20–21 at UT Austin.",
 };

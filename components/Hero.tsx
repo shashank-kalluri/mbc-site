@@ -61,14 +61,20 @@ export default function Hero() {
                 "radial-gradient(ellipse 70% 65% at center, rgba(8,13,17,0.65) 0%, rgba(8,13,17,0) 75%)",
             }}
           />
-          <Image
-            src="/university_blockchain_conference_logo.svg"
-            alt="University Blockchain Conference"
-            width={2048}
-            height={608}
-            className="w-full max-w-[clamp(340px,95vw,1300px)] h-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
-            priority
-          />
+          <h1 className="m-0">
+            <span className="sr-only">
+              University Blockchain Conference 2026 — November 20–21, 2026 at UT
+              Austin
+            </span>
+            <Image
+              src="/university_blockchain_conference_logo.svg"
+              alt="University Blockchain Conference"
+              width={2048}
+              height={608}
+              className="w-full max-w-[clamp(340px,95vw,1300px)] h-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+              priority
+            />
+          </h1>
         </motion.div>
 
         {/* Date, location, CTAs */}
