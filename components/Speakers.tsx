@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FaGlobe, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { getSpeakers } from "@/lib/api/speakers";
 
 type Speaker = {
@@ -12,14 +13,19 @@ type Speaker = {
   image_url?: string | null;
   linkedin_url?: string | null;
   x_url?: string | null;
+  company_url?: string | null;
   featured?: boolean | null;
 };
 
 function SpeakerCard({ s }: { s: Speaker }) {
-  const href = s.linkedin_url || s.x_url || undefined;
+  const links = [
+    { href: s.company_url, label: `${s.company || "Company"} website`, Icon: FaGlobe },
+    { href: s.x_url, label: `${s.name} on X`, Icon: FaXTwitter },
+    { href: s.linkedin_url, label: `${s.name} on LinkedIn`, Icon: FaLinkedinIn },
+  ].filter((l) => l.href);
 
-  const inner = (
-    <article className="group relative overflow-hidden rounded-2xl cursor-pointer bg-[#243040]">
+  return (
+    <article className="group relative overflow-hidden rounded-2xl bg-[#243040]">
       {/* Photo */}
       <div className="relative aspect-[3/4] overflow-hidden">
         <Image
@@ -41,19 +47,27 @@ function SpeakerCard({ s }: { s: Speaker }) {
           <p className="text-white/55 text-xs mt-0.5 line-clamp-1 font-medium">
             {[s.title, s.company].filter(Boolean).join(" · ")}
           </p>
+          {links.length > 0 && (
+            <div className="flex items-center gap-1 mt-2 -ml-1.5">
+              {links.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="p-1.5 rounded-md text-white/60 hover:text-[#EC8644] hover:bg-white/10 transition-colors"
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </article>
   );
-
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer">
-        {inner}
-      </a>
-    );
-  }
-  return inner;
 }
 
 /** Trailing tile signalling the lineup isn't final. placeholder.png is a white

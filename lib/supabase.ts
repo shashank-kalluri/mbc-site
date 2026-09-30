@@ -100,6 +100,7 @@ export interface Speaker {
   image_url: string | null;
   linkedin_url: string | null;
   x_url: string | null;
+  company_url: string | null;
   tags: string[];
   created_at: string;
   updated_at: string;
