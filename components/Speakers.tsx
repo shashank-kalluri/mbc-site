@@ -93,7 +93,7 @@ export default function Speakers() {
       .then((data) => {
         const all = (data ?? []) as Speaker[];
         const featured = all.filter((s) => s.featured);
-        setSpeakers(featured.length >= 3 ? featured.slice(0, 11) : all.slice(0, 11));
+        setSpeakers(featured.length >= 3 ? featured : all.slice(0, 11));
       })
       .catch(() => setSpeakers([]))
       .finally(() => setLoading(false));
