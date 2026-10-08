@@ -19,9 +19,21 @@ export type Partnership = {
 /** Logo height per tier, so bigger sponsors read bigger. */
 const TIER_HEIGHT: Record<number, number> = { 1: 72, 2: 56 };
 const DEFAULT_HEIGHT = 36;
+/** Width:height of a typical wordmark; the tier height is tuned for this shape. */
+const REFERENCE_ASPECT = 4;
+
+/** Scale a logo's height so it covers about the same area as a typical
+ *  wordmark of its tier — otherwise stacked or square logos look tiny
+ *  next to wide ones at the same height. */
+function logoHeight(base: number, aspect: number | null) {
+  if (!aspect) return base;
+  const scale = Math.pow(REFERENCE_ASPECT / aspect, 0.75);
+  return Math.round(base * Math.min(Math.max(scale, 1), 1.8));
+}
 
 function PartnerLogo({ p }: { p: Partnership }) {
-  const height = TIER_HEIGHT[p.tier] ?? DEFAULT_HEIGHT;
+  const [aspect, setAspect] = useState<number | null>(null);
+  const height = logoHeight(TIER_HEIGHT[p.tier] ?? DEFAULT_HEIGHT, aspect);
   const inner = (
     <div className="relative transition-opacity duration-200 opacity-70 hover:opacity-100" style={{ height }}>
       <Image
@@ -30,6 +42,10 @@ function PartnerLogo({ p }: { p: Partnership }) {
         width={height * 4}
         height={height}
         className="object-contain h-full w-auto"
+        onLoad={(e) => {
+          const img = e.currentTarget;
+          if (img.naturalHeight) setAspect(img.naturalWidth / img.naturalHeight);
+        }}
         unoptimized
       />
     </div>
