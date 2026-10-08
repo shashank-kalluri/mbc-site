@@ -16,14 +16,19 @@ export type Partnership = {
   updated_at: string;
 };
 
+/** Logo height per tier, so bigger sponsors read bigger. */
+const TIER_HEIGHT: Record<number, number> = { 1: 72, 2: 56 };
+const DEFAULT_HEIGHT = 36;
+
 function PartnerLogo({ p }: { p: Partnership }) {
+  const height = TIER_HEIGHT[p.tier] ?? DEFAULT_HEIGHT;
   const inner = (
-    <div className="relative transition-opacity duration-200 opacity-70 hover:opacity-100" style={{ height: 40 }}>
+    <div className="relative transition-opacity duration-200 opacity-70 hover:opacity-100" style={{ height }}>
       <Image
         src={p.logo_url}
         alt={p.name}
-        width={160}
-        height={40}
+        width={height * 4}
+        height={height}
         className="object-contain h-full w-auto"
         unoptimized
       />
@@ -47,8 +52,8 @@ export default function Sponsors() {
       .from("partnerships")
       .select("id, slug, name, website_url, logo_url, tier, status, created_at, updated_at")
       .eq("status", "active")
-      .lte("tier", 2)
       .order("tier", { ascending: true })
+      .order("name", { ascending: true })
       .then(({ data, error }) => {
         if (!error && data) setPartners(data as Partnership[]);
         setLoading(false);
@@ -87,9 +92,15 @@ export default function Sponsors() {
         )}
 
         {!loading && partners && partners.length > 0 && (
-          <div className="flex flex-wrap items-center gap-x-12 gap-y-8">
-            {partners.map((p) => (
-              <PartnerLogo key={p.id} p={p} />
+          <div className="flex flex-col gap-12">
+            {[...new Set(partners.map((p) => p.tier))].map((tier) => (
+              <div key={tier} className="flex flex-wrap items-center gap-x-12 gap-y-8">
+                {partners
+                  .filter((p) => p.tier === tier)
+                  .map((p) => (
+                    <PartnerLogo key={p.id} p={p} />
+                  ))}
+              </div>
             ))}
             <span className="text-[#293C4B] text-lg font-[var(--font-zuume)] font-black tracking-tight">
               ... and more!
