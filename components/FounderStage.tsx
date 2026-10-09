@@ -12,6 +12,8 @@ import {
   Rocket,
   Cpu,
   Building2,
+  Gavel,
+  Banknote,
 } from "lucide-react";
 
 const APPLY_URL =
@@ -24,17 +26,22 @@ const PROGRAM_DOC =
 
 const HERO_IMAGE = "/photos/main-stage.jpg";
 
+const VEDA_URL =
+  "https://www.marshall.usc.edu/institutes-and-centers/vaneck-digital-assets-initiative";
+const VEDA_LOGO =
+  "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos/usc-veda.png";
+
 const INVESTORS: { name: string; href?: string }[] = [
   { name: "Y Combinator", href: "https://www.ycombinator.com/" },
   { name: "Colosseum", href: "https://www.colosseum.org" },
   { name: "Portal Ventures", href: "https://portal.vc/" },
   { name: "Castle Island Ventures", href: "https://castleisland.vc/" },
   { name: "No Limit Holdings", href: "https://nlh.xyz/" },
-  { name: "Multicoin Capital", href: "https://multicoin.capital/" },
-  { name: "USC VanEck Digital Asset Initiative" },
+  { name: "CoinFund", href: "https://www.coinfund.io/" },
+  { name: "USC VanEck Digital Assets Initiative", href: VEDA_URL },
 ];
 
-const SPONSORS = ["Coinbase", "Solana", "Gemini", "Ripple", "MoonPay", "Ledger"];
+const SPONSORS = ["Solana", "Circle", "Gemini", "Ledger", "MoonPay", "Franklin Templeton"];
 
 const TRACKS = [
   {
@@ -45,7 +52,7 @@ const TRACKS = [
   {
     n: "02",
     title: "Raising your first",
-    body: "You're raising your first capital and ready to meet the investors who'll back you. You're also eligible for a non-dilutive grant from College.xyz.",
+    body: "You're raising your first capital and ready to meet the investors who'll back you. The top team receives a $10,000 non-dilutive grant from USC VEDA.",
   },
 ];
 
@@ -85,8 +92,8 @@ const BENEFITS = [
   },
   {
     n: "04",
-    title: "A non-dilutive grant",
-    body: "A cash grant from College.xyz, judged live by the investors in the audience.",
+    title: "A shot at $10K, non-dilutive",
+    body: "A $10K cash grant from USC VEDA & College.xyz, judged live by the investors in the audience.",
   },
   {
     n: "05",
@@ -207,12 +214,28 @@ export default function FounderStage() {
             rather build the company than join one.
           </motion.p>
 
-          <motion.div
+          <motion.a
             custom={3}
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="flex flex-wrap items-center gap-3 mt-9"
+            href="#grant"
+            className="inline-flex items-center gap-3 mt-8 rounded-full border border-[#EC8644]/45 bg-[#EC8644]/12 pl-2 pr-5 py-2 text-white hover:bg-[#EC8644]/20 transition-colors"
+          >
+            <span className="font-[var(--font-zuume)] font-black text-lg leading-none bg-[#EC8644] text-white rounded-full px-3 py-1.5">
+              $10K
+            </span>
+            <span className="text-sm sm:text-[15px] font-medium">
+              Non-dilutive grant from <span className="text-[#EC8644]">USC VEDA</span> &amp; College.xyz
+            </span>
+          </motion.a>
+
+          <motion.div
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="flex flex-wrap items-center gap-3 mt-8"
           >
             <a
               href={APPLY_URL}
@@ -241,7 +264,7 @@ export default function FounderStage() {
           </motion.div>
 
           <motion.p
-            custom={4}
+            custom={5}
             variants={fadeUp}
             initial="hidden"
             animate="show"
@@ -249,6 +272,97 @@ export default function FounderStage() {
           >
             Nov 20–21, 2026 · UT Austin, TX · Applications close Oct 25
           </motion.p>
+        </div>
+      </section>
+
+      {/* ---------- Grant ---------- */}
+      <section id="grant" className="pt-16 sm:pt-24 scroll-mt-24">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <Reveal>
+            <div className="relative bg-white rounded-3xl overflow-hidden border border-[#EC8644]/25">
+              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#EC8644]" />
+              <div className="grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-16 items-center p-8 sm:p-12 lg:p-14">
+                <div>
+                  <p className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase mb-2">
+                    The grant
+                  </p>
+                  <p
+                    className="font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight leading-[0.85]"
+                    style={{ fontSize: "clamp(88px, 14vw, 180px)" }}
+                  >
+                    $10K
+                  </p>
+                  <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight mt-2">
+                    Non-dilutive. Cash.
+                  </p>
+                </div>
+
+                <div>
+                  <h2
+                    className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] mb-5"
+                    style={{ fontSize: "clamp(30px, 3.8vw, 50px)" }}
+                  >
+                    Backed by the{" "}
+                    <a
+                      href={VEDA_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-[#EC8644]/40 decoration-2 underline-offset-4 hover:decoration-[#EC8644] transition-colors"
+                    >
+                      USC VanEck Digital Assets Initiative
+                    </a>
+                  </h2>
+                  <p className="text-[#5A6B78] text-base leading-relaxed max-w-2xl">
+                    Select founders will have a shot at a $10,000 non-dilutive cash grant from{" "}
+                    <a
+                      href={VEDA_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#EC8644] font-medium hover:underline"
+                    >
+                      USC VEDA
+                    </a>{" "}
+                    &amp; College.xyz. No equity, no strings. The winner is judged live, on
+                    stage, by the investors in the audience.
+                  </p>
+
+                  <ul className="grid sm:grid-cols-2 gap-3 mt-7 max-w-2xl">
+                    <li className="flex items-start gap-3 bg-[#F4F3EF] rounded-xl px-4 py-3">
+                      <Banknote size={18} className="text-[#EC8644] mt-0.5 shrink-0" />
+                      <span className="text-[#293C4B] text-sm font-medium">
+                        $10,000 to the top emerging team
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-[#F4F3EF] rounded-xl px-4 py-3">
+                      <Gavel size={18} className="text-[#EC8644] mt-0.5 shrink-0" />
+                      <span className="text-[#293C4B] text-sm font-medium">
+                        Judged live by investors in the room
+                      </span>
+                    </li>
+                  </ul>
+
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-8 pt-7 border-t border-[#293C4B]/10">
+                    <span className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase">
+                      Presented by
+                    </span>
+                    <a href={VEDA_URL} target="_blank" rel="noopener noreferrer" title="USC VanEck Digital Assets Initiative">
+                      <Image
+                        src={VEDA_LOGO}
+                        alt="USC Marshall VanEck Digital Assets Initiative"
+                        width={180}
+                        height={79}
+                        className="h-14 w-auto"
+                        unoptimized
+                      />
+                    </a>
+                    <span className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl tracking-tight">
+                      &amp; College.xyz
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
