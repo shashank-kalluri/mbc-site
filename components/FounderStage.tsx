@@ -28,6 +28,8 @@ const HERO_IMAGE = "/photos/main-stage.jpg";
 
 const VEDA_URL =
   "https://www.marshall.usc.edu/institutes-and-centers/vaneck-digital-assets-initiative";
+const CXYZ_URL = "https://www.college.xyz/";
+const CXYZ_LOGO = "/college-xyz.png";
 const VEDA_LOGO =
   "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos/usc-veda.png";
 
@@ -184,7 +186,10 @@ export default function FounderStage() {
             <div className="flex items-center gap-3 mb-5">
               <span className="block w-6 h-[2px] bg-[#EC8644]" />
               <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-                College.xyz · UBC 2026
+                <a href={CXYZ_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  College.xyz
+                </a>{" "}
+                · UBC 2026
               </span>
             </div>
           </motion.div>
@@ -226,7 +231,8 @@ export default function FounderStage() {
               $10K
             </span>
             <span className="text-sm sm:text-[15px] font-medium">
-              Non-dilutive grant from <span className="text-[#EC8644]">USC VEDA</span> &amp; College.xyz
+              Non-dilutive grant from <span className="text-[#EC8644]">USC VEDA</span> &amp;{" "}
+              <span className="text-[#EC8644]">College.xyz</span>
             </span>
           </motion.a>
 
@@ -322,7 +328,16 @@ export default function FounderStage() {
                     >
                       USC VEDA
                     </a>{" "}
-                    &amp; College.xyz. No equity, no strings. The winner is judged live, on
+                    &amp;{" "}
+                    <a
+                      href={CXYZ_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#EC8644] font-medium hover:underline"
+                    >
+                      College.xyz
+                    </a>
+                    . No equity, no strings. The winner is judged live, on
                     stage, by the investors in the audience.
                   </p>
 
@@ -355,9 +370,16 @@ export default function FounderStage() {
                         unoptimized
                       />
                     </a>
-                    <span className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl tracking-tight">
-                      &amp; College.xyz
-                    </span>
+                    <span className="text-[#9CADB7] text-xl font-light">&amp;</span>
+                    <a href={CXYZ_URL} target="_blank" rel="noopener noreferrer" title="College.xyz">
+                      <Image
+                        src={CXYZ_LOGO}
+                        alt="College.xyz"
+                        width={1022}
+                        height={157}
+                        className="h-7 sm:h-8 w-auto"
+                      />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -382,7 +404,15 @@ export default function FounderStage() {
               </h2>
               <div className="space-y-4 max-w-xl">
                 <p className="text-[#5A6B78] text-base leading-relaxed">
-                  College.xyz is a 501(c)(3) nonprofit working to close the gap between talented
+                  <a
+                    href={CXYZ_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#293C4B] font-semibold underline decoration-[#EC8644]/50 decoration-2 underline-offset-4 hover:decoration-[#EC8644] transition-colors"
+                  >
+                    College.xyz
+                  </a>{" "}
+                  is a 501(c)(3) nonprofit working to close the gap between talented
                   students and frontier tech. Every year we host the University Blockchain
                   Conference, which brings together top talent from over 100 universities and puts
                   them in front of companies like Coinbase, Solana, Polymarket, Gemini, and Ledger.
@@ -394,14 +424,24 @@ export default function FounderStage() {
                   who actually back young teams.
                 </p>
               </div>
-              <a
-                href={PROGRAM_DOC}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-8 bg-[#293C4B] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-[#1A2A36] transition-colors"
-              >
-                <FileText size={16} /> Read the full program
-              </a>
+              <div className="flex flex-wrap gap-3 mt-8">
+                <a
+                  href={PROGRAM_DOC}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#293C4B] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-[#1A2A36] transition-colors"
+                >
+                  <FileText size={16} /> Read the full program
+                </a>
+                <a
+                  href={CXYZ_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-[#293C4B]/20 text-[#293C4B] text-sm font-semibold px-6 py-3 rounded-full hover:border-[#EC8644] hover:text-[#EC8644] transition-colors"
+                >
+                  About College.xyz <ArrowUpRight size={16} />
+                </a>
+              </div>
             </Reveal>
 
             <Reveal i={1}>
