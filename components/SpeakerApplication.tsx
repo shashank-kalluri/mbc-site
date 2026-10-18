@@ -3,10 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Caveat } from "next/font/google";
 import {
   AlertCircle,
-  ArrowRight,
   ArrowUpRight,
   Check,
   Loader2,
@@ -18,17 +18,12 @@ import {
 } from "lucide-react";
 import FAQ from "@/components/FAQ";
 
+const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
+
 const CONTACT_EMAIL = "uniblockchainconferences@gmail.com";
 /** UBC 2025. A speaker mid-keynote, and the room during a research talk. */
 const HERO_IMAGE = "/photos/keynote.jpg";
 const SIDE_IMAGE = "/photos/research-talk.jpg";
-
-const FACTS = [
-  { value: "Nov 20–21", label: "2026" },
-  { value: "UT Austin", label: "Austin, TX" },
-  { value: "1000+", label: "Students" },
-  { value: "100+", label: "Universities" },
-];
 
 const FORMATS = [
   { id: "Keynote", blurb: "A headline talk on the main stage" },
@@ -78,18 +73,18 @@ const ATTENDANCE = [
 const LOOKING_FOR = [
   {
     Icon: Mic,
-    title: "People building the thing",
-    body: "Founders, protocol engineers, researchers, investors, and policy people who can talk about work they actually did.",
+    title: "You've done the work",
+    body: "Founders, engineers, researchers, investors, policy folks. We want the people who built it, shipped it, or fought for it, telling the story firsthand.",
   },
   {
     Icon: Users,
-    title: "A student audience",
-    body: "The room is over a thousand students from a hundred-plus universities. The best talks assume curiosity and technical literacy, but not industry context.",
+    title: "You get the room",
+    body: "You'll be talking to 1,000+ students from 100+ schools. They're sharp and curious, but most haven't worked in crypto yet, so skip the insider shorthand.",
   },
   {
     Icon: Wrench,
-    title: "Something specific",
-    body: "One argument, one system, one hard-won lesson. A sharp fifteen-minute keynote, or one perspective that changes where a panel goes, beats a generic summary of the industry every time.",
+    title: "You've got a point",
+    body: "Bring one idea you really believe in, a system you know inside out, or a lesson you learned the hard way. That beats a tour of the whole industry every time.",
   },
 ];
 
@@ -434,6 +429,7 @@ function Section({
 /* ------------------------------------------------------------------ */
 
 export default function SpeakerApplication() {
+  const reduce = useReducedMotion();
   const [values, setValues] = useState<Record<Key, string>>(EMPTY);
   const [formats, setFormats] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
@@ -637,52 +633,46 @@ export default function SpeakerApplication() {
             minutes.
           </motion.p>
 
-          <motion.div
+          {/* Scribbled scroll cue in place of a button */}
+          <motion.button
+            type="button"
             custom={3}
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="flex flex-wrap items-center gap-3 mt-9"
+            onClick={() => scrollTo(applyRef.current)}
+            className="group mt-8 flex items-start gap-1 text-left text-[#EC8644]"
           >
-            <button
-              type="button"
-              onClick={() => scrollTo(applyRef.current)}
-              className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
+            <motion.svg
+              viewBox="0 0 60 70"
+              className="w-14 h-16 sm:w-16 sm:h-[4.75rem] shrink-0"
+              aria-hidden
+              animate={reduce ? undefined : { y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             >
-              Start your application <ArrowRight size={17} />
-            </button>
-            <Link
-              href="/#speakers"
-              className="shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
+              <path
+                d="M 50 6 C 24 2, 8 16, 22 28 C 32 36, 40 22, 26 22 C 12 22, 14 46, 20 62"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M 20 62 L 12 52 M 20 62 L 27 51"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+            <span
+              className={`${handwriting.className} text-white text-[24px] sm:text-[28px] leading-none -rotate-3 mt-2 group-hover:text-[#EC8644] transition-colors`}
             >
-              Who you&rsquo;d share the stage with
-            </Link>
-          </motion.div>
-
-          <motion.div
-            custom={4}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-12 max-w-4xl"
-          >
-            {FACTS.map((f) => (
-              <div
-                key={f.label}
-                className="rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-md px-5 py-4"
-              >
-                <p
-                  className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-none whitespace-nowrap"
-                  style={{ fontSize: "clamp(20px, 2.6vw, 28px)" }}
-                >
-                  {f.value}
-                </p>
-                <p className="text-white/40 text-[11px] font-medium tracking-[0.18em] uppercase mt-2">
-                  {f.label}
-                </p>
-              </div>
-            ))}
-          </motion.div>
+              the application&rsquo;s right down here!
+            </span>
+          </motion.button>
         </div>
       </section>
 
@@ -756,10 +746,9 @@ export default function SpeakerApplication() {
                 Tell us what you&rsquo;d talk about
               </h2>
               <p className="text-[#5A6B78] text-base leading-relaxed mt-5">
-                It&rsquo;s all on this page — fill it in, hit submit, and it
-                lands straight in the programming team&rsquo;s inbox. Fields
-                marked <span className="text-[#EC8644] font-semibold">*</span>{" "}
-                are required.
+                Fields marked{" "}
+                <span className="text-[#EC8644] font-semibold">*</span> are
+                required.
               </p>
             </Reveal>
           </div>

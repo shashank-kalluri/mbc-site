@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Caveat } from "next/font/google";
 import { ArrowUpRight, Lock } from "lucide-react";
+import ProgramsClosing from "@/components/ProgramsClosing";
 import { programs, type ProgramMeta } from "@/data/programs";
+
+const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
 export const metadata: Metadata = {
   alternates: { canonical: "/programs" },
@@ -92,8 +96,30 @@ export default function ProgramsPage() {
     <div className="bg-[#F4F3EF] min-h-screen">
       {/* Header */}
       <section className="relative bg-[#1A2A36] overflow-hidden">
+        <Image
+          src="/photos/hackathon/pitch.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-30"
+        />
         <div
-          className="absolute inset-0 opacity-[0.1] pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(26,42,54,0.7) 0%, rgba(26,42,54,0.85) 60%, #1A2A36 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 70% at 85% 15%, rgba(236,134,68,0.25) 0%, rgba(236,134,68,0) 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.08] pointer-events-none"
           style={{
             backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
@@ -112,15 +138,45 @@ export default function ProgramsPage() {
           >
             Programs
           </h1>
-          <p className="text-white/55 text-base sm:text-lg leading-relaxed max-w-xl mt-5">
+          <p className="text-white/60 text-base sm:text-lg leading-relaxed max-w-xl mt-5">
             Build, research, and pitch your way onto the stage at UBC 2026, Nov 20–21 at UT
             Austin.
           </p>
+
+          {/* Scribbled note pointing down at the cards */}
+          <div
+            aria-hidden
+            className="hidden md:block absolute right-10 lg:right-24 bottom-24 text-[#EC8644] pointer-events-none"
+          >
+            <span
+              className={`${handwriting.className} block text-white text-[28px] leading-none -rotate-6 -translate-x-10`}
+            >
+              pick your path!
+            </span>
+            <svg viewBox="0 0 90 80" className="w-[90px] h-[80px] ml-14 -mt-1">
+              <path
+                d="M 10 6 C 40 2, 70 14, 56 30 C 46 42, 32 30, 46 24 C 66 16, 74 46, 62 72"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M 62 72 L 54 60 M 62 72 L 72 62"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         </div>
       </section>
 
       {/* Program cards, pulled up over the header */}
-      <section className="pb-20 sm:pb-28">
+      <section>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 -mt-16 sm:-mt-20 relative">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {programs.map((p) => (
@@ -129,6 +185,8 @@ export default function ProgramsPage() {
           </div>
         </div>
       </section>
+
+      <ProgramsClosing />
     </div>
   );
 }

@@ -29,12 +29,18 @@ const NOTE = "hackathon, research comp & more!";
  *  visitors know it leads to the hackathon and competitions. */
 function ProgramsButton() {
   const reduce = useReducedMotion();
-  const draw = {
-    initial: { pathLength: reduce ? 1 : 0 },
-    animate: { pathLength: 1 },
-    transition: { delay: 1.1, duration: 0.9, ease: "easeInOut" as const },
-  };
-  const tip = { ...draw, transition: { ...draw.transition, delay: 1.9, duration: 0.25 } };
+  // Round line caps paint a dot even at pathLength 0, so each stroke stays
+  // hidden until the moment it starts drawing.
+  const stroked = (delay: number, duration: number) => ({
+    initial: { pathLength: reduce ? 1 : 0, opacity: reduce ? 1 : 0 },
+    animate: { pathLength: 1, opacity: 1 },
+    transition: {
+      pathLength: { delay, duration, ease: "easeInOut" as const },
+      opacity: { delay, duration: 0.01 },
+    },
+  });
+  const draw = stroked(1.1, 0.9);
+  const tip = stroked(1.9, 0.25);
   const note = {
     initial: { opacity: 0, y: reduce ? 0 : 6 },
     animate: { opacity: 1, y: 0 },
