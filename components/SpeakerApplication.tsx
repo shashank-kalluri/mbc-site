@@ -627,10 +627,10 @@ export default function SpeakerApplication() {
             animate="show"
             className="text-white/65 text-base sm:text-lg leading-relaxed max-w-2xl mt-7"
           >
-            The agenda is programmed, not sold. If you&rsquo;re building,
-            researching, funding, or regulating something worth a thousand
-            students&rsquo; attention, tell us about it. One page, about five
-            minutes.
+            Apply to give a keynote, join a panel, or run a workshop at UBC
+            2026, November 20&ndash;21 at UT Austin. Tell us who you are and
+            what you&rsquo;d like to talk about, and our programming team will
+            get back to you.
           </motion.p>
 
           {/* Scribbled scroll cue in place of a button */}
@@ -670,7 +670,7 @@ export default function SpeakerApplication() {
             <span
               className={`${handwriting.className} text-white text-[24px] sm:text-[28px] leading-none -rotate-3 mt-2 group-hover:text-[#EC8644] transition-colors`}
             >
-              the application&rsquo;s right down here!
+              fill out the application below!
             </span>
           </motion.button>
         </div>

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Caveat } from "next/font/google";
 import { ArrowUpRight, Lock } from "lucide-react";
-import ProgramsClosing from "@/components/ProgramsClosing";
 import { programs, type ProgramMeta } from "@/data/programs";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
@@ -176,7 +175,7 @@ export default function ProgramsPage() {
       </section>
 
       {/* Program cards, pulled up over the header */}
-      <section>
+      <section className="pb-20 sm:pb-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 -mt-16 sm:-mt-20 relative">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {programs.map((p) => (
@@ -185,8 +184,6 @@ export default function ProgramsPage() {
           </div>
         </div>
       </section>
-
-      <ProgramsClosing />
     </div>
   );
 }

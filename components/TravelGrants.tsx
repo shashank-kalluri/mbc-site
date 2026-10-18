@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, Check, FileText, Plane, Users, Wallet, X } from "lucide-react";
 import FAQ from "@/components/FAQ";
-import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
+import { Sticker, Ticker } from "@/components/Scrapbook";
 
 /** Travel Grant Program application. Closes November 13, 2026. */
 const APPLY_URL =
@@ -754,7 +754,7 @@ export default function TravelGrants() {
                   backgroundSize: "28px 28px",
                 }}
               />
-              <div className="relative grid lg:grid-cols-[1fr_auto] items-center gap-12">
+              <div className="relative">
                 <div>
                   <Eyebrow>Apply by November 13</Eyebrow>
                   <h2
@@ -773,15 +773,6 @@ export default function TravelGrants() {
                   <div className="mt-9">
                     <CtaButtons />
                   </div>
-                </div>
-                <div className="lg:w-[28rem]">
-                  <div className="flex gap-4 sm:gap-6">
-                    <Polaroid src="/photos/workspace.jpg" caption="Made it!" tilt={-4} className="flex-1 max-w-56" />
-                    <Polaroid src="/photos/main-stage.jpg" caption="Worth the trip" tilt={4} className="flex-1 max-w-56 mt-8" />
-                  </div>
-                  <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase mt-6">
-                    UBC 2025 · Ann Arbor
-                  </p>
                 </div>
               </div>
             </div>

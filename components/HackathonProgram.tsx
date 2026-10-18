@@ -93,7 +93,7 @@ const PODIUM = [
 const BOUNTIES = [
   { name: "Gemini", prize: "$5,000", note: "Prediction markets · $1,000 each to 5 teams" },
   { name: "Circle", prize: "$1,000", note: "Best build with stablecoins and Circle tools" },
-  { name: "ElevenLabs", prize: "$$$", note: "3 months of ElevenLabs Scale per member for the best voice or audio build" },
+  { name: "ElevenLabs", prize: "$897", note: "Per member: 3 months of ElevenLabs Scale ($299/mo) for the best voice or audio build" },
   { name: "Everyone", prize: "$50", note: "Per team that submits, plus 1 month of ElevenLabs Creator" },
 ];
 
@@ -109,8 +109,6 @@ const WEEK = [
 const PHOTOS = {
   headsDown: { src: "/photos/hackathon/heads-down.jpg", caption: "Heads down" },
   pitch: { src: "/photos/hackathon/pitch.jpg", caption: "Pitch time" },
-  winners: { src: "/photos/hackathon/winners.jpg", caption: "Winners on stage" },
-  bigCheck: { src: "/photos/hackathon/big-check.jpg", caption: "Big check energy" },
 };
 
 const HACKATHON_FAQ = [
@@ -579,7 +577,7 @@ export default function HackathonProgram() {
                   backgroundSize: "28px 28px",
                 }}
               />
-              <div className="relative grid lg:grid-cols-[1fr_auto] items-center gap-12">
+              <div className="relative">
                 <div>
                   <Eyebrow>Ready?</Eyebrow>
                   <h2
@@ -595,15 +593,6 @@ export default function HackathonProgram() {
                   <div className="mt-9">
                     <CtaButtons />
                   </div>
-                </div>
-                <div className="lg:w-[28rem]">
-                  <div className="flex gap-4 sm:gap-6">
-                    <Polaroid {...PHOTOS.winners} tilt={-4} className="flex-1 max-w-56" />
-                    <Polaroid {...PHOTOS.bigCheck} tilt={4} className="flex-1 max-w-56 mt-8" />
-                  </div>
-                  <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase mt-6">
-                    MBC 2025 hackathon winners
-                  </p>
                 </div>
               </div>
             </div>
