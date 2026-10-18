@@ -33,12 +33,12 @@ export const programs: ProgramMeta[] = [
   {
     slug: "hackathon",
     name: "Hackathon",
-    tagline: "Build across two days",
+    tagline: "One week · four tracks · $23,500+ in prizes",
     description:
-      "Ship something real over the course of UBC 2026 and compete for prizes from our partners.",
-    detail: "Details coming soon",
-    image: "/photos/workspace.jpg",
-    status: "coming-soon",
+      "Build for a week on Solana or Arc, then pitch the finals live at UBC 2026. Prizes from Solana, Circle, Gemini, and ElevenLabs.",
+    detail: "Hacking starts Nov 13",
+    image: "/photos/hackathon/heads-down.jpg",
+    status: "live",
   },
   {
     slug: "research-competition",
