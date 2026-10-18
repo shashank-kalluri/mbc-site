@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
+import FAQ from "@/components/FAQ";
 import {
   ArrowUpRight,
   FileText,
@@ -92,7 +93,7 @@ const PODIUM = [
 const BOUNTIES = [
   { name: "Gemini", prize: "$5,000", note: "Prediction markets · $1,000 each to 5 teams" },
   { name: "Circle", prize: "$1,000", note: "Best build with stablecoins and Circle tools" },
-  { name: "ElevenLabs", prize: "3 mo. Scale", note: "Per member, for the best voice or audio build" },
+  { name: "ElevenLabs", prize: "$$$", note: "3 months of ElevenLabs Scale per member for the best voice or audio build" },
   { name: "Everyone", prize: "$50", note: "Per team that submits, plus 1 month of ElevenLabs Creator" },
 ];
 
@@ -104,20 +105,54 @@ const WEEK = [
   { date: "Nov 21", title: "Finals at UBC", note: "Top 3 per track pitch live in Austin" },
 ];
 
-const POLAROIDS = [
-  { src: "/photos/hackathon/heads-down.jpg", caption: "Heads down", tilt: -3 },
-  { src: "/photos/hackathon/pitch.jpg", caption: "Pitch time", tilt: 2 },
-  { src: "/photos/hackathon/winners.jpg", caption: "Winners on stage", tilt: -1.5 },
-  { src: "/photos/hackathon/big-check.jpg", caption: "Big check energy", tilt: 3 },
-];
+/** Photos from the MBC 2025 hackathon. */
+const PHOTOS = {
+  headsDown: { src: "/photos/hackathon/heads-down.jpg", caption: "Heads down" },
+  pitch: { src: "/photos/hackathon/pitch.jpg", caption: "Pitch time" },
+  winners: { src: "/photos/hackathon/winners.jpg", caption: "Winners on stage" },
+  bigCheck: { src: "/photos/hackathon/big-check.jpg", caption: "Big check energy" },
+};
 
-const RULES = [
-  { title: "One main track", body: "Pick exactly one, then enter as many bounties as you like." },
-  { title: "Teams of 1–4", body: "Solo builders are welcome too." },
-  { title: "Fresh code", body: "Build it during the hackathon, not before." },
-  { title: "Repo, video, README", body: "A GitHub repo, a 3–5 minute video pitch, and docs." },
-  { title: "AI is encouraged", body: "Use what helps you ship. You keep your IP." },
-  { title: "Be in Austin Nov 21", body: "You have to be at the closing ceremony to win." },
+const HACKATHON_FAQ = [
+  {
+    question: "Can I work on a project I've already started?",
+    answer: "No. Projects need to be substantially built during the hackathon week.",
+  },
+  {
+    question: "Can I submit to more than one track?",
+    answer:
+      "Each project enters exactly one main track. After that, you can submit the same project to as many bounties as you like, as long as it meets each bounty's requirements.",
+  },
+  {
+    question: "Do I need a team?",
+    answer: "No. Teams of 1–4 are recommended, and solo builders are welcome.",
+  },
+  {
+    question: "What do I submit?",
+    answer:
+      "Your project name, description, and team on Devpost, plus a GitHub repo, a 3–5 minute video pitch, and a README with your technical docs. Some tracks ask for extras, like a contract address.",
+    link: { href: GUIDE_URL, label: "Track requirements in the guide" },
+  },
+  {
+    question: "Do I need to be in Austin?",
+    answer:
+      "You can build from anywhere. Finalists pitch in person on Nov 21, and you have to be at the UBC closing ceremony to win any prize, including bounties.",
+  },
+  {
+    question: "How are projects judged?",
+    answer:
+      "Judges look for technical rigor, real impact, strong UX, focused execution, a clear presentation, and a path to real users. The top 3 teams in each track pitch live for 5 minutes, plus 2 minutes of Q&A.",
+  },
+  {
+    question: "Can I use AI tools? Who owns my project?",
+    answer: "Yes, AI tools are encouraged. You keep all rights to your code and IP.",
+  },
+  {
+    question: "Where can I get help?",
+    answer:
+      "Ask in the Telegram, join the kickoff call on Nov 8, or drop into nightly office hours with sponsor engineers Nov 16–19.",
+    link: { href: SCHEDULE_URL, label: "Workshop & office hours schedule" },
+  },
 ];
 
 const fadeUp = {
@@ -163,12 +198,45 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** Round sticker with the prize pool, its rim text slowly spinning. */
-function PrizeSticker({ reduce }: { reduce: boolean | null }) {
-  const r = 62;
+function Polaroid({
+  src,
+  caption,
+  tilt,
+  className = "",
+}: {
+  src: string;
+  caption: string;
+  tilt: number;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
   return (
-    <div className="relative w-44 h-44 sm:w-56 sm:h-56 rotate-[-10deg]">
-      <div className="absolute inset-0 rounded-full bg-[#EC8644] shadow-2xl shadow-[#EC8644]/30" />
+    <motion.figure
+      initial={{ rotate: tilt }}
+      whileHover={reduce ? undefined : { rotate: 0, scale: 1.04, y: -6 }}
+      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      className={`relative bg-white p-2.5 sm:p-3 pb-10 sm:pb-11 rounded-md shadow-[0_18px_40px_-18px_rgba(10,18,24,0.55)] ${className}`}
+    >
+      <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-[#1A2A36]">
+        <Image src={src} alt={caption} fill sizes="240px" className="object-cover" />
+      </div>
+      <figcaption className="absolute left-0 right-0 bottom-2.5 sm:bottom-3 text-center whitespace-nowrap font-[var(--font-zuume)] font-bold text-[#293C4B] text-sm sm:text-lg tracking-tight">
+        {caption}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+const RIM = "ONE WEEK ✦ FOUR TRACKS ✦ BIG PRIZES ✦ ";
+
+/** Round sticker with the prize pool, its rim text slowly spinning. Each rim
+ *  letter is placed at its own angle so the ring always closes evenly,
+ *  whatever font the browser ends up using. */
+function PrizeSticker({ reduce }: { reduce: boolean | null }) {
+  const chars = [...RIM];
+  return (
+    <div className="relative w-28 h-28 sm:w-40 sm:h-40 lg:w-56 lg:h-56 rotate-[-10deg]">
+      <div className="absolute inset-0 rounded-full bg-[#EC8644] shadow-2xl shadow-black/30" />
       <motion.svg
         viewBox="0 0 160 160"
         className="absolute inset-0 w-full h-full"
@@ -176,26 +244,25 @@ function PrizeSticker({ reduce }: { reduce: boolean | null }) {
         transition={{ duration: 24, ease: "linear", repeat: Infinity }}
         aria-hidden
       >
-        <defs>
-          <path
-            id="sticker-rim"
-            d={`M 80,80 m -${r},0 a ${r},${r} 0 1,1 ${r * 2},0 a ${r},${r} 0 1,1 -${r * 2},0`}
-          />
-        </defs>
-        <text
-          className="fill-white font-[var(--font-zuume)] font-bold uppercase"
-          style={{ fontSize: 13, letterSpacing: "0.12em" }}
-          textLength={2 * Math.PI * r - 4}
-          lengthAdjust="spacing"
-        >
-          <textPath href="#sticker-rim">One week ✦ Four tracks ✦ Prizes ✦ </textPath>
-        </text>
+        {chars.map((c, i) => (
+          <text
+            key={i}
+            x={80}
+            y={22}
+            textAnchor="middle"
+            transform={`rotate(${(i * 360) / chars.length} 80 80)`}
+            className="fill-white font-bold"
+            style={{ fontSize: 13 }}
+          >
+            {c}
+          </text>
+        ))}
       </motion.svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-        <span className="font-[var(--font-zuume)] font-black text-[28px] sm:text-[38px] tracking-tight leading-none">
+        <span className="font-[var(--font-zuume)] font-black text-[19px] sm:text-[27px] lg:text-[38px] tracking-tight leading-none">
           $23.5K
         </span>
-        <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase mt-1 text-white/85">
+        <span className="text-[7px] sm:text-[9px] lg:text-[11px] font-semibold tracking-[0.2em] uppercase mt-0.5 sm:mt-1 text-white/85">
           in prizes
         </span>
       </div>
@@ -267,14 +334,14 @@ export default function HackathonProgram() {
           />
         </div>
 
-        <div className="relative z-10 max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 pt-32 pb-24 sm:pt-44 sm:pb-32">
+        <div className="relative z-20 max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 pt-32 pb-32 sm:pt-44 sm:pb-36 lg:pb-32">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             <div>
               <motion.div custom={0} variants={fadeUp} initial="hidden" animate="show">
                 <div className="flex items-center gap-3 mb-5">
                   <span className="block w-6 h-[2px] bg-[#EC8644]" />
                   <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-                    UBC 2026 Hackathon
+                    One week. Ship it.
                   </span>
                 </div>
               </motion.div>
@@ -287,9 +354,9 @@ export default function HackathonProgram() {
                 className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.88] max-w-4xl"
                 style={{ fontSize: "clamp(52px, 9vw, 132px)" }}
               >
-                One week.
+                UBC 2026
                 <br />
-                <span className="text-[#EC8644]">Ship it.</span>
+                <span className="text-[#EC8644]">Hackathon</span>
               </motion.h1>
 
               <motion.p
@@ -322,7 +389,7 @@ export default function HackathonProgram() {
               initial={{ opacity: 0, scale: 0.6, rotate: -30 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               transition={{ delay: 0.5, type: "spring", stiffness: 140, damping: 12 }}
-              className="self-start lg:self-auto lg:mb-6"
+              className="absolute right-5 bottom-1 sm:right-10 sm:bottom-0 lg:static lg:mb-6"
             >
               <PrizeSticker reduce={reduce} />
             </motion.div>
@@ -508,15 +575,25 @@ export default function HackathonProgram() {
       {/* ---------- The week ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>The week</Eyebrow>
-            <h2
-              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] mb-12"
-              style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
-            >
-              Kickoff to closing ceremony
-            </h2>
-          </Reveal>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14">
+            <Reveal>
+              <Eyebrow>The week</Eyebrow>
+              <h2
+                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
+                style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
+              >
+                Kickoff to closing ceremony
+              </h2>
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
+                Build from anywhere for a week, then bring it to Austin. Here&rsquo;s how it
+                looked at MBC &rsquo;25.
+              </p>
+            </Reveal>
+            <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
+              <Polaroid {...PHOTOS.headsDown} tilt={-4} className="flex-1 max-w-56" />
+              <Polaroid {...PHOTOS.pitch} tilt={3} className="flex-1 max-w-56 mt-6" />
+            </Reveal>
+          </div>
 
           <ol className="relative grid gap-8 lg:grid-cols-5 lg:gap-4">
             {/* Connector: vertical on mobile, horizontal on desktop */}
@@ -569,97 +646,10 @@ export default function HackathonProgram() {
         </div>
       </section>
 
-      {/* ---------- Last year ---------- */}
-      <section className="pt-20 sm:pt-28">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>Last year</Eyebrow>
-            <h2
-              className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] mb-12"
-              style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
-            >
-              From laptops to big checks
-            </h2>
-          </Reveal>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8 px-2">
-            {POLAROIDS.map((p, i) => (
-              <Reveal key={p.src} i={i}>
-                <motion.figure
-                  initial={{ rotate: p.tilt }}
-                  whileHover={reduce ? undefined : { rotate: 0, scale: 1.04, y: -6 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  className="bg-white p-2.5 sm:p-3 pb-10 sm:pb-12 rounded-md shadow-[0_18px_40px_-18px_rgba(26,42,54,0.45)] relative"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-[#1A2A36]">
-                    <Image
-                      src={p.src}
-                      alt={p.caption}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <figcaption className="absolute left-0 right-0 bottom-2.5 sm:bottom-3.5 text-center whitespace-nowrap font-[var(--font-zuume)] font-bold text-[#293C4B] text-base sm:text-xl tracking-tight">
-                    {p.caption}
-                  </figcaption>
-                </motion.figure>
-              </Reveal>
-            ))}
-          </div>
-          <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10">
-            Midwest Blockchain Conference 2025
-          </p>
-        </div>
-      </section>
-
-      {/* ---------- The short version ---------- */}
-      <section className="pt-20 sm:pt-28">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-              <div>
-                <Eyebrow>The short version</Eyebrow>
-                <h2
-                  className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
-                  style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
-                >
-                  Ground rules
-                </h2>
-              </div>
-              <a
-                href={GUIDE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 self-start md:self-auto text-[#293C4B] text-sm font-semibold border border-[#293C4B]/20 px-5 py-2.5 rounded-full hover:border-[#EC8644] hover:text-[#EC8644] transition-colors"
-              >
-                <FileText size={16} /> Full requirements in the guide
-              </a>
-            </div>
-          </Reveal>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {RULES.map((r, i) => (
-              <Reveal key={r.title} i={i % 3} className="h-full">
-                <div className="h-full bg-white rounded-2xl p-7 flex gap-4">
-                  <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none mt-0.5">
-                    ✦
-                  </span>
-                  <div>
-                    <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight">
-                      {r.title}
-                    </h3>
-                    <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-1">{r.body}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQ items={HACKATHON_FAQ} />
 
       {/* ---------- CTA ---------- */}
-      <section className="py-20 sm:py-28">
+      <section className="pb-20 sm:pb-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <Reveal>
             <div className="relative bg-[#1A2A36] rounded-3xl p-8 sm:p-14 lg:p-16 overflow-hidden">
@@ -677,20 +667,31 @@ export default function HackathonProgram() {
                   backgroundSize: "28px 28px",
                 }}
               />
-              <div className="relative">
-                <Eyebrow>Ready?</Eyebrow>
-                <h2
-                  className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.9]"
-                  style={{ fontSize: "clamp(44px, 7vw, 96px)" }}
-                >
-                  Let&rsquo;s hack<span className="text-[#EC8644]">.</span>
-                </h2>
-                <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
-                  Pick your track, find a team (or go solo), and start building on Nov 13.
-                  Questions? Ask in the Telegram or drop into office hours.
-                </p>
-                <div className="mt-9">
-                  <CtaButtons />
+              <div className="relative grid lg:grid-cols-[1fr_auto] items-center gap-12">
+                <div>
+                  <Eyebrow>Ready?</Eyebrow>
+                  <h2
+                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.9]"
+                    style={{ fontSize: "clamp(44px, 7vw, 96px)" }}
+                  >
+                    Let&rsquo;s hack<span className="text-[#EC8644]">.</span>
+                  </h2>
+                  <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
+                    Pick your track, find a team (or go solo), and start building on Nov 13.
+                    Questions? Ask in the Telegram or drop into office hours.
+                  </p>
+                  <div className="mt-9">
+                    <CtaButtons />
+                  </div>
+                </div>
+                <div className="lg:w-[28rem]">
+                  <div className="flex gap-4 sm:gap-6">
+                    <Polaroid {...PHOTOS.winners} tilt={-4} className="flex-1 max-w-56" />
+                    <Polaroid {...PHOTOS.bigCheck} tilt={4} className="flex-1 max-w-56 mt-8" />
+                  </div>
+                  <p className="text-white/35 text-[11px] font-medium tracking-[0.18em] uppercase mt-6">
+                    MBC 2025 hackathon winners
+                  </p>
                 </div>
               </div>
             </div>
