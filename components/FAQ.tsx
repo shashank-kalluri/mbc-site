@@ -45,7 +45,7 @@ function FAQRow({ item, index }: { item: FAQItem; index: number }) {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="pb-6 pl-10">
+            <div className="pb-6 pl-10 max-w-4xl">
               <p className="text-[#9CADB7] text-sm sm:text-base leading-relaxed whitespace-pre-line">
                 {item.answer}
               </p>
@@ -72,27 +72,25 @@ export default function FAQ({ items }: FAQProps) {
   return (
     <section id="faq" className="bg-[#F4F3EF] py-16 sm:py-24">
       <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="max-w-3xl">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-3">
-            <span className="block w-6 h-[2px] bg-[#EC8644]" />
-            <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-              Questions
-            </span>
-          </div>
-          <h2
-            className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-14"
-            style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
-          >
-            FAQ
-          </h2>
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-3">
+          <span className="block w-6 h-[2px] bg-[#EC8644]" />
+          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
+            Questions
+          </span>
+        </div>
+        <h2
+          className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none mb-14"
+          style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
+        >
+          FAQ
+        </h2>
 
-          {/* Rows */}
-          <div>
-            {items.map((item, i) => (
-              <FAQRow key={i} item={item} index={i} />
-            ))}
-          </div>
+        {/* Rows */}
+        <div>
+          {items.map((item, i) => (
+            <FAQRow key={i} item={item} index={i} />
+          ))}
         </div>
       </div>
     </section>

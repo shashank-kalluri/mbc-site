@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,6 +20,57 @@ const fadeUp = {
 
 const VIDEO_SRC =
   "https://cdn.jsdelivr.net/gh/shashank-kalluri/mbc-site@7000a75/public/video.mp4";
+
+/** Cycled inside the Programs button so "Programs" reads as these events. */
+const PROGRAM_WORDS = ["Hackathon", "Research", "Founder Stage"];
+
+function ProgramsButton() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(() => setI((n) => (n + 1) % PROGRAM_WORDS.length), 2200);
+    return () => clearInterval(id);
+  }, [reduce]);
+
+  return (
+    <Link
+      href="/programs"
+      aria-label="Programs: Hackathon, Research Competition, and Founder Stage"
+      className="group shrink-0 whitespace-nowrap inline-flex items-center gap-2.5 bg-white text-[#293C4B] text-sm sm:text-base font-semibold pl-5 sm:pl-7 pr-1.5 py-1.5 rounded-full shadow-lg shadow-black/25 hover:bg-[#F4F3EF] transition-colors"
+    >
+      Programs
+      <span
+        aria-hidden
+        className="inline-flex items-center gap-1 h-7 sm:h-9 px-3 sm:px-3.5 rounded-full bg-[#EC8644] text-white text-xs sm:text-sm"
+      >
+        {/* Words share one grid cell; invisible copies hold the longest one's
+            width so the pill never resizes as they slide through. */}
+        <span className="relative inline-grid justify-items-center overflow-hidden">
+          {PROGRAM_WORDS.map((w) => (
+            <span key={w} className="invisible col-start-1 row-start-1">
+              {w}
+            </span>
+          ))}
+          <AnimatePresence initial={false}>
+            <motion.span
+              key={PROGRAM_WORDS[i]}
+              initial={{ y: "120%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="col-start-1 row-start-1"
+            >
+              {PROGRAM_WORDS[i]}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+        <span className="transition-transform group-hover:translate-x-0.5">→</span>
+      </span>
+    </Link>
+  );
+}
 
 export default function Hero() {
   return (
@@ -97,26 +149,7 @@ export default function Hero() {
             >
               Get Tickets →
             </a>
-            <a
-              href="mailto:uniblockchainconferences@gmail.com?subject=UBC%20Inquiry"
-              className="shrink-0 whitespace-nowrap bg-gradient-to-r from-[#EC8644]/50 to-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:from-[#EC8644]/65 hover:to-white/20 hover:border-white/60 transition-colors"
-            >
-              Get in Touch
-            </a>
-            <Link
-              href="/programs"
-              className="shrink-0 whitespace-nowrap bg-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
-            >
-              Programs
-            </Link>
-            <a
-              href="https://badge.universityblockchain.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-badge shrink-0 whitespace-nowrap bg-white/10 text-white text-sm sm:text-base font-semibold border border-white/40 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-lg shadow-black/30"
-            >
-              Get Your Badge
-            </a>
+            <ProgramsButton />
           </div>
         </motion.div>
       </div>
