@@ -27,12 +27,23 @@ const TELEGRAM_URL = "https://t.me/+Q0hy2P7nbIk2YWIx";
 const LOGO_BASE =
   "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos";
 
-const TRACKS = [
+const TRACKS: {
+  Icon: typeof Landmark;
+  title: string;
+  body: string;
+  req: string;
+  art: TrackArtKind;
+  card: string;
+  muted: string;
+  chip: string;
+  tilt: number;
+}[] = [
   {
     Icon: Landmark,
     title: "Tokenized Equities & RWAs",
     body: "Make stocks, treasuries, and real-world assets easier to issue, trade, use, or trust onchain.",
     req: "Solana or Arc",
+    art: "rwa",
     card: "bg-[#EC8644] text-white",
     muted: "text-white/75",
     chip: "bg-white/20 text-white",
@@ -43,6 +54,7 @@ const TRACKS = [
     title: "Agentic Payments & AI",
     body: "Give AI agents wallets, budgets, and guardrails so they can pay for APIs, data, and compute.",
     req: "Solana or Arc",
+    art: "agent",
     card: "bg-[#1A2A36] text-white",
     muted: "text-white/60",
     chip: "bg-white/10 text-white/80",
@@ -53,6 +65,7 @@ const TRACKS = [
     title: "DeFi & Onchain Apps",
     body: "New financial primitives (exchanges, lending, yield, payments) that compose with what already exists.",
     req: "Solana or Arc",
+    art: "defi",
     card: "bg-white text-[#293C4B]",
     muted: "text-[#5A6B78]",
     chip: "bg-[#F4F3EF] text-[#293C4B]",
@@ -63,6 +76,7 @@ const TRACKS = [
     title: "Consumer Apps",
     body: "Payments, social, gaming, and creator tools where the crypto is invisible and the app just works.",
     req: "Working frontend",
+    art: "consumer",
     card: "bg-[#9CADB7] text-[#1A2A36]",
     muted: "text-[#1A2A36]/70",
     chip: "bg-white/40 text-[#1A2A36]",
@@ -192,6 +206,150 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
       <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
         {children}
       </span>
+    </div>
+  );
+}
+
+type TrackArtKind = "rwa" | "agent" | "defi" | "consumer";
+
+const SPARKS = [
+  { sym: "TSLA", d: "M0 14 L8 11 L16 12 L24 7 L32 8 L40 3" },
+  { sym: "GOLD", d: "M0 12 L8 13 L16 9 L24 10 L32 5 L40 4" },
+  { sym: "T-BILL", d: "M0 13 L8 12 L16 10 L24 9 L32 7 L40 5" },
+];
+
+/** A small vignette per track, so each card shows what it's about. */
+function TrackArt({ kind }: { kind: TrackArtKind }) {
+  const reduce = useReducedMotion();
+  const line = (i: number) => ({
+    initial: { opacity: reduce ? 1 : 0, y: reduce ? 0 : 4 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { delay: 0.3 + i * 0.35, duration: 0.3 },
+  });
+
+  if (kind === "rwa") {
+    return (
+      <div className="h-full rounded-2xl bg-white/15 p-4 flex flex-col justify-between">
+        {SPARKS.map((r, i) => (
+          <div key={r.sym} className="flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-white" />
+            <span className="font-mono text-[12px] font-semibold w-14">{r.sym}</span>
+            <svg viewBox="0 0 40 16" preserveAspectRatio="none" className="flex-1 min-w-0 h-5" aria-hidden>
+              <motion.path
+                d={r.d}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                vectorEffect="non-scaling-stroke"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: reduce ? 1 : 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + i * 0.2, duration: 0.8, ease: "easeOut" }}
+              />
+            </svg>
+            <span className="text-[11px] font-semibold">▲</span>
+          </div>
+        ))}
+        <span className="self-start text-[10px] font-semibold tracking-[0.14em] uppercase bg-white text-[#EC8644] rounded-full px-2.5 py-1">
+          Now onchain
+        </span>
+      </div>
+    );
+  }
+
+  if (kind === "agent") {
+    return (
+      <div className="h-full rounded-2xl bg-black/30 border border-white/10 p-4 font-mono text-[11.5px] leading-[1.7]">
+        <div className="flex gap-1.5 mb-2.5" aria-hidden>
+          <span className="w-2 h-2 rounded-full bg-white/20" />
+          <span className="w-2 h-2 rounded-full bg-white/20" />
+          <span className="w-2 h-2 rounded-full bg-white/20" />
+        </div>
+        <motion.p {...line(0)}>
+          <span className="text-white/40">$</span> agent.fetch(&quot;/forecast&quot;)
+        </motion.p>
+        <motion.p {...line(1)} className="text-white/45">
+          ← 402 payment required
+        </motion.p>
+        <motion.p {...line(2)} className="text-[#EC8644]">
+          ✓ paid 0.01 USDC
+        </motion.p>
+        <motion.p {...line(3)} className="text-white/80">
+          ← 200 OK
+          <motion.span
+            className="inline-block w-[7px] h-[13px] bg-white/70 ml-1.5 align-middle"
+            animate={reduce ? undefined : { opacity: [1, 0, 1] }}
+            transition={{ duration: 1, repeat: Infinity }}
+          />
+        </motion.p>
+      </div>
+    );
+  }
+
+  if (kind === "defi") {
+    const blocks = [
+      { label: "Swap", dot: "bg-[#EC8644]", x: "left-4", y: "top-4" },
+      { label: "Lend", dot: "bg-[#293C4B]", x: "left-[30%]", y: "top-[2.6rem]" },
+      { label: "Yield", dot: "bg-[#9CADB7]", x: "left-[54%]", y: "top-[5.2rem]" },
+    ];
+    return (
+      <div className="relative h-full rounded-2xl bg-[#F4F3EF] overflow-hidden">
+        {/* Connector the blocks snap along */}
+        <svg viewBox="0 0 100 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" aria-hidden>
+          <path d="M 18 14 L 48 32 L 78 50" fill="none" stroke="#293C4B" strokeOpacity="0.15" strokeWidth="1" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" />
+        </svg>
+        {blocks.map((b, i) => (
+          <motion.span
+            key={b.label}
+            initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : -14 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 + i * 0.25, type: "spring", stiffness: 260, damping: 18 }}
+            className={`absolute ${b.x} ${b.y} inline-flex items-center gap-2 rounded-xl bg-white px-3.5 py-2 text-[13px] font-semibold shadow-[0_8px_18px_-10px_rgba(26,42,54,0.45)]`}
+          >
+            <span className={`w-2.5 h-2.5 rounded-[4px] ${b.dot}`} />
+            {b.label}
+          </motion.span>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-full rounded-2xl bg-white/35 overflow-hidden flex items-end justify-center">
+      {/* A phone peeking up from the bottom of the panel */}
+      <div className="relative w-[7.5rem] h-[88%] rounded-t-[22px] border-[3px] border-b-0 border-[#1A2A36] bg-white px-3 pt-3">
+        <span className="block mx-auto w-8 h-1 rounded-full bg-[#1A2A36]/20" />
+        <div className="flex items-center gap-2 mt-3">
+          <span className="w-6 h-6 rounded-full bg-[#EC8644] text-white text-[11px] font-bold flex items-center justify-center">
+            M
+          </span>
+          <span className="text-[11px] font-semibold">@maya</span>
+        </div>
+        <p className="font-[var(--font-zuume)] font-black text-2xl tracking-tight mt-1.5">$5 🍕</p>
+        <span className="mt-2 block rounded-full bg-[#1A2A36] text-white text-[11px] font-semibold text-center py-1.5">
+          Pay
+        </span>
+      </div>
+      <motion.span
+        className="absolute right-5 top-4 text-xl"
+        animate={reduce ? undefined : { y: [0, -6, 0], rotate: [0, 8, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden
+      >
+        🔥
+      </motion.span>
+      <motion.span
+        className="absolute left-5 top-9 text-lg"
+        animate={reduce ? undefined : { y: [0, -5, 0], rotate: [0, -8, 0] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+        aria-hidden
+      >
+        ❤️
+      </motion.span>
     </div>
   );
 }
@@ -353,11 +511,12 @@ export default function HackathonProgram() {
                   transition={{ type: "spring", stiffness: 260, damping: 18 }}
                   className={`h-full rounded-3xl p-7 flex flex-col ${t.card}`}
                 >
-                  <div className="flex items-start justify-between mb-10">
-                    <span className="font-[var(--font-zuume)] font-black text-5xl tracking-tight leading-none opacity-90">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <t.Icon size={22} strokeWidth={2} className="opacity-80" />
+                  <div className="h-36 mb-6">
+                    <TrackArt kind={t.art} />
+                  </div>
+                  <div className={`flex items-center gap-2 text-[11px] font-semibold tracking-[0.16em] uppercase mb-2.5 ${t.muted}`}>
+                    <t.Icon size={14} strokeWidth={2.25} />
+                    Track {String(i + 1).padStart(2, "0")}
                   </div>
                   <h3 className="font-[var(--font-zuume)] font-black text-2xl sm:text-[28px] tracking-tight leading-[0.95]">
                     {t.title}
