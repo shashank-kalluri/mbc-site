@@ -104,10 +104,10 @@ const PODIUM = [
   { place: "3rd", amount: "$1,000", h: "h-16 sm:h-20", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
-const BOUNTIES = [
+const BOUNTIES: { name: string; prize: string; unit?: string; note: string }[] = [
   { name: "Gemini", prize: "$5,000", note: "Prediction markets · $1,000 each to 5 teams" },
   { name: "Circle", prize: "$1,000", note: "Best build with stablecoins and Circle tools" },
-  { name: "ElevenLabs", prize: "$897", note: "Per member: 3 months of ElevenLabs Scale ($299/mo) for the best voice or audio build" },
+  { name: "ElevenLabs", prize: "~$900", unit: "in credits", note: "Per member: 3 months of ElevenLabs Scale ($299/mo) for the best voice or audio build" },
   { name: "Everyone", prize: "$50", note: "Per team that submits, plus 1 month of ElevenLabs Creator" },
 ];
 
@@ -628,8 +628,15 @@ export default function HackathonProgram() {
                           <p className="text-white font-semibold">{b.name}</p>
                           <p className="text-white/50 text-[13px] leading-snug mt-0.5">{b.note}</p>
                         </div>
-                        <span className="shrink-0 font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl sm:text-3xl tracking-tight">
-                          {b.prize}
+                        <span className="shrink-0 text-right">
+                          <span className="block font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl sm:text-3xl tracking-tight">
+                            {b.prize}
+                          </span>
+                          {b.unit && (
+                            <span className="block text-white/50 text-[10px] font-semibold tracking-[0.16em] uppercase">
+                              {b.unit}
+                            </span>
+                          )}
                         </span>
                       </li>
                     ))}

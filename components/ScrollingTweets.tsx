@@ -50,13 +50,23 @@ function Card({ tweet }: { tweet: TweetCard }) {
   );
 }
 
-function Row({ tweets, direction }: { tweets: TweetCard[]; direction: "left" | "right" }) {
+/** `fade` is the Tailwind gradient stop matching the background behind the
+ *  rows, so cards dissolve into it at the edges. */
+function Row({
+  tweets,
+  direction,
+  fade,
+}: {
+  tweets: TweetCard[];
+  direction: "left" | "right";
+  fade: string;
+}) {
   const doubled = [...tweets, ...tweets];
   return (
     <div className="relative overflow-hidden">
       {/* Fade overlays */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F4F3EF] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F4F3EF] to-transparent z-10 pointer-events-none" />
+      <div className={`absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r ${fade} to-transparent z-10 pointer-events-none`} />
+      <div className={`absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l ${fade} to-transparent z-10 pointer-events-none`} />
       <div
         className={`flex ${direction === "left" ? "animate-scroll-left" : "animate-scroll-right"}`}
         style={{ width: "max-content" }}
@@ -69,15 +79,21 @@ function Row({ tweets, direction }: { tweets: TweetCard[]; direction: "left" | "
   );
 }
 
-export default function ScrollingTweets({ tweets }: { tweets: TweetCard[] }) {
+export default function ScrollingTweets({
+  tweets,
+  fade = "from-[#F4F3EF]",
+}: {
+  tweets: TweetCard[];
+  fade?: string;
+}) {
   const mid = Math.ceil(tweets.length / 2);
   const row1 = tweets.slice(0, mid);
   const row2 = tweets.slice(mid);
 
   return (
     <div className="space-y-4">
-      <Row tweets={row1} direction="left" />
-      <Row tweets={row2} direction="right" />
+      <Row tweets={row1} direction="left" fade={fade} />
+      <Row tweets={row2} direction="right" fade={fade} />
     </div>
   );
 }

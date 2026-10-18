@@ -3,113 +3,139 @@
 import { useState } from "react";
 import Image from "next/image";
 
+/** `widescreen` episodes have letterboxed YouTube thumbnails, so they're
+ *  scaled up to crop the bars. */
 const episodes = [
-  { id: "ZPfEsIBZUS4", episode: "Episode 01", title: "", comingSoon: false, widescreen: true },
-  { id: "7z48yaaV-xs", episode: "Episode 02", title: "", comingSoon: false, widescreen: true },
-  { id: "ifz_9FkFwrw", episode: "Episode 03", title: "", comingSoon: false, widescreen: false },
+  { id: "ZPfEsIBZUS4", episode: "Episode 01", widescreen: true },
+  { id: "7z48yaaV-xs", episode: "Episode 02", widescreen: true },
+  { id: "ifz_9FkFwrw", episode: "Episode 03", widescreen: false },
 ];
 
-function EpisodeCard({ id, episode, title, comingSoon, widescreen }: typeof episodes[number]) {
-  const [playing, setPlaying] = useState(false);
-  const [thumbSrc, setThumbSrc] = useState(`https://img.youtube.com/vi/${id}/maxresdefault.jpg`);
+type Episode = (typeof episodes)[number];
 
-  if (comingSoon) {
-    return (
-      <div className="flex flex-col gap-3">
-        <div
-          className="relative w-full rounded-2xl overflow-hidden bg-[#293C4B]/8 border border-[#293C4B]/10"
-          style={{ paddingTop: "56.25%" }}
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full border border-[#293C4B]/15 flex items-center justify-center">
-              <svg className="w-4 h-4 text-[#293C4B]/25" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-              </svg>
-            </div>
-            <span className="text-[#293C4B]/30 text-sm font-medium">Coming Soon</span>
-          </div>
-        </div>
-        <div>
-          <p className="text-[#EC8644] text-xs font-medium uppercase tracking-widest">{episode}</p>
-          <p className="text-[#293C4B] text-sm font-medium mt-0.5">{title}</p>
-        </div>
-      </div>
-    );
-  }
-
+function Thumb({ ep, sizes }: { ep: Episode; sizes: string }) {
+  const [src, setSrc] = useState(`https://img.youtube.com/vi/${ep.id}/maxresdefault.jpg`);
   return (
-    <div className="flex flex-col gap-3">
-      <div
-        className="relative w-full rounded-2xl overflow-hidden shadow-lg shadow-black/20 cursor-pointer group"
-        style={{ paddingTop: "56.25%" }}
-        onClick={() => setPlaying(true)}
-      >
-        {playing ? (
-          <iframe
-            src={`https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
-            className="absolute inset-0 w-full h-full"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title={title}
-          />
-        ) : (
-          <>
-            <Image
-              src={thumbSrc}
-              alt={episode}
-              fill
-              className={`object-cover transition-transform duration-0 ${widescreen ? "scale-[1.35]" : ""}`}
-              unoptimized
-              onError={() => setThumbSrc(`https://img.youtube.com/vi/${id}/hqdefault.jpg`)}
-            />
-            {/* dark scrim */}
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-200" />
-            {/* play button */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-white/90 group-hover:bg-white flex items-center justify-center shadow-lg transition-all duration-200 group-hover:scale-105">
-                <svg className="w-6 h-6 text-[#293C4B] ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      <div>
-        <p className="text-[#EC8644] text-xs font-medium uppercase tracking-widest">{episode}</p>
-        <p className="text-[#293C4B] text-sm font-medium mt-0.5">{title}</p>
-      </div>
-    </div>
+    <Image
+      src={src}
+      alt={ep.episode}
+      fill
+      sizes={sizes}
+      className={`object-cover ${ep.widescreen ? "scale-[1.35]" : ""}`}
+      unoptimized
+      onError={() => setSrc(`https://img.youtube.com/vi/${ep.id}/hqdefault.jpg`)}
+    />
   );
 }
 
-export default function Videos() {
+function PlayIcon({ className }: { className: string }) {
   return (
-    <section className="bg-[#F4F3EF] py-16 sm:py-20">
-      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="block w-6 h-[2px] bg-[#EC8644]" />
-          <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
-            Original Series
-          </span>
-        </div>
-        <div className="flex items-end justify-between mb-10 gap-6">
-          <h2
-            className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
-            style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
-          >
-            The UBC Sitcom
-          </h2>
-        </div>
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  );
+}
 
-        {/* Episodes */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          {episodes.map((ep) => (
-            <EpisodeCard key={ep.episode} {...ep} />
-          ))}
+/** The UBC Sitcom as a little TV: one big screen and an episode guide. */
+export default function Sitcom() {
+  const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const ep = episodes[current];
+
+  return (
+    <div className="grid lg:grid-cols-[1fr_300px] gap-4 sm:gap-5">
+      {/* Screen */}
+      <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-2.5 sm:p-3">
+        <div className="relative aspect-video rounded-2xl overflow-hidden bg-black">
+          {playing ? (
+            <iframe
+              key={ep.id}
+              src={`https://www.youtube.com/embed/${ep.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+              className="absolute inset-0 w-full h-full"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title={`The UBC Sitcom, ${ep.episode}`}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              className="group absolute inset-0 w-full h-full text-left"
+              aria-label={`Play ${ep.episode}`}
+            >
+              <Thumb key={ep.id} ep={ep} sizes="(max-width: 1024px) 100vw, 900px" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/10 to-black/10 group-hover:via-black/20 transition-colors" />
+              <div className="absolute inset-0 grid place-items-center">
+                <span className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#EC8644] text-white grid place-items-center shadow-2xl shadow-black/40 transition-transform duration-200 group-hover:scale-110">
+                  <PlayIcon className="w-7 h-7 sm:w-8 sm:h-8 ml-1" />
+                </span>
+              </div>
+              <div className="hidden sm:block absolute left-6 top-5">
+                <div>
+                  <p className="text-[#EC8644] text-[11px] font-semibold tracking-[0.2em] uppercase">
+                    Now showing
+                  </p>
+                  <p className="font-[var(--font-zuume)] font-black text-white text-2xl sm:text-4xl tracking-tight leading-none mt-1">
+                    {ep.episode}
+                  </p>
+                </div>
+              </div>
+            </button>
+          )}
         </div>
       </div>
-    </section>
+
+      {/* Episode guide */}
+      <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-4 sm:p-5 flex flex-col">
+        <p className="text-white/40 text-[11px] font-semibold tracking-[0.2em] uppercase px-1 mb-3">
+          Episode guide
+        </p>
+        <ul className="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
+          {episodes.map((e, i) => {
+            const active = i === current;
+            return (
+              <li key={e.id}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrent(i);
+                    setPlaying(true);
+                  }}
+                  aria-current={active}
+                  className={`w-full flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 rounded-2xl p-1.5 lg:p-2 text-left transition-colors ${
+                    active ? "bg-white/[0.12] ring-1 ring-[#EC8644]/70" : "hover:bg-white/[0.07]"
+                  }`}
+                >
+                  <span className="relative block w-full lg:w-28 aspect-video rounded-xl overflow-hidden shrink-0 bg-black">
+                    <Thumb ep={e} sizes="160px" />
+                    {active && (
+                      <span className="absolute inset-0 grid place-items-center bg-black/35">
+                        <PlayIcon className="w-5 h-5 text-white" />
+                      </span>
+                    )}
+                  </span>
+                  <span className="px-1 lg:px-0 pb-1 lg:pb-0">
+                    <span className={`block font-[var(--font-zuume)] font-black text-base sm:text-xl tracking-tight leading-none ${active ? "text-[#EC8644]" : "text-white"}`}>
+                      {e.episode.replace("Episode ", "Ep. ")}
+                    </span>
+                    <span className="hidden lg:block text-white/40 text-xs mt-1">
+                      {active && playing ? "Now playing" : "Watch"}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <a
+          href={`https://www.youtube.com/watch?v=${ep.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden lg:inline-flex mt-auto pt-5 px-1 items-center gap-2 text-white/50 text-xs font-semibold hover:text-white transition-colors"
+        >
+          Watch on YouTube →
+        </a>
+      </div>
+    </div>
   );
 }
