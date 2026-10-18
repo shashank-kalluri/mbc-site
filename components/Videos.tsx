@@ -45,7 +45,7 @@ export default function Sitcom() {
   return (
     <div className="grid lg:grid-cols-[1fr_300px] gap-4 sm:gap-5">
       {/* Screen */}
-      <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-2.5 sm:p-3">
+      <div className="rounded-3xl bg-white p-2.5 sm:p-3 shadow-[0_24px_60px_-30px_rgba(26,42,54,0.45)]">
         <div className="relative aspect-video rounded-2xl overflow-hidden bg-black">
           {playing ? (
             <iframe
@@ -86,8 +86,8 @@ export default function Sitcom() {
       </div>
 
       {/* Episode guide */}
-      <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-4 sm:p-5 flex flex-col">
-        <p className="text-white/40 text-[11px] font-semibold tracking-[0.2em] uppercase px-1 mb-3">
+      <div className="rounded-3xl bg-white p-4 sm:p-5 flex flex-col">
+        <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.2em] uppercase px-1 mb-3">
           Episode guide
         </p>
         <ul className="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
@@ -103,7 +103,7 @@ export default function Sitcom() {
                   }}
                   aria-current={active}
                   className={`w-full flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 rounded-2xl p-1.5 lg:p-2 text-left transition-colors ${
-                    active ? "bg-white/[0.12] ring-1 ring-[#EC8644]/70" : "hover:bg-white/[0.07]"
+                    active ? "bg-[#F4F3EF] ring-1 ring-[#EC8644]/70" : "hover:bg-[#F4F3EF]"
                   }`}
                 >
                   <span className="relative block w-full lg:w-28 aspect-video rounded-xl overflow-hidden shrink-0 bg-black">
@@ -115,10 +115,10 @@ export default function Sitcom() {
                     )}
                   </span>
                   <span className="px-1 lg:px-0 pb-1 lg:pb-0">
-                    <span className={`block font-[var(--font-zuume)] font-black text-base sm:text-xl tracking-tight leading-none ${active ? "text-[#EC8644]" : "text-white"}`}>
+                    <span className={`block font-[var(--font-zuume)] font-black text-base sm:text-xl tracking-tight leading-none ${active ? "text-[#EC8644]" : "text-[#293C4B]"}`}>
                       {e.episode.replace("Episode ", "Ep. ")}
                     </span>
-                    <span className="hidden lg:block text-white/40 text-xs mt-1">
+                    <span className="hidden lg:block text-[#9CADB7] text-xs mt-1">
                       {active && playing ? "Now playing" : "Watch"}
                     </span>
                   </span>
@@ -131,7 +131,7 @@ export default function Sitcom() {
           href={`https://www.youtube.com/watch?v=${ep.id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden lg:inline-flex mt-auto pt-5 px-1 items-center gap-2 text-white/50 text-xs font-semibold hover:text-white transition-colors"
+          className="hidden lg:inline-flex mt-auto pt-5 px-1 items-center gap-2 text-[#5A6B78] text-xs font-semibold hover:text-[#EC8644] transition-colors"
         >
           Watch on YouTube →
         </a>

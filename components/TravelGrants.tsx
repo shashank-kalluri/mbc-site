@@ -453,12 +453,8 @@ export default function TravelGrants() {
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <Reveal>
             <Eyebrow>How much</Eyebrow>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div className="mb-10">
               <SectionTitle>Your ticket to Austin</SectionTitle>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
-                Your max depends on where you&rsquo;re coming from and whether you enter one of
-                our competitions.
-              </p>
             </div>
           </Reveal>
 
@@ -645,12 +641,9 @@ export default function TravelGrants() {
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      {REFERRAL_REWARDS.map((r, i) => (
-                        <motion.div
+                      {REFERRAL_REWARDS.map((r) => (
+                        <div
                           key={r.count}
-                          initial={{ rotate: i % 2 ? 1.5 : -1.5 }}
-                          whileHover={reduce ? undefined : { rotate: 0, y: -4 }}
-                          transition={{ type: "spring", stiffness: 260, damping: 18 }}
                           className={`rounded-2xl p-5 sm:p-6 ${
                             r.highlight
                               ? "bg-[#EC8644] text-white"
@@ -670,7 +663,7 @@ export default function TravelGrants() {
                           >
                             {r.count}
                           </p>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                     <p className="text-white/55 text-xs leading-relaxed mt-5">

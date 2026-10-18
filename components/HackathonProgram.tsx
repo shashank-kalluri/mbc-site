@@ -290,17 +290,14 @@ function TrackArt({ kind }: { kind: TrackArtKind }) {
   }
 
   if (kind === "defi") {
+    // Blocks step down and to the right, each one building on the last.
     const blocks = [
-      { label: "Swap", dot: "bg-[#EC8644]", x: "left-4", y: "top-4" },
-      { label: "Lend", dot: "bg-[#293C4B]", x: "left-[30%]", y: "top-[2.6rem]" },
-      { label: "Yield", dot: "bg-[#9CADB7]", x: "left-[54%]", y: "top-[5.2rem]" },
+      { label: "Swap", dot: "bg-[#EC8644]", indent: "ml-0" },
+      { label: "Lend", dot: "bg-[#293C4B]", indent: "ml-[18%]" },
+      { label: "Yield", dot: "bg-[#9CADB7]", indent: "ml-[36%]" },
     ];
     return (
-      <div className="relative h-full rounded-2xl bg-[#F4F3EF] overflow-hidden">
-        {/* Connector the blocks snap along */}
-        <svg viewBox="0 0 100 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" aria-hidden>
-          <path d="M 18 14 L 48 32 L 78 50" fill="none" stroke="#293C4B" strokeOpacity="0.15" strokeWidth="1" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" />
-        </svg>
+      <div className="h-full rounded-2xl bg-[#F4F3EF] overflow-hidden flex flex-col justify-center gap-2.5 px-4">
         {blocks.map((b, i) => (
           <motion.span
             key={b.label}
@@ -308,7 +305,7 @@ function TrackArt({ kind }: { kind: TrackArtKind }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 + i * 0.25, type: "spring", stiffness: 260, damping: 18 }}
-            className={`absolute ${b.x} ${b.y} inline-flex items-center gap-2 rounded-xl bg-white px-3.5 py-2 text-[13px] font-semibold shadow-[0_8px_18px_-10px_rgba(26,42,54,0.45)]`}
+            className={`self-start ${b.indent} inline-flex items-center gap-2 rounded-xl bg-white px-3.5 py-2 text-[13px] font-semibold shadow-[0_8px_18px_-10px_rgba(26,42,54,0.45)]`}
           >
             <span className={`w-2.5 h-2.5 rounded-[4px] ${b.dot}`} />
             {b.label}
