@@ -6,12 +6,15 @@ import { Caveat } from "next/font/google";
 import Marquee from "react-fast-marquee";
 import FAQ from "@/components/FAQ";
 import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
-import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Info } from "lucide-react";
+import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, TriangleAlert, Check } from "lucide-react";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
 /** Sign-up and the kickoff / tools-demo calls all run through this Luma event. */
 const SIGNUP_URL = "https://luma.com/z1bgn7z8";
+/** Full competition memo: tracks, format, report structure, and judging. */
+const MEMO_URL =
+  "https://docs.google.com/document/d/1n_DFfKbDEzRWKLzivAMEYfUhppSXo_ZRtOPZiMajqug/edit?usp=sharing";
 /** Competition chat. Join after signing up on Luma. */
 const TELEGRAM_URL = "https://t.me/+AN2V5Da8qh9mYmVh";
 /** Main UBC 2026 registration. Only attendees can compete. */
@@ -69,22 +72,46 @@ const STAGES = [
   {
     Icon: FileText,
     title: "Written report",
-    body: "Write an investment thesis of up to 5 pages on one asset in your track.",
+    body: "Write an investment thesis of up to 5 pages on one asset in your track. The top 3 reports in each track move on to the finals.",
     when: "Due Nov 9 at 11:59 PM ET",
   },
   {
     Icon: Mic,
     title: "Live pitch",
-    body: "The top 3 teams in each track present at UBC. You get 5 minutes to pitch, followed by 5 minutes of questions from the judges.",
+    body: "Finalists present their thesis at UBC with a slide deck based on their report. You get 5 minutes to pitch, with a hard stop, followed by 5 minutes of questions from the judges.",
     when: "Nov 20 at UT Austin",
   },
+];
+
+const REPORT_SECTIONS = [
+  {
+    title: "Title page",
+    body: "The report title, your track, your team members' names, your school, and contact information.",
+  },
+  { title: "Executive summary", body: "One page covering your key findings and investment thesis." },
+  {
+    title: "Project overview",
+    body: "The project's value proposition or narrative, product design, team, market, traction, token assessment, upcoming catalysts, and risks.",
+  },
+  {
+    title: "Investment proposal",
+    body: "Whether you're going long or short, your time horizon, and your price target for exiting.",
+  },
+  { title: "Conclusion", body: "Your final thoughts, summarizing the analysis." },
+  { title: "References", body: "Every data source, report, and reference you used." },
+];
+
+const CRITERIA = [
+  "Whether your thesis holds up",
+  "How thorough and well thought out your research is",
+  "How clearly you communicate it",
 ];
 
 const DATES = [
   { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET on Google Meet. We go over the tracks and rules and answer your questions." },
   { date: "Oct 29", title: "Research tools demo", note: "8 PM ET. A walkthrough of Blockworks and Allium." },
-  { date: "Nov 9", title: "Reports due", note: "Submit by 11:59 PM ET." },
-  { date: "Nov 16", title: "Finalists announced", note: "The top 3 teams in each track move on." },
+  { date: "Nov 9", title: "Reports due", note: "Submit by 11:59 PM ET. Judging runs through Nov 15." },
+  { date: "Nov 16", title: "Finalists announced", note: "The top 3 teams in each track are told they're presenting." },
   { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch in person in Austin." },
   { date: "Nov 21", title: "Winners announced", note: "At the UBC closing ceremony." },
 ];
@@ -125,7 +152,18 @@ const RESEARCH_FAQ = [
   {
     question: "What goes in the written report?",
     answer:
-      "An investment thesis of up to 5 pages, due Nov 9 at 11:59 PM ET. We'll share the exact submission requirements and judging criteria after the kickoff town hall on Oct 22.",
+      "A title page, a one-page executive summary, a project overview, your investment proposal, a conclusion, and references. The main text can be up to 5 pages, not counting the title page, appendix, and references. The memo has the full breakdown.",
+    link: { href: MEMO_URL, label: "Read the competition memo" },
+  },
+  {
+    question: "Where do I submit my report?",
+    answer:
+      "Reports are due Nov 9 at 11:59 PM ET and are submitted through the college.xyz website or the submission form on the UBC website. We'll share the link in the Telegram group before the deadline.",
+  },
+  {
+    question: "Can I use AI?",
+    answer:
+      "Reports that are overly AI-generated will be disqualified, so make sure the thesis and the writing are your team's own.",
   },
   {
     question: "How are finalists picked?",
@@ -195,6 +233,14 @@ function CtaButtons() {
         className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
       >
         Sign up on Luma <ArrowUpRight size={17} />
+      </a>
+      <a
+        href={MEMO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white text-[#293C4B] text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/90 transition-colors shadow-lg shadow-black/20"
+      >
+        <FileText size={17} /> Read the memo
       </a>
       <a
         href={TELEGRAM_URL}
@@ -430,23 +476,109 @@ export default function ResearchCompetitionProgram() {
                     </li>
                   ))}
                 </ol>
-                <div className="mt-auto space-y-2">
-                  <div className="flex items-start gap-4 rounded-2xl bg-[#EC8644]/10 p-5">
-                    <Info size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
-                    <p className="text-[#5A6B78] text-sm leading-relaxed">
-                      <span className="text-[#293C4B] font-semibold">More details are coming.</span>{" "}
-                      We&rsquo;ll share the exact submission requirements and judging criteria
-                      after the kickoff town hall on Oct 22.
+                <div className="mt-auto flex items-start gap-4 rounded-2xl bg-[#F4F3EF] p-5">
+                  <Wrench size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
+                  <p className="text-[#5A6B78] text-sm leading-relaxed">
+                    <span className="text-[#293C4B] font-semibold">Free research tools.</span>{" "}
+                    You&rsquo;ll get limited access to Blockworks and Allium while the competition
+                    runs. We&rsquo;ll show you how to claim it on the Oct 29 demo call.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- The report ---------- */}
+      <section className="pt-20 sm:pt-28">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <Reveal>
+            <Eyebrow>The report</Eyebrow>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+              <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
+                What goes in your report
+              </h2>
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md">
+                The main text can be up to 5 pages, not counting the title page, appendix, and
+                references. Charts in the main text count toward the limit, so move them to the
+                appendix if you need room.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-10 items-start">
+            {/* A sheet of paper with the report outline on it */}
+            <Reveal>
+              <motion.div
+                initial={{ rotate: -1.2 }}
+                whileHover={reduce ? undefined : { rotate: 0, y: -4 }}
+                transition={{ type: "spring", stiffness: 220, damping: 20 }}
+                className="relative bg-white rounded-md p-7 sm:p-10 shadow-[0_24px_48px_-24px_rgba(26,42,54,0.45)]"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#EC8644]/35 rotate-[-3deg]"
+                />
+                <div className="flex items-baseline justify-between gap-4 border-b-2 border-[#293C4B] pb-3 mb-2">
+                  <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight">
+                    Contents
+                  </p>
+                  <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase">
+                    5 pages max
+                  </p>
+                </div>
+                <ol className="divide-y divide-dashed divide-[#293C4B]/15">
+                  {REPORT_SECTIONS.map((r, i) => (
+                    <li key={r.title} className="flex gap-5 py-4">
+                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-xl tracking-tight w-6 shrink-0">
+                        {i + 1}.
+                      </span>
+                      <div>
+                        <h3 className="text-[#293C4B] font-semibold">{r.title}</h3>
+                        <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-0.5">{r.body}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </motion.div>
+            </Reveal>
+
+            <Reveal i={1} className="lg:mt-6">
+              <div className="relative bg-[#1A2A36] rounded-3xl p-8 sm:p-10 overflow-hidden">
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 70% 60% at 100% 0%, rgba(236,134,68,0.22) 0%, rgba(236,134,68,0) 70%)",
+                  }}
+                />
+                <div className="relative">
+                  <Eyebrow>How reports are judged</Eyebrow>
+                  <ul className="space-y-3 mt-5">
+                    {CRITERIA.map((c) => (
+                      <li key={c} className="flex items-start gap-3">
+                        <span className="mt-0.5 grid place-items-center w-5 h-5 rounded-full bg-[#EC8644] text-white shrink-0">
+                          <Check size={12} strokeWidth={3} />
+                        </span>
+                        <p className="text-white text-[15px] leading-snug">{c}</p>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-start gap-3 rounded-2xl bg-white/[0.06] border border-white/10 p-4 mt-8">
+                    <TriangleAlert size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      Reports that are overly AI-generated will be disqualified.
                     </p>
                   </div>
-                  <div className="flex items-start gap-4 rounded-2xl bg-[#F4F3EF] p-5">
-                    <Wrench size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
-                    <p className="text-[#5A6B78] text-sm leading-relaxed">
-                      <span className="text-[#293C4B] font-semibold">Free research tools.</span>{" "}
-                      You&rsquo;ll get limited access to Blockworks and Allium while the competition
-                      runs. We&rsquo;ll show you how to claim it on the Oct 29 demo call.
-                    </p>
-                  </div>
+                  <a
+                    href={MEMO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 mt-8 text-[#EC8644] text-sm font-semibold hover:underline underline-offset-4"
+                  >
+                    <FileText size={16} /> Read the full memo <ArrowUpRight size={15} />
+                  </a>
                 </div>
               </div>
             </Reveal>
