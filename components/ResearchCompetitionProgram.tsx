@@ -1,6 +1,5 @@
 "use client";
 
-import { useId } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { Caveat } from "next/font/google";
@@ -261,7 +260,6 @@ function CtaButtons() {
 
 /** Locked until SUBMIT_URL is set. `dark` styles it for the navy CTA panel. */
 function SubmitButton({ dark = false }: { dark?: boolean }) {
-  const tipId = useId();
   const base =
     "inline-flex items-center gap-2 shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full";
   if (SUBMIT_URL) {
@@ -276,31 +274,38 @@ function SubmitButton({ dark = false }: { dark?: boolean }) {
       </a>
     );
   }
+  // Both labels share one grid cell, so the button stays the width of the
+  // longer one while they cross-fade on hover or keyboard focus.
+  const swap = "col-start-1 row-start-1 flex items-center gap-2 transition-all duration-300 ease-out";
   return (
     <span
       role="button"
       tabIndex={0}
       aria-disabled="true"
-      aria-describedby={tipId}
-      className={`group relative ${base} cursor-not-allowed select-none border border-dashed outline-none ${
+      aria-label="Submit your report. Submission link opening soon."
+      className={`group ${base} cursor-not-allowed select-none border border-dashed outline-none ${
         dark ? "border-white/30 text-white/45" : "border-[#293C4B]/25 text-[#293C4B]/45"
       }`}
     >
-      <span
-        id={tipId}
-        role="tooltip"
-        className="pointer-events-none absolute left-1/2 bottom-full mb-2.5 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-full bg-[#EC8644] text-white text-xs font-semibold px-3.5 py-1.5 shadow-lg opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0"
-      >
-        Submission link opening soon
-        <span className="absolute left-1/2 top-full -translate-x-1/2 border-[5px] border-transparent border-t-[#EC8644]" />
-      </span>
-      <Lock size={15} /> Submit your report
-      <span
-        className={`text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full ${
-          dark ? "bg-white/10 text-white/60" : "bg-[#293C4B]/[0.06] text-[#293C4B]/60"
-        }`}
-      >
-        Link TBD
+      <Lock size={15} className="shrink-0" />
+      <span className="grid overflow-hidden" aria-hidden>
+        <span
+          className={`${swap} group-hover:-translate-y-full group-hover:opacity-0 group-focus-visible:-translate-y-full group-focus-visible:opacity-0`}
+        >
+          Submit your report
+          <span
+            className={`text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full ${
+              dark ? "bg-white/10 text-white/60" : "bg-[#293C4B]/[0.06] text-[#293C4B]/60"
+            }`}
+          >
+            Link TBD
+          </span>
+        </span>
+        <span
+          className={`${swap} translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100`}
+        >
+          Submission link opening soon
+        </span>
       </span>
     </span>
   );
