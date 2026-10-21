@@ -2,9 +2,13 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import { Caveat } from "next/font/google";
+import Marquee from "react-fast-marquee";
 import FAQ from "@/components/FAQ";
 import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
-import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench } from "lucide-react";
+import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Info } from "lucide-react";
+
+const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
 /** Sign-up and the kickoff / tools-demo calls all run through this Luma event. */
 const SIGNUP_URL = "https://luma.com/z1bgn7z8";
@@ -13,12 +17,15 @@ const TELEGRAM_URL = "https://t.me/+AN2V5Da8qh9mYmVh";
 /** Main UBC 2026 registration. Only attendees can compete. */
 const UBC_REGISTER_URL = "https://luma.com/n4ad0k9m";
 
+const LOGO_BASE =
+  "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos";
+
 const TRACKS = [
   {
     Icon: TrendingUp,
     side: "Long",
     cap: "Under $250M",
-    body: "Find a small-cap asset the market is missing and make the case for owning it.",
+    body: "Pick an asset with a circulating market cap under $250M and explain why it's worth buying.",
     card: "bg-[#EC8644] text-white",
     muted: "text-white/75",
     chip: "bg-white/20 text-white",
@@ -28,7 +35,7 @@ const TRACKS = [
     Icon: TrendingUp,
     side: "Long",
     cap: "Over $250M",
-    body: "Pick an established asset and argue why it's still worth more than the market thinks.",
+    body: "Pick an asset with a circulating market cap over $250M and explain why it's worth buying.",
     card: "bg-[#1A2A36] text-white",
     muted: "text-white/60",
     chip: "bg-white/10 text-white/80",
@@ -38,7 +45,7 @@ const TRACKS = [
     Icon: TrendingDown,
     side: "Short",
     cap: "Over $1B",
-    body: "Take on a large-cap asset and show why it's overvalued.",
+    body: "Pick an asset with a circulating market cap over $1B and explain why it's overvalued.",
     card: "bg-white text-[#293C4B]",
     muted: "text-[#5A6B78]",
     chip: "bg-[#F4F3EF] text-[#293C4B]",
@@ -47,8 +54,8 @@ const TRACKS = [
 ];
 
 const TICKER = [
-  "Long small caps",
-  "Long large caps",
+  "Long under $250M",
+  "Long over $250M",
   "Short over $1B",
   "$10,000 prize pool",
   "Franklin Templeton",
@@ -60,34 +67,36 @@ const TICKER = [
 const STAGES = [
   {
     Icon: FileText,
-    title: "Written thesis",
-    body: "An investment thesis of up to 5 pages on one asset in your track.",
-    when: "Due Nov 9 · 11:59 PM ET",
+    title: "Written report",
+    body: "Write an investment thesis of up to 5 pages on one asset in your track.",
+    when: "Due Nov 9 at 11:59 PM ET",
   },
   {
     Icon: Mic,
     title: "Live pitch",
-    body: "The top 3 teams in each track pitch in person: 5 minutes, then 5 minutes of judge Q&A.",
-    when: "Nov 20 · UBC at UT Austin",
+    body: "The top 3 teams in each track present at UBC. You get 5 minutes to pitch, followed by 5 minutes of questions from the judges.",
+    when: "Nov 20 at UT Austin",
   },
 ];
 
 const DATES = [
-  { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET · competition opens, tracks and Q&A" },
-  { date: "Oct 29", title: "Tools demo", note: "8 PM ET · Blockworks and Allium walkthrough" },
-  { date: "Nov 9", title: "Reports due", note: "11:59 PM ET" },
-  { date: "Nov 16", title: "Finalists announced", note: "Top 3 per track" },
-  { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch live in Austin" },
-  { date: "Nov 21", title: "Winners", note: "Announced at the closing ceremony" },
+  { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET on Google Meet. We go over the tracks and rules and answer your questions." },
+  { date: "Oct 29", title: "Research tools demo", note: "8 PM ET. A walkthrough of Blockworks and Allium." },
+  { date: "Nov 9", title: "Reports due", note: "Submit by 11:59 PM ET." },
+  { date: "Nov 16", title: "Finalists announced", note: "The top 3 teams in each track move on." },
+  { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch in person in Austin." },
+  { date: "Nov 21", title: "Winners announced", note: "At the UBC closing ceremony." },
 ];
 
+/** `h` is the rendered height in px, tuned so wide wordmarks and stacked
+ *  marks read at a similar visual weight. */
 const JUDGES = [
-  "Franklin Templeton",
-  "No Limit Holdings",
-  "Collab + Currency",
-  "Blockworks",
-  "Portal Ventures",
-  "College.xyz",
+  { name: "Franklin Templeton", logo: `${LOGO_BASE}/ft.png`, h: 34 },
+  { name: "No Limit Holdings", logo: `${LOGO_BASE}/nlh.png`, h: 32 },
+  { name: "Collab + Currency", logo: "/judges/collab-currency.svg", h: 18 },
+  { name: "Blockworks", logo: "/judges/blockworks.svg", h: 24 },
+  { name: "Portal Ventures", logo: `${LOGO_BASE}/portal.png`, h: 34 },
+  { name: "College.xyz", logo: "/college-xyz.png", h: 20 },
 ];
 
 const PHOTOS = {
@@ -99,38 +108,38 @@ const RESEARCH_FAQ = [
   {
     question: "Who can compete?",
     answer:
-      "Students attending UBC 2026. Compete solo or in a team of up to 4, and each school can enter as many teams as it likes.",
+      "Any student attending UBC 2026. You can compete alone or in a team of up to 4, and there's no limit on how many teams can enter from one school.",
     link: { href: UBC_REGISTER_URL, label: "Register for UBC" },
   },
   {
     question: "How do I sign up?",
     answer:
-      "Register on the Luma event, then join the competition Telegram. That's where all updates and the call links go out.",
+      "Register on the Luma event, then join the competition's Telegram group. We post updates and call links there.",
     link: { href: SIGNUP_URL, label: "Sign up on Luma" },
   },
   {
     question: "Can I enter more than one track?",
-    answer: "No. Each team picks one track and pitches one asset.",
+    answer: "No. Each team enters one track and writes about one asset.",
   },
   {
     question: "What goes in the written report?",
     answer:
-      "An investment thesis of up to 5 pages on your asset, due Nov 9 at 11:59 PM ET. The kickoff town hall on Oct 22 covers exactly what to include and how it's judged.",
+      "An investment thesis of up to 5 pages, due Nov 9 at 11:59 PM ET. We'll share the exact submission requirements and judging criteria after the kickoff town hall on Oct 22.",
   },
   {
     question: "How are finalists picked?",
     answer:
-      "Judges score the written reports, and the top 3 teams in each track are announced on Nov 16. Finalists pitch in person at UBC on Nov 20.",
+      "The judges score every written report. The top 3 teams in each track are announced on Nov 16 and pitch in person at UBC on Nov 20.",
   },
   {
     question: "What research tools do I get?",
     answer:
-      "Free, limited access to Blockworks and Allium for the length of the competition. The Oct 29 demo call shows how to use them and how to claim access.",
+      "Limited free access to Blockworks and Allium while the competition runs. On the Oct 29 demo call, we'll show you how to use them and how to claim access.",
   },
   {
     question: "Do I need to be in Austin?",
     answer:
-      "You can research and write from anywhere, but you must attend UBC to compete. Finalists pitch in person on Nov 20.",
+      "You can work on your report from anywhere, but you have to attend UBC to compete. Finalists pitch in person on Nov 20.",
   },
 ];
 
@@ -263,9 +272,9 @@ export default function ResearchCompetitionProgram() {
                 animate="show"
                 className="text-white/65 text-base sm:text-lg leading-relaxed max-w-xl mt-7"
               >
-                Pick a track, write an investment thesis on one asset, and pitch it to judges from
-                Franklin Templeton and top crypto funds at UBC 2026. Franklin Templeton&rsquo;s
-                crypto division is putting up $10,000 for the winners.
+                Pick a track, write an investment thesis on one crypto asset, and pitch it to judges
+                from Franklin Templeton and top crypto funds at UBC 2026. Franklin Templeton&rsquo;s
+                crypto division is sponsoring $10,000 in prizes.
               </motion.p>
 
               <motion.div custom={3} variants={fadeUp} initial="hidden" animate="show" className="mt-8">
@@ -307,11 +316,11 @@ export default function ResearchCompetitionProgram() {
             <Eyebrow>The tracks</Eyebrow>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
-                Pick one. Pitch one asset.
+                Choose your track
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
-                Each track is split by circulating market cap. Your team picks one track and builds
-                its whole thesis around a single asset.
+                Each team enters one track and writes about one asset. The tracks are based on the
+                asset&rsquo;s circulating market cap.
               </p>
             </div>
           </Reveal>
@@ -371,18 +380,18 @@ export default function ResearchCompetitionProgram() {
                     $10,000
                   </p>
                   <p className="text-white text-base leading-relaxed mt-4 max-w-md">
-                    Sponsored by Franklin Templeton&rsquo;s crypto division. Win your track and you
-                    could take home $5,000.
+                    Franklin Templeton&rsquo;s crypto division is sponsoring the prizes. A team that
+                    wins its track and is also named the best overall takes home $5,000.
                   </p>
                   <ul className="mt-auto pt-8 space-y-2">
                     <li className="flex items-center justify-between gap-4 rounded-2xl bg-white/15 px-5 py-4">
-                      <span className="text-white font-semibold">Each track winner</span>
+                      <span className="text-white font-semibold">Winner of each track</span>
                       <span className="font-[var(--font-zuume)] font-black text-white text-2xl sm:text-3xl tracking-tight">
                         $2,500
                       </span>
                     </li>
                     <li className="flex items-center justify-between gap-4 rounded-2xl bg-[#1A2A36] px-5 py-4">
-                      <span className="text-white font-semibold">Top team across all tracks</span>
+                      <span className="text-white font-semibold">Bonus for the best team overall</span>
                       <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl sm:text-3xl tracking-tight">
                         +$2,500
                       </span>
@@ -396,11 +405,11 @@ export default function ResearchCompetitionProgram() {
               <div className="h-full bg-white rounded-3xl p-8 sm:p-10 flex flex-col">
                 <Eyebrow>How it works</Eyebrow>
                 <h2 className={`${H2} mb-2`} style={{ fontSize: "clamp(28px, 3vw, 40px)" }}>
-                  Write it, then defend it
+                  Two rounds
                 </h2>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed">
-                  Teams of 1–4 students. Go solo if you like, and your school can enter as many
-                  teams as it wants.
+                  You can compete on your own or in a team of up to 4 students. There&rsquo;s no
+                  limit on how many teams can enter from the same school.
                 </p>
                 <ol className="divide-y divide-[#293C4B]/10 mt-4">
                   {STAGES.map((s, i) => (
@@ -420,13 +429,23 @@ export default function ResearchCompetitionProgram() {
                     </li>
                   ))}
                 </ol>
-                <div className="mt-auto flex items-start gap-4 rounded-2xl bg-[#F4F3EF] p-5">
-                  <Wrench size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
-                  <p className="text-[#5A6B78] text-sm leading-relaxed">
-                    <span className="text-[#293C4B] font-semibold">Free research tools.</span>{" "}
-                    Limited access to Blockworks and Allium for the whole competition. Learn how to
-                    claim it on the Oct 29 demo call.
-                  </p>
+                <div className="mt-auto space-y-2">
+                  <div className="flex items-start gap-4 rounded-2xl bg-[#EC8644]/10 p-5">
+                    <Info size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
+                    <p className="text-[#5A6B78] text-sm leading-relaxed">
+                      <span className="text-[#293C4B] font-semibold">More details are coming.</span>{" "}
+                      We&rsquo;ll share the exact submission requirements and judging criteria
+                      after the kickoff town hall on Oct 22.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-4 rounded-2xl bg-[#F4F3EF] p-5">
+                    <Wrench size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
+                    <p className="text-[#5A6B78] text-sm leading-relaxed">
+                      <span className="text-[#293C4B] font-semibold">Free research tools.</span>{" "}
+                      You&rsquo;ll get limited access to Blockworks and Allium while the competition
+                      runs. We&rsquo;ll show you how to claim it on the Oct 29 demo call.
+                    </p>
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -441,11 +460,11 @@ export default function ResearchCompetitionProgram() {
             <Reveal>
               <Eyebrow>Key dates</Eyebrow>
               <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
-                Kickoff to closing ceremony
+                From kickoff to finals
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
-                Research from anywhere, then bring your thesis to Austin. Both calls are linked
-                from the Luma event.
+                You can do your research from anywhere. Links to both calls are on the Luma
+                event.
               </p>
             </Reveal>
             <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
@@ -498,25 +517,58 @@ export default function ResearchCompetitionProgram() {
       {/* ---------- Judges ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <div className="bg-white rounded-3xl p-8 sm:p-10">
-              <Eyebrow>The judges</Eyebrow>
-              <h2 className={`${H2} mb-8`} style={{ fontSize: "clamp(28px, 3vw, 40px)" }}>
-                Pitch to the people who invest for a living
-              </h2>
-              <ul className="flex flex-wrap gap-2.5">
-                {JUDGES.map((j) => (
-                  <li
-                    key={j}
-                    className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl sm:text-2xl tracking-tight rounded-full border border-[#293C4B]/15 px-5 py-2"
-                  >
-                    {j}
-                  </li>
-                ))}
-              </ul>
+          <Reveal className="relative flex items-end justify-between gap-6">
+            <Eyebrow>Judged by</Eyebrow>
+            {/* Scribbled note pointing down at the logo band */}
+            <div aria-hidden className="hidden sm:flex items-end gap-1 text-[#EC8644] pointer-events-none -mb-6 mr-4 lg:mr-24">
+              <span className={`${handwriting.className} text-[#293C4B] text-[26px] leading-none -rotate-3 mb-12`}>
+                the people you&rsquo;ll pitch to
+              </span>
+              <svg viewBox="0 0 90 80" className="w-[72px] h-[64px]">
+                <path
+                  d="M 10 6 C 40 2, 70 14, 56 30 C 46 42, 32 30, 46 24 C 66 16, 74 46, 62 72"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M 62 72 L 54 60 M 62 72 L 72 62"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
           </Reveal>
         </div>
+
+        <Reveal className="relative -mx-4 mt-6">
+          <div className="rotate-[1.5deg] bg-white py-7 sm:py-9 shadow-[0_24px_48px_-28px_rgba(26,42,54,0.45)]">
+            <Marquee autoFill pauseOnHover speed={35} play={!reduce}>
+              {JUDGES.map((j) => (
+                <span key={j.name} className="flex items-center">
+                  <Image
+                    src={j.logo}
+                    alt={j.name}
+                    title={j.name}
+                    width={240}
+                    height={j.h}
+                    style={{ height: j.h }}
+                    className="w-auto"
+                    unoptimized
+                  />
+                  <span className="mx-10 sm:mx-14 text-[#EC8644] text-lg" aria-hidden>
+                    ✦
+                  </span>
+                </span>
+              ))}
+            </Marquee>
+          </div>
+        </Reveal>
       </section>
 
       <FAQ items={RESEARCH_FAQ} />
@@ -543,7 +595,7 @@ export default function ResearchCompetitionProgram() {
                   Make your call<span className="text-[#EC8644]">.</span>
                 </h2>
                 <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
-                  Sign up on Luma, then join the Telegram for updates. You&rsquo;ll need to be
+                  Sign up on Luma and join the Telegram group for updates. You also need to be
                   registered for UBC 2026 to compete.
                 </p>
                 <div className="mt-9">
