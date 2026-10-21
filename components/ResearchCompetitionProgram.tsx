@@ -59,6 +59,7 @@ const TICKER = [
   "Short over $1B",
   "$10,000 prize pool",
   "Franklin Templeton",
+  "No Limit Holdings",
   "Blockworks",
   "Allium",
   "Finals at UT Austin",
