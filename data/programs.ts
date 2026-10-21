@@ -43,12 +43,12 @@ export const programs: ProgramMeta[] = [
   {
     slug: "research-competition",
     name: "Research Competition",
-    tagline: "Franklin Templeton Research Competition",
+    tagline: "Franklin Crypto · $10,000 prize pool",
     description:
-      "Submit original research and present your findings to industry judges at UBC 2026.",
-    detail: "Details coming soon",
+      "Write an investment thesis on one crypto asset, then pitch it live to judges from Franklin Templeton and top funds at UBC 2026.",
+    detail: "Reports due Nov 9",
     image: "/photos/research-talk.jpg",
-    status: "coming-soon",
+    status: "live",
   },
 ];
 

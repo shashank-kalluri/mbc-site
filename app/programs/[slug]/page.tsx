@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import FounderStage from "@/components/FounderStage";
 import HackathonProgram from "@/components/HackathonProgram";
-import { ResearchCompetitionProgram } from "@/components/ResearchCompetitionProgram";
+import ResearchCompetitionProgram from "@/components/ResearchCompetitionProgram";
 import { getProgram, livePrograms } from "@/data/programs";
 
 const COMPONENTS: Record<string, React.ComponentType> = {
