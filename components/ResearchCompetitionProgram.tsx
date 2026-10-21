@@ -158,7 +158,7 @@ const RESEARCH_FAQ = [
   {
     question: "Where do I submit my report?",
     answer:
-      "Reports are due Nov 9 at 11:59 PM ET and are submitted through the college.xyz website or the submission form on the UBC website. We'll share the link in the Telegram group before the deadline.",
+      "Through the college.xyz website. Reports are due Nov 9 at 11:59 PM ET. The submission link is TBD, and we'll post it here and in the Telegram group once it's live.",
   },
   {
     question: "Can I use AI?",
