@@ -1,12 +1,13 @@
 "use client";
 
+import { useId } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { Caveat } from "next/font/google";
 import Marquee from "react-fast-marquee";
 import FAQ from "@/components/FAQ";
 import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
-import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, TriangleAlert, Check } from "lucide-react";
+import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Lightbulb, Check, Lock } from "lucide-react";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
@@ -15,6 +16,9 @@ const SIGNUP_URL = "https://luma.com/z1bgn7z8";
 /** Full competition memo: tracks, format, report structure, and judging. */
 const MEMO_URL =
   "https://docs.google.com/document/d/1n_DFfKbDEzRWKLzivAMEYfUhppSXo_ZRtOPZiMajqug/edit?usp=sharing";
+/** Set this once the submission link is live and the locked submit buttons
+ *  turn into real links. */
+const SUBMIT_URL: string | null = null;
 /** Competition chat. Join after signing up on Luma. */
 const TELEGRAM_URL = "https://t.me/+AN2V5Da8qh9mYmVh";
 /** Main UBC 2026 registration. Only attendees can compete. */
@@ -28,7 +32,7 @@ const TRACKS = [
     Icon: TrendingUp,
     side: "Long",
     cap: "Under $250M",
-    body: "Pick an asset with a circulating market cap under $250M and explain why it's worth buying.",
+    body: "Make the case for buying an asset with a circulating market cap under $250M.",
     card: "bg-[#EC8644] text-white",
     muted: "text-white/75",
     chip: "bg-white/20 text-white",
@@ -38,7 +42,7 @@ const TRACKS = [
     Icon: TrendingUp,
     side: "Long",
     cap: "Over $250M",
-    body: "Pick an asset with a circulating market cap over $250M and explain why it's worth buying.",
+    body: "Make the case for buying an asset with a circulating market cap over $250M.",
     card: "bg-[#1A2A36] text-white",
     muted: "text-white/60",
     chip: "bg-white/10 text-white/80",
@@ -48,7 +52,7 @@ const TRACKS = [
     Icon: TrendingDown,
     side: "Short",
     cap: "Over $1B",
-    body: "Pick an asset with a circulating market cap over $1B and explain why it's overvalued.",
+    body: "Make the case for betting against an asset with a circulating market cap over $1B.",
     card: "bg-white text-[#293C4B]",
     muted: "text-[#5A6B78]",
     chip: "bg-[#F4F3EF] text-[#293C4B]",
@@ -72,46 +76,47 @@ const STAGES = [
   {
     Icon: FileText,
     title: "Written report",
-    body: "Write an investment thesis of up to 5 pages on one asset in your track. The top 3 reports in each track move on to the finals.",
+    body: "Write up to 5 pages making the case for your asset. The top 3 reports in each track make it to the finals.",
     when: "Due Nov 9 at 11:59 PM ET",
   },
   {
     Icon: Mic,
     title: "Live pitch",
-    body: "Finalists present their thesis at UBC with a slide deck based on their report. You get 5 minutes to pitch, with a hard stop, followed by 5 minutes of questions from the judges.",
+    body: "Finalists pitch their thesis in person at UBC, with slides. You get 5 minutes to present (we cut you off at 5), then 5 minutes of questions from the judges.",
     when: "Nov 20 at UT Austin",
   },
 ];
 
+/** `counts` marks the parts that make up the 5-page main report. */
 const REPORT_SECTIONS = [
-  {
-    title: "Title page",
-    body: "The report title, your track, your team members' names, your school, and contact information.",
-  },
-  { title: "Executive summary", body: "One page covering your key findings and investment thesis." },
+  { title: "Title page", body: "Report title, track, team members, school, and contact info.", counts: false },
+  { title: "Executive summary", body: "One page with your thesis and key findings.", counts: true },
   {
     title: "Project overview",
-    body: "The project's value proposition or narrative, product design, team, market, traction, token assessment, upcoming catalysts, and risks.",
+    body: "What the project does and why it matters: product, team, market, traction, token, upcoming catalysts, and risks.",
+    counts: true,
   },
   {
     title: "Investment proposal",
-    body: "Whether you're going long or short, your time horizon, and your price target for exiting.",
+    body: "Long or short, how long you'd hold, and your price target to exit.",
+    counts: true,
   },
-  { title: "Conclusion", body: "Your final thoughts, summarizing the analysis." },
-  { title: "References", body: "Every data source, report, and reference you used." },
+  { title: "Conclusion", body: "Wrap up your argument.", counts: true },
+  { title: "Appendix", body: "Optional. Extra charts and tables can go here.", counts: false },
+  { title: "References", body: "Every source you used.", counts: false },
 ];
 
 const CRITERIA = [
-  "Whether your thesis holds up",
-  "How thorough and well thought out your research is",
-  "How clearly you communicate it",
+  "Does your thesis hold up?",
+  "How thorough is your research?",
+  "How clearly do you explain it?",
 ];
 
 const DATES = [
-  { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET on Google Meet. We go over the tracks and rules and answer your questions." },
-  { date: "Oct 29", title: "Research tools demo", note: "8 PM ET. A walkthrough of Blockworks and Allium." },
-  { date: "Nov 9", title: "Reports due", note: "Submit by 11:59 PM ET. Judging runs through Nov 15." },
-  { date: "Nov 16", title: "Finalists announced", note: "The top 3 teams in each track are told they're presenting." },
+  { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET on Google Meet. We'll walk through the tracks and rules and take questions." },
+  { date: "Oct 29", title: "Research tools demo", note: "8 PM ET. Blockworks and Allium show off their tools." },
+  { date: "Nov 9", title: "Reports due", note: "11:59 PM ET. Judges read reports through Nov 15." },
+  { date: "Nov 16", title: "Finalists announced", note: "We'll tell the top 3 teams in each track they're presenting." },
   { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch in person in Austin." },
   { date: "Nov 21", title: "Winners announced", note: "At the UBC closing ceremony." },
 ];
@@ -136,49 +141,49 @@ const RESEARCH_FAQ = [
   {
     question: "Who can compete?",
     answer:
-      "Any student attending UBC 2026. You can compete alone or in a team of up to 4, and there's no limit on how many teams can enter from one school.",
+      "Any student who's attending UBC 2026. Compete solo or in a team of up to 4. There's no cap on how many teams a school can send.",
     link: { href: UBC_REGISTER_URL, label: "Register for UBC" },
   },
   {
     question: "How do I sign up?",
     answer:
-      "Register on the Luma event, then join the competition's Telegram group. We post updates and call links there.",
+      "Sign up on Luma, then join the competition Telegram. That's where we post updates and links to the calls.",
     link: { href: SIGNUP_URL, label: "Sign up on Luma" },
   },
   {
     question: "Can I enter more than one track?",
-    answer: "No. Each team enters one track and writes about one asset.",
+    answer: "No. Each team picks one track and one asset.",
   },
   {
     question: "What goes in the written report?",
     answer:
-      "A title page, a one-page executive summary, a project overview, your investment proposal, a conclusion, and references. The main text can be up to 5 pages, not counting the title page, appendix, and references. The memo has the full breakdown.",
+      "A title page, a one-page executive summary, a project overview, your investment proposal, a conclusion, and references. Keep the main report to 5 pages. The title page, appendix, and references don't count toward that. The memo has the full details.",
     link: { href: MEMO_URL, label: "Read the competition memo" },
   },
   {
     question: "Where do I submit my report?",
     answer:
-      "Through the college.xyz website. Reports are due Nov 9 at 11:59 PM ET. The submission link is TBD, and we'll post it here and in the Telegram group once it's live.",
+      "Reports are due Nov 9 at 11:59 PM ET. The submission link isn't live yet. We'll post it here and in the Telegram once it's ready.",
   },
   {
     question: "Can I use AI?",
     answer:
-      "Reports that are overly AI-generated will be disqualified, so make sure the thesis and the writing are your team's own.",
+      "AI is fine for helping with research, but the judges want to read your team's own analysis. Reports that feel mostly AI-written won't score well.",
   },
   {
     question: "How are finalists picked?",
     answer:
-      "The judges score every written report. The top 3 teams in each track are announced on Nov 16 and pitch in person at UBC on Nov 20.",
+      "Judges read every report between Nov 9 and Nov 15. The top 3 teams in each track hear back on Nov 16 and pitch at UBC on Nov 20.",
   },
   {
     question: "What research tools do I get?",
     answer:
-      "Limited free access to Blockworks and Allium while the competition runs. On the Oct 29 demo call, we'll show you how to use them and how to claim access.",
+      "Blockworks and Allium are giving competitors free, limited access to their tools. They'll show you how to use them and how to get access on the Oct 29 call.",
   },
   {
     question: "Do I need to be in Austin?",
     answer:
-      "You can work on your report from anywhere, but you have to attend UBC to compete. Finalists pitch in person on Nov 20.",
+      "You can do the research and writing from anywhere, but you need to be at UBC to compete. Finalists pitch in person on Nov 20.",
   },
 ];
 
@@ -254,6 +259,53 @@ function CtaButtons() {
   );
 }
 
+/** Locked until SUBMIT_URL is set. `dark` styles it for the navy CTA panel. */
+function SubmitButton({ dark = false }: { dark?: boolean }) {
+  const tipId = useId();
+  const base =
+    "inline-flex items-center gap-2 shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full";
+  if (SUBMIT_URL) {
+    return (
+      <a
+        href={SUBMIT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${base} bg-[#EC8644] text-white hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25`}
+      >
+        Submit your report <ArrowUpRight size={17} />
+      </a>
+    );
+  }
+  return (
+    <span
+      role="button"
+      tabIndex={0}
+      aria-disabled="true"
+      aria-describedby={tipId}
+      className={`group relative ${base} cursor-not-allowed select-none border border-dashed outline-none ${
+        dark ? "border-white/30 text-white/45" : "border-[#293C4B]/25 text-[#293C4B]/45"
+      }`}
+    >
+      <span
+        id={tipId}
+        role="tooltip"
+        className="pointer-events-none absolute left-1/2 bottom-full mb-2.5 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-full bg-[#EC8644] text-white text-xs font-semibold px-3.5 py-1.5 shadow-lg opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0"
+      >
+        Submission link opening soon
+        <span className="absolute left-1/2 top-full -translate-x-1/2 border-[5px] border-transparent border-t-[#EC8644]" />
+      </span>
+      <Lock size={15} /> Submit your report
+      <span
+        className={`text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full ${
+          dark ? "bg-white/10 text-white/60" : "bg-[#293C4B]/[0.06] text-[#293C4B]/60"
+        }`}
+      >
+        Link TBD
+      </span>
+    </span>
+  );
+}
+
 const DOT_GRID = {
   backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
   backgroundSize: "28px 28px",
@@ -319,9 +371,9 @@ export default function ResearchCompetitionProgram() {
                 animate="show"
                 className="text-white/65 text-base sm:text-lg leading-relaxed max-w-xl mt-7"
               >
-                Pick a track, write an investment thesis on one crypto asset, and pitch it to judges
-                from Franklin Templeton and top crypto funds at UBC 2026. Franklin Templeton&rsquo;s
-                crypto division is sponsoring $10,000 in prizes.
+                Write an investment thesis on a crypto asset, then pitch it in person to judges from
+                Franklin Templeton and leading crypto funds at UBC 2026. There&rsquo;s $10,000 in
+                prizes, sponsored by Franklin Templeton&rsquo;s crypto division.
               </motion.p>
 
               <motion.div custom={3} variants={fadeUp} initial="hidden" animate="show" className="mt-8">
@@ -366,8 +418,8 @@ export default function ResearchCompetitionProgram() {
                 Choose your track
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
-                Each team enters one track and writes about one asset. The tracks are based on the
-                asset&rsquo;s circulating market cap.
+                Your team picks one track and one asset. Tracks are split by the asset&rsquo;s
+                circulating market cap.
               </p>
             </div>
           </Reveal>
@@ -427,18 +479,18 @@ export default function ResearchCompetitionProgram() {
                     $10,000
                   </p>
                   <p className="text-white text-base leading-relaxed mt-4 max-w-md">
-                    Franklin Templeton&rsquo;s crypto division is sponsoring the prizes. A team that
-                    wins its track and is also named the best overall takes home $5,000.
+                    Each track winner gets $2,500. The best team across all three tracks gets another
+                    $2,500 on top, so one team could walk away with $5,000.
                   </p>
                   <ul className="mt-auto pt-8 space-y-2">
                     <li className="flex items-center justify-between gap-4 rounded-2xl bg-white/15 px-5 py-4">
-                      <span className="text-white font-semibold">Winner of each track</span>
+                      <span className="text-white font-semibold">Each track winner</span>
                       <span className="font-[var(--font-zuume)] font-black text-white text-2xl sm:text-3xl tracking-tight">
                         $2,500
                       </span>
                     </li>
                     <li className="flex items-center justify-between gap-4 rounded-2xl bg-[#1A2A36] px-5 py-4">
-                      <span className="text-white font-semibold">Bonus for the best team overall</span>
+                      <span className="text-white font-semibold">Best team overall</span>
                       <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl sm:text-3xl tracking-tight">
                         +$2,500
                       </span>
@@ -455,8 +507,8 @@ export default function ResearchCompetitionProgram() {
                   Two rounds
                 </h2>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed">
-                  You can compete on your own or in a team of up to 4 students. There&rsquo;s no
-                  limit on how many teams can enter from the same school.
+                  Compete solo or with up to 3 teammates. Your school can send as many teams as it
+                  wants.
                 </p>
                 <ol className="divide-y divide-[#293C4B]/10 mt-4">
                   {STAGES.map((s, i) => (
@@ -480,8 +532,8 @@ export default function ResearchCompetitionProgram() {
                   <Wrench size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
                   <p className="text-[#5A6B78] text-sm leading-relaxed">
                     <span className="text-[#293C4B] font-semibold">Free research tools.</span>{" "}
-                    You&rsquo;ll get limited access to Blockworks and Allium while the competition
-                    runs. We&rsquo;ll show you how to claim it on the Oct 29 demo call.
+                    Blockworks and Allium are giving competitors limited access to their research
+                    tools. They&rsquo;ll demo them and explain how to get access on the Oct 29 call.
                   </p>
                 </div>
               </div>
@@ -500,9 +552,9 @@ export default function ResearchCompetitionProgram() {
                 What goes in your report
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md">
-                The main text can be up to 5 pages, not counting the title page, appendix, and
-                references. Charts in the main text count toward the limit, so move them to the
-                appendix if you need room.
+                Keep the main report to 5 pages. The title page, appendix, and references
+                don&rsquo;t count toward that, but charts in the main text do. If you&rsquo;re short
+                on space, move charts to the appendix.
               </p>
             </div>
           </Reveal>
@@ -520,26 +572,58 @@ export default function ResearchCompetitionProgram() {
                   aria-hidden
                   className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#EC8644]/35 rotate-[-3deg]"
                 />
-                <div className="flex items-baseline justify-between gap-4 border-b-2 border-[#293C4B] pb-3 mb-2">
-                  <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight">
-                    Contents
-                  </p>
-                  <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase">
-                    5 pages max
-                  </p>
-                </div>
-                <ol className="divide-y divide-dashed divide-[#293C4B]/15">
-                  {REPORT_SECTIONS.map((r, i) => (
-                    <li key={r.title} className="flex gap-5 py-4">
-                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-xl tracking-tight w-6 shrink-0">
-                        {i + 1}.
-                      </span>
-                      <div>
-                        <h3 className="text-[#293C4B] font-semibold">{r.title}</h3>
-                        <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-0.5">{r.body}</p>
-                      </div>
-                    </li>
-                  ))}
+                <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl sm:text-3xl tracking-tight border-b-2 border-[#293C4B] pb-3 mb-2">
+                  Contents
+                </p>
+                <ol>
+                  {REPORT_SECTIONS.map((r, i) => {
+                    const prev = REPORT_SECTIONS[i - 1];
+                    const next = REPORT_SECTIONS[i + 1];
+                    const first = r.counts && !prev?.counts;
+                    const last = r.counts && !next?.counts;
+                    return (
+                      <li
+                        key={r.title}
+                        className={
+                          r.counts
+                            ? `relative bg-[#EC8644]/[0.07] border-l-[3px] border-[#EC8644] pl-4 pr-3 ${
+                                first ? "rounded-tr-xl mt-2 pt-9" : ""
+                              } ${last ? "rounded-br-xl mb-2" : ""}`
+                            : ""
+                        }
+                      >
+                        {first && (
+                          <span className="absolute left-4 top-3 text-[#EC8644] text-[11px] font-semibold tracking-[0.16em] uppercase">
+                            5 pages max
+                          </span>
+                        )}
+                        <div
+                          className={`flex gap-5 py-4 ${
+                            r.counts && !first ? "border-t border-dashed border-[#EC8644]/30" : ""
+                          } ${!r.counts && i > 0 && !prev?.counts ? "border-t border-dashed border-[#293C4B]/15" : ""}`}
+                        >
+                          <span
+                            className={`font-[var(--font-zuume)] font-black text-xl tracking-tight w-6 shrink-0 ${
+                              r.counts ? "text-[#EC8644]" : "text-[#9CADB7]"
+                            }`}
+                          >
+                            {i + 1}.
+                          </span>
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                              <h3 className="text-[#293C4B] font-semibold">{r.title}</h3>
+                              {!r.counts && (
+                                <span className="text-[10px] font-semibold tracking-[0.14em] uppercase text-[#5A6B78] bg-[#F4F3EF] px-2 py-0.5 rounded-full">
+                                  Not in page count
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-0.5">{r.body}</p>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ol>
               </motion.div>
             </Reveal>
@@ -566,16 +650,21 @@ export default function ResearchCompetitionProgram() {
                     ))}
                   </ul>
                   <div className="flex items-start gap-3 rounded-2xl bg-white/[0.06] border border-white/10 p-4 mt-8">
-                    <TriangleAlert size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
+                    <Lightbulb size={18} className="text-[#EC8644] shrink-0 mt-0.5" />
                     <p className="text-white/70 text-sm leading-relaxed">
-                      Reports that are overly AI-generated will be disqualified.
+                      <span className="text-white font-semibold">Make it yours.</span> The judges
+                      want to hear how your team thinks. Reports that feel mostly AI-written
+                      won&rsquo;t score well.
                     </p>
+                  </div>
+                  <div className="mt-8">
+                    <SubmitButton dark />
                   </div>
                   <a
                     href={MEMO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-8 text-[#EC8644] text-sm font-semibold hover:underline underline-offset-4"
+                    className="inline-flex items-center gap-2 mt-5 text-[#EC8644] text-sm font-semibold hover:underline underline-offset-4"
                   >
                     <FileText size={16} /> Read the full memo <ArrowUpRight size={15} />
                   </a>
@@ -596,8 +685,7 @@ export default function ResearchCompetitionProgram() {
                 From kickoff to finals
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
-                You can do your research from anywhere. Links to both calls are on the Luma
-                event.
+                You can do all the research from home. Both calls are linked on the Luma page.
               </p>
             </Reveal>
             <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
@@ -728,11 +816,12 @@ export default function ResearchCompetitionProgram() {
                   Make your call<span className="text-[#EC8644]">.</span>
                 </h2>
                 <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
-                  Sign up on Luma and join the Telegram group for updates. You also need to be
-                  registered for UBC 2026 to compete.
+                  Sign up on Luma and join the Telegram so you don&rsquo;t miss updates. You&rsquo;ll
+                  also need to be registered for UBC 2026 to compete.
                 </p>
-                <div className="mt-9">
+                <div className="mt-9 space-y-3">
                   <CtaButtons />
+                  <SubmitButton dark />
                 </div>
               </div>
             </div>
