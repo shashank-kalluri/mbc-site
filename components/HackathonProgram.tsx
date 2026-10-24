@@ -99,9 +99,9 @@ const BOUNTIES: { name: string; prize: string; unit?: string; note: string }[] =
   { name: "Solana", prize: "$2,750", note: "Best build on Solana · $1,500 / $750 / $500" },
   { name: "Arc", prize: "$2,750", note: "Best build on Arc · $1,500 / $750 / $500" },
   { name: "QuickNode", prize: "$500", note: "Best build using QuickNode Streams" },
-  { name: "Cursor", prize: "Keyboard", unit: "per member", note: "Best build using Cursor and the Grok Imagine or Voice API wins a Cursor mechanical keyboard for each member" },
-  { name: "ElevenLabs", prize: "~$900", unit: "in credits", note: "Per member: 3 months of Scale ($299/mo) for the best voice or audio build. 1st place in every main track also gets 3 months of Pro per member." },
-  { name: "Everyone", prize: "$50", unit: "per team", note: "For every team that submits, plus 1 month of ElevenLabs Creator, the QuickNode $49/mo plan, and Cursor credits (up to 300 participants)" },
+  { name: "Cursor", prize: "Keyboard", unit: "per member", note: "Best build with Cursor and the Grok Imagine or Voice API wins a Cursor mechanical keyboard" },
+  { name: "ElevenLabs", prize: "~$900", unit: "per member", note: "Best voice or audio build gets 3 months of Scale. Main track winners get 3 months of Pro." },
+  { name: "Everyone", prize: "$50", unit: "per team", note: "Per team that submits, plus ElevenLabs Creator, QuickNode's $49 plan, and Cursor credits (first 300)" },
 ];
 
 const WEEK = [
