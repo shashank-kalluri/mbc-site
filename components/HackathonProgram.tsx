@@ -9,7 +9,6 @@ import {
   FileText,
   Send,
   CalendarDays,
-  Landmark,
   Bot,
   Layers,
   Smartphone,
@@ -28,7 +27,7 @@ const LOGO_BASE =
   "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos";
 
 const TRACKS: {
-  Icon: typeof Landmark;
+  Icon: typeof Bot;
   title: string;
   body: string;
   req: string;
@@ -39,21 +38,10 @@ const TRACKS: {
   tilt: number;
 }[] = [
   {
-    Icon: Landmark,
-    title: "Tokenized Equities & RWAs",
-    body: "Make stocks, treasuries, and real-world assets easier to issue, trade, use, or trust onchain.",
-    req: "Solana or Arc",
-    art: "rwa",
-    card: "bg-[#EC8644] text-white",
-    muted: "text-white/75",
-    chip: "bg-white/20 text-white",
-    tilt: -1.5,
-  },
-  {
     Icon: Bot,
     title: "Agentic Payments & AI",
     body: "Give AI agents wallets, budgets, and guardrails so they can pay for APIs, data, and compute.",
-    req: "Solana or Arc",
+    req: "Any chain",
     art: "agent",
     card: "bg-[#1A2A36] text-white",
     muted: "text-white/60",
@@ -64,7 +52,7 @@ const TRACKS: {
     Icon: Layers,
     title: "DeFi & Onchain Apps",
     body: "New financial primitives (exchanges, lending, yield, payments) that compose with what already exists.",
-    req: "Solana or Arc",
+    req: "Any chain",
     art: "defi",
     card: "bg-white text-[#293C4B]",
     muted: "text-[#5A6B78]",
@@ -85,30 +73,35 @@ const TRACKS: {
 ];
 
 const TICKER = [
-  "Tokenized RWAs",
   "Agentic payments",
   "DeFi",
   "Consumer apps",
-  "$23,500+ in prizes",
+  "$23,000+ in prizes",
   "Solana",
   "Circle",
   "Gemini",
   "ElevenLabs",
+  "QuickNode",
+  "Cursor",
   "Finals at UT Austin",
 ];
 
-/** Display order is 2nd, 1st, 3rd so first place stands in the middle. */
+/** Display order is 2nd, 1st, 3rd so first place stands in the middle. Bar
+ *  heights are proportional to the payout. */
 const PODIUM = [
-  { place: "2nd", amount: "$1,375", h: "h-24 sm:h-28", bg: "bg-[#293C4B]", text: "text-white" },
-  { place: "1st", amount: "$2,000", h: "h-36 sm:h-44", bg: "bg-[#EC8644]", text: "text-white" },
-  { place: "3rd", amount: "$1,000", h: "h-16 sm:h-20", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
+  { place: "2nd", amount: "$1,250", h: "h-[62.5%]", bg: "bg-[#293C4B]", text: "text-white" },
+  { place: "1st", amount: "$2,000", h: "h-full", bg: "bg-[#EC8644]", text: "text-white" },
+  { place: "3rd", amount: "$750", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
 const BOUNTIES: { name: string; prize: string; unit?: string; note: string }[] = [
   { name: "Gemini", prize: "$5,000", note: "Prediction markets · $1,000 each to 5 teams" },
-  { name: "Circle", prize: "$1,000", note: "Best build with stablecoins and Circle tools" },
-  { name: "ElevenLabs", prize: "~$900", unit: "in credits", note: "Per member: 3 months of ElevenLabs Scale ($299/mo) for the best voice or audio build" },
-  { name: "Everyone", prize: "$50", note: "Per team that submits, plus 1 month of ElevenLabs Creator" },
+  { name: "Solana", prize: "$2,750", note: "Best build on Solana · $1,500 / $750 / $500" },
+  { name: "Arc", prize: "$2,750", note: "Best build on Arc · $1,500 / $750 / $500" },
+  { name: "QuickNode", prize: "$500", note: "Best build using QuickNode Streams" },
+  { name: "Cursor", prize: "Keyboard", unit: "per member", note: "Best build using Cursor and the Grok Imagine or Voice API wins a Cursor mechanical keyboard for each member" },
+  { name: "ElevenLabs", prize: "~$900", unit: "in credits", note: "Per member: 3 months of Scale ($299/mo) for the best voice or audio build. 1st place in every main track also gets 3 months of Pro per member." },
+  { name: "Everyone", prize: "$50", unit: "per team", note: "For every team that submits, plus 1 month of ElevenLabs Creator, the QuickNode $49/mo plan, and Cursor credits (up to 300 participants)" },
 ];
 
 const WEEK = [
@@ -142,7 +135,7 @@ const HACKATHON_FAQ = [
   {
     question: "What do I submit?",
     answer:
-      "Your project name, description, and team on Devpost, plus a GitHub repo, a 3–5 minute video pitch, and a README with your technical docs. Some tracks ask for extras, like a contract address.",
+      "Your project name, description, and team on Devpost, plus a GitHub repo, a video pitch of up to 3 minutes, and a README with your technical docs. Some tracks ask for extras, like a contract address.",
     link: { href: GUIDE_URL, label: "Track requirements in the guide" },
   },
   {
@@ -210,13 +203,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-type TrackArtKind = "rwa" | "agent" | "defi" | "consumer";
-
-const SPARKS = [
-  { sym: "TSLA", d: "M0 14 L8 11 L16 12 L24 7 L32 8 L40 3" },
-  { sym: "GOLD", d: "M0 12 L8 13 L16 9 L24 10 L32 5 L40 4" },
-  { sym: "T-BILL", d: "M0 13 L8 12 L16 10 L24 9 L32 7 L40 5" },
-];
+type TrackArtKind = "agent" | "defi" | "consumer";
 
 /** A small vignette per track, so each card shows what it's about. */
 function TrackArt({ kind }: { kind: TrackArtKind }) {
@@ -227,38 +214,6 @@ function TrackArt({ kind }: { kind: TrackArtKind }) {
     viewport: { once: true },
     transition: { delay: 0.3 + i * 0.35, duration: 0.3 },
   });
-
-  if (kind === "rwa") {
-    return (
-      <div className="h-full rounded-2xl bg-white/15 p-4 flex flex-col justify-between">
-        {SPARKS.map((r, i) => (
-          <div key={r.sym} className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-white" />
-            <span className="font-mono text-[12px] font-semibold w-14">{r.sym}</span>
-            <svg viewBox="0 0 40 16" preserveAspectRatio="none" className="flex-1 min-w-0 h-5" aria-hidden>
-              <motion.path
-                d={r.d}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                vectorEffect="non-scaling-stroke"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: reduce ? 1 : 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 + i * 0.2, duration: 0.8, ease: "easeOut" }}
-              />
-            </svg>
-            <span className="text-[11px] font-semibold">▲</span>
-          </div>
-        ))}
-        <span className="self-start text-[10px] font-semibold tracking-[0.14em] uppercase bg-white text-[#EC8644] rounded-full px-2.5 py-1">
-          Now onchain
-        </span>
-      </div>
-    );
-  }
 
   if (kind === "agent") {
     return (
@@ -472,7 +427,7 @@ export default function HackathonProgram() {
               transition={{ delay: 0.5, type: "spring", stiffness: 140, damping: 12 }}
               className="absolute right-5 bottom-1 sm:right-10 sm:bottom-0 lg:static lg:mb-6"
             >
-              <Sticker rim="ONE WEEK ✦ FOUR TRACKS ✦ BIG PRIZES ✦ " value="$23.5K" label="in prizes" />
+              <Sticker rim="ONE WEEK ✦ THREE TRACKS ✦ BIG PRIZES ✦ " value="$23K" label="in prizes" />
             </motion.div>
           </div>
         </div>
@@ -500,7 +455,7 @@ export default function HackathonProgram() {
             </div>
           </Reveal>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {TRACKS.map((t, i) => (
               <Reveal key={t.title} i={i} className="h-full">
                 <motion.div
@@ -542,17 +497,17 @@ export default function HackathonProgram() {
                   className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
                   style={{ fontSize: "clamp(52px, 6vw, 92px)" }}
                 >
-                  $23,500<span className="text-[#EC8644]">+</span>
+                  $23,000<span className="text-[#EC8644]">+</span>
                 </p>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  $17,500 across the four main tracks from Solana and Circle, plus $6,000 in
+                  $12,000 across three main tracks from Solana and Circle, plus $11,000 in
                   bounties and perks.
                 </p>
 
                 <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-4">
                   Every main track pays
                 </p>
-                <div className="mt-auto flex items-end gap-2 sm:gap-3">
+                <div className="flex-1 min-h-44 sm:min-h-52 flex items-end gap-2 sm:gap-3">
                   {PODIUM.map((p, i) => (
                     <motion.div
                       key={p.place}
@@ -626,7 +581,11 @@ export default function HackathonProgram() {
                           <p className="text-white/50 text-[13px] leading-snug mt-0.5">{b.note}</p>
                         </div>
                         <span className="shrink-0 text-right">
-                          <span className="block font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl sm:text-3xl tracking-tight">
+                          <span
+                            className={`block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight ${
+                              b.prize.startsWith("$") || b.prize.startsWith("~") ? "text-2xl" : "text-lg"
+                            } sm:text-3xl`}
+                          >
                             {b.prize}
                           </span>
                           {b.unit && (
