@@ -30,7 +30,7 @@ export type AgendaDay = {
 
 export const VENUES: Record<Venue, { label: string; place?: string }> = {
   main: { label: "Main Stage", place: "Zlotnick Ballroom" },
-  second: { label: "Second Stage" },
+  second: { label: "Second Stage", place: "Zlotnick Ballroom" },
   workshop: { label: "Workshops", place: "Rowling Classroom" },
   side: { label: "Side events", place: "Off-site" },
 };
