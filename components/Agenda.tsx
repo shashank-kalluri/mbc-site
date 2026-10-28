@@ -128,6 +128,7 @@ function SideEventCard({ s }: { s: Session }) {
           {people(s) && <span>Hosted by {people(s)!.join(" · ")}</span>}
         </p>
       )}
+      {s.note && <p className="text-white/45 text-xs leading-relaxed mt-2">{s.note}</p>}
     </article>
   );
 }

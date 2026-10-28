@@ -16,6 +16,8 @@ export type Session = {
   place?: string;
   /** A program page with more detail. */
   href?: string;
+  /** A short line under an off-site event, such as an unconfirmed start time. */
+  note?: string;
 };
 
 export type AgendaDay = {
@@ -194,6 +196,14 @@ export const AGENDA: AgendaDay[] = [
       { start: "14:50", end: "15:30", venue: "workshop", title: "Circle Developer Workshop", with: ["Circle"] },
       { start: "15:35", end: "16:05", venue: "workshop", title: "Monad Developer Workshop", with: ["Monad"] },
 
+      {
+        start: "14:30",
+        end: "18:30",
+        venue: "side",
+        title: "Texas vs. Arkansas Football Game",
+        place: "DKR-Texas Memorial Stadium",
+        note: "Kickoff is set for between 2:30 and 3:30 PM. The exact time hasn't been announced yet.",
+      },
       { start: "21:00", end: "00:00", venue: "side", title: "After Party" },
     ],
   },
