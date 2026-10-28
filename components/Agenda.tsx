@@ -1,629 +1,442 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { getAgenda, type Agenda as AgendaRow } from "@/lib/api/agenda";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, MapPin, Search, X } from "lucide-react";
+import { AGENDA, VENUES, type AgendaDay, type Session, type Venue } from "@/data/agenda";
 
-// ---------------------------
-// Types
-// ---------------------------
+const STAGES: Venue[] = ["main", "second", "workshop"];
 
-type AgendaSession = {
-  id: number | string;
-  title: string;
-  room: string;
-  start: string;
-  end: string;
-  speakers?: string[];
-  sponsor?: string;
-  description?: string;
+const ACCENT: Record<Venue, string> = {
+  main: "bg-[#EC8644]",
+  second: "bg-[#293C4B]",
+  workshop: "bg-[#9CADB7]",
+  side: "bg-[#EC8644]",
 };
 
-type TimelineTick = {
-  time: Date;
-  label: string;
-  minutesFromStart: number;
+const toMin = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
 };
 
-type DayInfo = {
-  key: string;
-  label: string;
-  pretty: string;
+/** End time in minutes, pushed past midnight when it wraps. */
+const endMin = (s: Session) => {
+  const a = toMin(s.start);
+  const b = toMin(s.end);
+  return b <= a ? b + 24 * 60 : b;
 };
 
-type TimelineData = {
-  rooms: string[];
-  byRoom: Record<string, AgendaSession[]>;
-  ticks: TimelineTick[];
-  earliest: Date | null;
-  latest: Date | null;
-  filteredSessions: AgendaSession[];
+const clock = (t: string) => {
+  const [h, m] = t.split(":").map(Number);
+  return { text: `${h % 12 || 12}:${String(m).padStart(2, "0")}`, pm: h >= 12 && h < 24 };
 };
 
-// ---------------------------
-// Helpers
-// ---------------------------
-
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const normalizeSpeakers = (speakers: unknown): string[] | undefined => {
-  if (!Array.isArray(speakers)) return undefined;
-  if (typeof speakers[0] === "string") return speakers as string[];
-  return (speakers as { name?: string | null }[])
-    .map((s) => s?.name ?? "")
-    .filter((name): name is string => Boolean(name));
+const timeLabel = (t: string) => {
+  const c = clock(t);
+  return `${c.text} ${c.pm ? "PM" : "AM"}`;
 };
 
-const normalizeSponsor = (sponsor: unknown): string | undefined => {
-  if (!sponsor) return;
-  if (typeof sponsor === "string") return sponsor;
-  const obj = sponsor as { name?: string | null; label?: string | null; title?: string | null };
-  return obj.name ?? obj.label ?? obj.title ?? undefined;
+/** "10:20–10:50 AM", or "11:40 AM–12:10 PM" when the range crosses noon. */
+const range = (s: Session) => {
+  const a = clock(s.start);
+  const b = clock(s.end);
+  return a.pm === b.pm
+    ? `${a.text}–${b.text} ${b.pm ? "PM" : "AM"}`
+    : `${a.text} ${a.pm ? "PM" : "AM"}–${b.text} ${b.pm ? "PM" : "AM"}`;
 };
 
-const mapRow = (row: AgendaRow): AgendaSession => ({
-  id: row.id,
-  title: row.title ?? "TBD",
-  room: row.location ?? "TBD",
-  start: row.start!,
-  end: row.end!,
-  speakers: normalizeSpeakers(row.speakers),
-  sponsor: normalizeSponsor(row.sponsor),
-  description: row.description ?? undefined,
-});
+const isTba = (s: Session) => !s.title && !s.with?.length;
+const headline = (s: Session) => s.title ?? s.with?.join(", ") ?? "To be announced";
+const people = (s: Session) => (s.title ? s.with : undefined);
 
-const MINUTE_HEIGHT_PX = 2.2;
+const matches = (s: Session, q: string) => {
+  if (!q) return true;
+  const venue = s.venue === "all" ? "" : VENUES[s.venue].label;
+  return [s.title, ...(s.with ?? []), s.place, venue]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+    .includes(q);
+};
 
-function toDateSafe(value: string): Date | null {
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? null : d;
-}
+const byTime = (a: Session, b: Session) =>
+  toMin(a.start) - toMin(b.start) ||
+  STAGES.indexOf(a.venue as Venue) - STAGES.indexOf(b.venue as Venue);
 
-function minutesDiff(a: Date, b: Date): number {
-  return (b.getTime() - a.getTime()) / (1000 * 60);
-}
+const dayNum = (d: AgendaDay) => Number(d.date.slice(8));
 
-const OTHER_ROOM_LABEL = "Other Events";
+/* ---------- Cards ---------- */
 
-function isPrimaryRoom(roomRaw: string): boolean {
-  const room = roomRaw.trim().toLowerCase();
-  if (!room) return false;
-  if (room.includes("robertson")) return true;
-  if (room.startsWith("ross r")) return true;
-  if (room.includes("winter garden")) return true;
-  return false;
-}
+/** `fill` stretches the card to the rows it spans in the desktop grid. */
+function SessionCard({ s, showVenue = false, fill = false }: { s: Session; showVenue?: boolean; fill?: boolean }) {
+  const venue = s.venue === "all" ? null : VENUES[s.venue];
 
-function extractDayKey(dateStr: string): string | null {
-  const d = toDateSafe(dateStr);
-  if (!d) return null;
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function buildDays(sessions: AgendaSession[]): DayInfo[] {
-  const map = new Map<string, Date>();
-  sessions.forEach((s) => {
-    const key = extractDayKey(s.start);
-    const d = toDateSafe(s.start);
-    if (!key || !d) return;
-    if (!map.has(key)) map.set(key, d);
-  });
-  return Array.from(map.entries())
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([key, d], idx) => ({
-      key,
-      label: `Day ${idx + 1}`,
-      pretty: d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
-    }));
-}
-
-function buildTimelineData(sessions: AgendaSession[], query: string): TimelineData {
-  if (sessions.length === 0) {
-    return { rooms: [], byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions: [] };
-  }
-
-  const q = query.trim().toLowerCase();
-  const filteredSessions = sessions.filter((s) => {
-    if (!q) return true;
-    const haystack = [s.title, s.room, s.sponsor, s.description, ...(s.speakers ?? [])]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-    return haystack.includes(q);
-  });
-
-  if (filteredSessions.length === 0) {
-    return { rooms: [], byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions: [] };
-  }
-
-  const sorted = [...filteredSessions].sort((a, b) => +new Date(a.start) - +new Date(b.start));
-
-  const primaryRoomsSet = new Set<string>();
-  let hasOther = false;
-  sorted.forEach((s) => {
-    if (isPrimaryRoom(s.room)) primaryRoomsSet.add(s.room);
-    else hasOther = true;
-  });
-
-  const allPrimaryRooms = Array.from(primaryRoomsSet);
-  const winterGardenRooms = allPrimaryRooms.filter((r) => r.trim().toLowerCase().includes("winter garden"));
-  const otherPrimaryRooms = allPrimaryRooms.filter((r) => !r.trim().toLowerCase().includes("winter garden"));
-
-  const rooms: string[] = [...otherPrimaryRooms, ...winterGardenRooms];
-  if (hasOther) rooms.push(OTHER_ROOM_LABEL);
-  if (rooms.length === 0) rooms.push(OTHER_ROOM_LABEL);
-
-  let earliest: Date | null = null;
-  let latest: Date | null = null;
-  sorted.forEach((s) => {
-    const sDate = toDateSafe(s.start);
-    const eDate = toDateSafe(s.end);
-    if (!sDate || !eDate) return;
-    if (!earliest || sDate < earliest) earliest = sDate;
-    if (!latest || eDate > latest) latest = eDate;
-  });
-
-  if (!earliest || !latest) {
-    return { rooms, byRoom: {}, ticks: [], earliest: null, latest: null, filteredSessions };
-  }
-
-  const roundedEarliest = new Date(earliest);
-  roundedEarliest.setMinutes(Math.floor(roundedEarliest.getMinutes() / 30) * 30, 0, 0);
-
-  const roundedLatest = new Date(latest);
-  roundedLatest.setMinutes(Math.ceil(roundedLatest.getMinutes() / 30) * 30, 0, 0);
-
-  const ticks: TimelineTick[] = [];
-  for (
-    let t = new Date(roundedEarliest);
-    t <= roundedLatest;
-    t = new Date(t.getTime() + 30 * 60 * 1000)
-  ) {
-    ticks.push({
-      time: new Date(t),
-      label: t.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
-      minutesFromStart: minutesDiff(roundedEarliest, t),
-    });
-  }
-
-  const byRoom: Record<string, AgendaSession[]> = {};
-  rooms.forEach((r) => { byRoom[r] = []; });
-  sorted.forEach((s) => {
-    const targetRoom = isPrimaryRoom(s.room) ? s.room : OTHER_ROOM_LABEL;
-    if (!byRoom[targetRoom]) byRoom[targetRoom] = [];
-    byRoom[targetRoom].push(s);
-  });
-
-  return { rooms, byRoom, ticks, earliest: roundedEarliest, latest: roundedLatest, filteredSessions };
-}
-
-function formatTimeRange(start: string, end: string): string | null {
-  const s = toDateSafe(start);
-  const e = toDateSafe(end);
-  if (!s || !e) return null;
-  const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit" };
-  return `${s.toLocaleTimeString("en-US", opts)} – ${e.toLocaleTimeString("en-US", opts)}`;
-}
-
-// ---------------------------
-// Session Card
-// ---------------------------
-
-function SessionCard({ session, compact = false }: { session: AgendaSession; compact?: boolean }) {
-  const { title, room, sponsor, start, end } = session;
-  const timeRange = formatTimeRange(start, end);
-
-  if (compact) {
+  if (isTba(s)) {
     return (
-      <article
-        tabIndex={0}
-        className={cx(
-          "h-full rounded-xl border border-[#293C4B]/10 bg-white",
-          "px-2 sm:px-3 py-1.5 sm:py-2",
-          "shadow-sm transition-all duration-150 overflow-hidden",
-          "outline-none focus-visible:ring-2 focus-visible:ring-[#EC8644]/50",
-          "group-hover:border-[#EC8644]/40 group-hover:bg-[#EC8644]/[0.04] group-hover:shadow-md group-hover:scale-[1.03]"
-        )}
-      >
-        <div className="flex h-full items-center">
-          <h3 className="w-full truncate text-[10px] sm:text-xs font-semibold tracking-tight text-[#293C4B]">
-            {title}
-          </h3>
-        </div>
+      <article className={`${fill ? "h-full" : ""} rounded-2xl border border-dashed border-[#293C4B]/15 px-4 py-3.5`}>
+        <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#9CADB7]">
+          {range(s)}
+          {showVenue && venue && <> · {venue.label}</>}
+        </p>
+        <p className="text-[#9CADB7] text-sm font-medium mt-1.5">To be announced</p>
       </article>
     );
   }
 
   return (
     <article
-      tabIndex={0}
-      className={cx(
-        "h-full rounded-xl border border-[#293C4B]/10 bg-white",
-        "px-3 py-2 sm:px-3.5 sm:py-2.5",
-        "shadow-sm transition-all duration-150 overflow-hidden",
-        "outline-none focus-visible:ring-2 focus-visible:ring-[#EC8644]/50",
-        "group-hover:border-[#EC8644]/40 group-hover:bg-[#EC8644]/[0.04] group-hover:shadow-md group-hover:scale-[1.03]"
-      )}
+      className={`relative ${fill ? "h-full" : ""} rounded-2xl bg-white px-4 py-3.5 pl-5 shadow-[0_1px_2px_rgba(41,60,75,0.04)] overflow-hidden`}
     >
-      <div className="flex flex-col gap-1.5">
-        {timeRange && (
-          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-[#293C4B]/55">
-            <span className="inline-flex items-center rounded-full bg-[#293C4B]/[0.06] px-2 py-0.5 border border-[#293C4B]/10">
-              {timeRange}
-            </span>
-          </div>
-        )}
-
-        <h3 className="text-xs sm:text-sm font-semibold tracking-tight text-[#293C4B] line-clamp-2">
-          {title}
-        </h3>
-
-        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] text-[#293C4B]/55">
-          <span className="rounded-full bg-[#F4F3EF] px-2 py-0.5 border border-[#293C4B]/10">
-            {room || "TBD"}
-          </span>
-          {sponsor && (
-            <span className="rounded-full bg-[#EC8644]/10 px-2 py-0.5 text-[#EC8644] border border-[#EC8644]/25">
-              Sponsored by {sponsor}
-            </span>
-          )}
-        </div>
-      </div>
+      <span
+        aria-hidden
+        className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-r-full ${ACCENT[s.venue as Venue]}`}
+      />
+      <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#9CADB7]">
+        {range(s)}
+        {showVenue && venue && <> · {venue.label}</>}
+      </p>
+      <h4 className="text-[#293C4B] font-semibold text-[15px] leading-snug mt-1.5">{headline(s)}</h4>
+      {people(s) && (
+        <p className="text-[#5A6B78] text-[13px] leading-snug mt-1">{people(s)!.join(" · ")}</p>
+      )}
+      {s.href && (
+        <Link
+          href={s.href}
+          className="inline-flex items-center gap-1 mt-2.5 text-[#EC8644] text-[13px] font-semibold hover:underline underline-offset-4"
+        >
+          Details <ArrowUpRight size={14} />
+        </Link>
+      )}
     </article>
   );
 }
 
-// ---------------------------
-// Session Popover
-// ---------------------------
+function SideEventCard({ s }: { s: Session }) {
+  return (
+    <article className="rounded-2xl bg-[#1A2A36] px-4 py-3.5">
+      <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45">{range(s)}</p>
+      <h4 className="text-white font-semibold text-[15px] leading-snug mt-1.5">{headline(s)}</h4>
+      {(s.place || people(s)) && (
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-white/55 text-[13px] mt-1.5">
+          {s.place && (
+            <span className="inline-flex items-center gap-1">
+              <MapPin size={13} className="text-[#EC8644]" />
+              {s.place}
+            </span>
+          )}
+          {people(s) && <span>Hosted by {people(s)!.join(" · ")}</span>}
+        </p>
+      )}
+    </article>
+  );
+}
 
-function SessionPopover({
-  session,
-  placement = "bottom",
-}: {
-  session: AgendaSession;
-  placement?: "top" | "bottom";
-}) {
-  const { title, start, end, room, sponsor, speakers, description } = session;
-  const timeRange = formatTimeRange(start, end);
+/** Check-in and lunch, which run across every stage. */
+function Band({ s }: { s: Session }) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-dashed border-[#293C4B]/15 px-4 py-2.5">
+      <span className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#9CADB7]">{range(s)}</span>
+      <span className="text-[#293C4B] text-sm font-semibold">{s.title}</span>
+    </div>
+  );
+}
 
-  const placementClasses =
-    placement === "top"
-      ? "absolute inset-x-0 bottom-full mb-2"
-      : "absolute inset-x-0 top-full mt-2";
+function SideEvents({ sessions, wide = false }: { sessions: Session[]; wide?: boolean }) {
+  if (sessions.length === 0) return null;
+  return (
+    <div>
+      <div className="flex items-baseline gap-2 mb-3">
+        <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl tracking-tight">
+          {VENUES.side.label}
+        </h3>
+        <span className="text-[#9CADB7] text-xs">{VENUES.side.place}</span>
+      </div>
+      <div className={wide ? "grid sm:grid-cols-2 lg:grid-cols-3 gap-3" : "flex flex-col gap-3"}>
+        {sessions.map((s) => (
+          <SideEventCard key={s.start + headline(s)} s={s} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Layouts ---------- */
+
+/** Desktop: one column per stage, rows at each start time so parallel sessions
+ *  line up and long sessions span the rows they cover. */
+function StageGrid({ day, sessions }: { day: AgendaDay; sessions: Session[] }) {
+  const columns = STAGES.filter((v) => day.sessions.some((s) => s.venue === v));
+  const rows = [...new Set(sessions.map((s) => toMin(s.start)))].sort((a, b) => a - b);
+  const rowOf = (min: number) => rows.indexOf(min) + 2;
+  const rowEnd = (s: Session) => {
+    const i = rows.findIndex((r) => r >= endMin(s));
+    return i === -1 ? rows.length + 2 : i + 2;
+  };
 
   return (
     <div
-      className={cx(
-        "pointer-events-none opacity-0",
-        "group-hover:opacity-100 group-hover:pointer-events-auto",
-        "group-focus-within:opacity-100 group-focus-within:pointer-events-auto",
-        placementClasses,
-        "z-50 w-full rounded-2xl border border-[#293C4B]/15",
-        "bg-[#293C4B] p-3 shadow-2xl"
-      )}
+      className="grid gap-x-3 gap-y-2.5"
+      style={{
+        gridTemplateColumns: `72px repeat(${columns.length}, minmax(0, 1fr))`,
+        gridTemplateRows: `auto repeat(${rows.length}, auto)`,
+      }}
     >
-      {timeRange && (
-        <p className="text-[10px] sm:text-[11px] text-white/60 mb-1">{timeRange}</p>
-      )}
-
-      <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
-
-      <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-[11px] mb-2">
-        <span className="rounded-full bg-white/10 px-2 py-0.5 text-white/70 border border-white/15">
-          {room || "TBD"}
-        </span>
-        {sponsor && (
-          <span className="rounded-full bg-[#EC8644]/20 px-2 py-0.5 text-[#EC8644] border border-[#EC8644]/30">
-            Sponsored by {sponsor}
-          </span>
-        )}
-      </div>
-
-      {speakers && speakers.length > 0 && (
-        <p className="text-[11px] text-white/80 mb-1.5">
-          <span className="font-medium">Speakers: </span>
-          {speakers.join(", ")}
-        </p>
-      )}
-
-      {description && (
-        <p className="text-[11px] leading-snug text-white/75">{description}</p>
-      )}
-    </div>
-  );
-}
-
-// ---------------------------
-// Controls
-// ---------------------------
-
-function AgendaControls({
-  query,
-  setQuery,
-  days,
-  activeDayKey,
-  setActiveDayKey,
-}: {
-  query: string;
-  setQuery: (v: string) => void;
-  days: DayInfo[];
-  activeDayKey: string | null;
-  setActiveDayKey: (v: string) => void;
-}) {
-  return (
-    <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-      <div className="flex-1">
-        <label className="sr-only" htmlFor="agenda-search">
-          Search agenda
-        </label>
-        <input
-          id="agenda-search"
-          type="text"
-          placeholder="Search by session, room, speaker, sponsor…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-xl border border-[#293C4B]/12 bg-white shadow-sm px-4 py-2.5 text-sm text-[#293C4B] placeholder-[#9CADB7] outline-none focus:ring-2 focus:ring-[#EC8644]/40 transition"
-        />
-      </div>
-
-      {days.length > 1 && (
-        <div className="flex flex-wrap gap-2">
-          {days.map((day) => {
-            const isActive = day.key === activeDayKey;
-            return (
-              <button
-                key={day.key}
-                type="button"
-                onClick={() => setActiveDayKey(day.key)}
-                className={cx(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs sm:text-sm border font-medium transition-colors",
-                  isActive
-                    ? "bg-[#EC8644] text-white border-[#EC8644] shadow-sm"
-                    : "bg-[#F4F3EF] text-[#293C4B]/70 border-[#293C4B]/12 hover:bg-[#E8E7E3]"
-                )}
-              >
-                <span>{day.label}</span>
-                <span className={cx("text-[11px] sm:text-xs", isActive ? "text-white/80" : "text-[#9CADB7]")}>
-                  {day.pretty}
-                </span>
-              </button>
-            );
-          })}
+      {columns.map((v, i) => (
+        <div key={v} style={{ gridColumn: i + 2, gridRow: 1 }} className="pb-1.5">
+          <div className="flex items-center gap-2">
+            <span className={`w-2 h-2 rounded-full ${ACCENT[v]}`} />
+            <h3 className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl tracking-tight">
+              {VENUES[v].label}
+            </h3>
+          </div>
+          {VENUES[v].place && <p className="text-[#9CADB7] text-xs mt-0.5 ml-4">{VENUES[v].place}</p>}
         </div>
-      )}
+      ))}
+
+      {rows.map((min) => {
+        const t = `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
+        return (
+          <p
+            key={min}
+            style={{ gridColumn: 1, gridRow: rowOf(min) }}
+            className="text-[#9CADB7] text-xs font-semibold tabular-nums pt-3.5"
+          >
+            {timeLabel(t)}
+          </p>
+        );
+      })}
+
+      {sessions.map((s) => (
+        <div
+          key={s.venue + s.start}
+          style={{
+            gridColumn: s.venue === "all" ? "2 / -1" : columns.indexOf(s.venue as Venue) + 2,
+            gridRow: `${rowOf(toMin(s.start))} / ${s.venue === "all" ? rowOf(toMin(s.start)) + 1 : rowEnd(s)}`,
+          }}
+        >
+          {s.venue === "all" ? <Band s={s} /> : <SessionCard s={s} fill />}
+        </div>
+      ))}
     </div>
   );
 }
 
-// ---------------------------
-// Main Component
-// ---------------------------
+/** Mobile: everything on the stages in time order, grouped by start time. */
+function StageList({ sessions }: { sessions: Session[] }) {
+  const groups: { start: string; items: Session[] }[] = [];
+  for (const s of sessions) {
+    const last = groups[groups.length - 1];
+    if (last && last.start === s.start) last.items.push(s);
+    else groups.push({ start: s.start, items: [s] });
+  }
 
-export default function AgendaSection({
-  title = "Conference Agenda",
-  subtitle = "Two days of talks, workshops, and networking.",
-}: {
-  title?: string;
-  subtitle?: string;
-}) {
-  const [sessions, setSessions] = useState<AgendaSession[]>([]);
-  const [loading, setLoading] = useState(true);
+  return (
+    <ol className="flex flex-col gap-4">
+      {groups.map((g) => (
+        <li key={g.start} className="grid grid-cols-[44px_minmax(0,1fr)] gap-3">
+          <p className="pt-3 leading-none">
+            <span className="block text-[#293C4B] text-sm font-bold tabular-nums">{clock(g.start).text}</span>
+            <span className="block text-[#9CADB7] text-[10px] font-semibold tracking-[0.12em] mt-1">
+              {clock(g.start).pm ? "PM" : "AM"}
+            </span>
+          </p>
+          <div className="flex flex-col gap-2.5">
+            {g.items.map((s) =>
+              s.venue === "all" ? <Band key={s.start + s.title} s={s} /> : <SessionCard key={s.venue + s.start} s={s} showVenue />
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/* ---------- Section ---------- */
+
+export default function Agenda() {
+  const [dayKey, setDayKey] = useState("fri");
   const [query, setQuery] = useState("");
-  const [activeDayKey, setActiveDayKey] = useState<string | null>(null);
+  const q = query.trim().toLowerCase();
 
+  // During the conference, open on today's tab.
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const rows = await getAgenda();
-        if (cancelled) return;
-        const mapped = (rows || []).map(mapRow);
-        setSessions(mapped);
-      } catch (err) {
-        console.error("Error loading agenda:", err);
-        if (!cancelled) setSessions([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => { cancelled = true; };
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+    const match = AGENDA.find((d) => d.date === today);
+    if (match) setDayKey(match.key);
   }, []);
 
-  const days = useMemo(() => buildDays(sessions), [sessions]);
-
-  useEffect(() => {
-    if (days.length > 0 && !activeDayKey) {
-      setActiveDayKey(days[1]?.key ?? days[0].key);
-    }
-  }, [days, activeDayKey]);
-
-  const dayFilteredSessions = useMemo(() => {
-    if (!activeDayKey) return sessions;
-    return sessions.filter((s) => extractDayKey(s.start) === activeDayKey);
-  }, [sessions, activeDayKey]);
-
-  const { rooms, byRoom, ticks, earliest, latest, filteredSessions } = useMemo(
-    () => buildTimelineData(dayFilteredSessions, query),
-    [dayFilteredSessions, query]
+  const counts = useMemo(
+    () => Object.fromEntries(AGENDA.map((d) => [d.key, d.sessions.filter((s) => s.venue !== "all" && matches(s, q)).length])),
+    [q]
   );
 
-  const isEmptyAfterFilter =
-    !loading && dayFilteredSessions.length > 0 && filteredSessions.length === 0;
-
-  const totalMinutes = earliest && latest ? minutesDiff(earliest, latest) : 0;
-  const timelineHeight =
-    totalMinutes > 0 ? totalMinutes * MINUTE_HEIGHT_PX : 60 * MINUTE_HEIGHT_PX;
+  const day = AGENDA.find((d) => d.key === dayKey) ?? AGENDA[1];
+  const visible = day.sessions.filter((s) => (q ? s.venue !== "all" && matches(s, q) : true));
+  const stage = visible.filter((s) => s.venue !== "side").sort(byTime);
+  const side = visible.filter((s) => s.venue === "side").sort(byTime);
+  const otherDays = AGENDA.filter((d) => d.key !== day.key && counts[d.key] > 0);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
   return (
-    <section id="agenda" className="w-full py-16 sm:py-24 bg-[#F4F3EF]">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6">
-        {/* Heading */}
-        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-[#EC8644] text-xs font-semibold uppercase tracking-widest mb-3">
-              Schedule
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#293C4B]">
-              {title}
-            </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#9CADB7] max-w-prose">{subtitle}</p>
+    <section id="agenda" className="bg-[#F4F3EF] py-16 sm:py-24">
+      <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="block w-6 h-[2px] bg-[#EC8644]" />
+            <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
+              2026 Schedule
+            </span>
           </div>
+          <h2
+            className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
+            style={{ fontSize: "clamp(40px, 6vw, 80px)" }}
+          >
+            Agenda
+          </h2>
+          <p className="text-[#9CADB7] text-sm mt-3 max-w-xl">
+            Two days of talks, panels, and workshops at UT Austin, with side events each night. All
+            times are Central. More sessions will be announced soon.
+          </p>
         </div>
 
         {/* Controls */}
-        <AgendaControls
-          query={query}
-          setQuery={setQuery}
-          days={days}
-          activeDayKey={activeDayKey}
-          setActiveDayKey={setActiveDayKey}
-        />
-
-        {/* States */}
-        {loading && sessions.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
-            Loading agenda…
-          </div>
-        )}
-
-        {!loading && sessions.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
-            Agenda coming soon. Check back as we finalize the schedule.
-          </div>
-        )}
-
-        {!loading && sessions.length > 0 && dayFilteredSessions.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
-            No sessions scheduled for this day yet.
-          </div>
-        )}
-
-        {isEmptyAfterFilter && (
-          <div className="mt-10 rounded-2xl border border-dashed border-[#293C4B]/12 p-10 text-center text-[#9CADB7] text-sm">
-            No sessions match your search on this day.
-          </div>
-        )}
-
-        {/* Timeline */}
-        {!loading &&
-          dayFilteredSessions.length > 0 &&
-          filteredSessions.length > 0 &&
-          earliest &&
-          latest && (
-            <div className="mt-8 pb-4 overflow-x-auto overflow-y-hidden">
-              <div className="relative flex gap-4">
-                {/* Time axis */}
-                <div
-                  className={cx(
-                    "shrink-0 w-16 sm:w-20 lg:w-24",
-                    "sticky left-0 top-0 z-30 bg-[#F4F3EF]/90 backdrop-blur-sm pr-3"
-                  )}
-                  style={{ height: timelineHeight }}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+          <div
+            role="tablist"
+            aria-label="Conference day"
+            className="grid grid-cols-3 lg:inline-grid p-1 rounded-2xl bg-white border border-[#293C4B]/[0.06]"
+          >
+            {AGENDA.map((d) => {
+              const active = d.key === day.key;
+              return (
+                <button
+                  key={d.key}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setDayKey(d.key)}
+                  className="relative rounded-xl px-2.5 sm:px-6 py-2.5 text-left lg:min-w-[150px] outline-none focus-visible:ring-2 focus-visible:ring-[#EC8644]"
                 >
-                  <div className="mb-2 text-[11px] uppercase tracking-wide text-[#9CADB7]">
-                    Time
-                  </div>
-                  <div className="relative overflow-visible" style={{ height: timelineHeight }}>
-                    {ticks.map((tick) => {
-                      const top = tick.minutesFromStart * MINUTE_HEIGHT_PX;
-                      const isHour = tick.time.getMinutes() === 0;
-                      return (
-                        <div
-                          key={tick.time.toISOString()}
-                          className="absolute left-0 right-0"
-                          style={{ top }}
-                        >
-                          <div className="flex items-center gap-1 -translate-y-1/2">
-                            <span className={cx("h-px flex-1", isHour ? "bg-[#293C4B]/20" : "bg-[#293C4B]/8")} />
-                            {isHour && (
-                              <span className="text-[10px] sm:text-xs text-[#9CADB7] whitespace-nowrap">
-                                {tick.label}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Room columns */}
-                <div className="min-w-0 flex-1">
-                  <div
-                    className="grid gap-4"
-                    style={{ gridTemplateColumns: `repeat(${rooms.length}, minmax(200px, 1fr))` }}
+                  {active && (
+                    <motion.span
+                      layoutId="agenda-tab"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      className="absolute inset-0 rounded-xl bg-[#293C4B]"
+                    />
+                  )}
+                  <span
+                    className={`relative flex items-start justify-between gap-2 transition-opacity ${
+                      q && counts[d.key] === 0 && !active ? "opacity-40" : ""
+                    }`}
                   >
-                    {rooms.map((room) => {
-                      const roomSessions = byRoom[room] || [];
-                      return (
-                        <div key={room} className="min-w-[200px]">
-                          <div className="mb-2 text-xs sm:text-sm font-medium uppercase tracking-wide text-[#293C4B]/50">
-                            {room}
-                          </div>
-                          <div
-                            className="relative rounded-2xl border border-[#293C4B]/10 bg-white overflow-visible pt-1 pb-1 shadow-sm"
-                            style={{ height: timelineHeight }}
-                          >
-                            {/* Guidelines */}
-                            {ticks.map((tick) => {
-                              const top = tick.minutesFromStart * MINUTE_HEIGHT_PX;
-                              const isHour = tick.time.getMinutes() === 0;
-                              return (
-                                <div
-                                  key={tick.time.toISOString()}
-                                  className={cx(
-                                    "absolute inset-x-0 border-t border-dashed",
-                                    isHour ? "border-[#293C4B]/[0.08]" : "border-[#293C4B]/[0.04]"
-                                  )}
-                                  style={{ top }}
-                                />
-                              );
-                            })}
+                    <span>
+                      <span
+                        className={`block font-[var(--font-zuume)] font-black text-lg sm:text-xl tracking-tight leading-none ${
+                          active ? "text-white" : "text-[#293C4B]"
+                        }`}
+                      >
+                        {d.short}
+                        <span className="hidden sm:inline">, Nov</span> {dayNum(d)}
+                      </span>
+                      <span
+                        className={`block whitespace-nowrap text-[10px] sm:text-[11px] font-semibold tracking-[0.06em] sm:tracking-[0.14em] uppercase mt-1 ${
+                          active ? "text-white/60" : "text-[#9CADB7]"
+                        }`}
+                      >
+                        {d.label}
+                      </span>
+                    </span>
+                    {q && counts[d.key] > 0 && (
+                      <span className="shrink-0 text-[10px] font-bold tabular-nums rounded-full px-1.5 py-0.5 bg-[#EC8644] text-white">
+                        {counts[d.key]}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-                            {/* Sessions */}
-                            {roomSessions.map((session) => {
-                              const sDate = toDateSafe(session.start);
-                              const eDate = toDateSafe(session.end);
-                              if (!sDate || !eDate) return null;
+          <div className="relative w-full lg:w-[360px]">
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CADB7] pointer-events-none" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search speakers or sessions"
+              aria-label="Search the agenda"
+              className="w-full rounded-full bg-white border border-[#293C4B]/[0.06] pl-11 pr-10 py-3 text-sm text-[#293C4B] placeholder:text-[#9CADB7] outline-none focus:border-[#EC8644]/50 focus:ring-4 focus:ring-[#EC8644]/10 transition [&::-webkit-search-cancel-button]:appearance-none"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full text-[#9CADB7] hover:text-[#293C4B] hover:bg-[#F4F3EF] transition-colors"
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
+        </div>
 
-                              const startMin = Math.max(0, minutesDiff(earliest, sDate));
-                              const endMin = Math.max(startMin + 1, minutesDiff(earliest, eDate));
-                              const durationMin = endMin - startMin;
-                              const isShort = durationMin < 60;
+        {q && (
+          <p className="text-[#5A6B78] text-sm -mt-4 mb-6" aria-live="polite">
+            {total === 0
+              ? `Nothing matches “${query.trim()}”.`
+              : `${total} ${total === 1 ? "session matches" : "sessions match"} “${query.trim()}” across all days.`}
+          </p>
+        )}
 
-                              const top = startMin * MINUTE_HEIGHT_PX;
-                              const height = durationMin * MINUTE_HEIGHT_PX;
-                              const sessionbottom = top + height;
-                              const placeAbove = sessionbottom > timelineHeight * 0.8;
-
-                              return (
-                                <div
-                                  key={session.id}
-                                  className="absolute inset-x-0 group z-10 hover:z-40 focus-within:z-40"
-                                  style={{ top, height }}
-                                >
-                                  <SessionCard session={session} compact={isShort} />
-                                  <SessionPopover
-                                    session={session}
-                                    placement={placeAbove ? "top" : "bottom"}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={day.key}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {visible.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-[#293C4B]/15 px-6 py-10 text-center">
+                <p className="text-[#5A6B78] text-sm">
+                  Nothing on {day.weekday} matches your search.
+                  {otherDays.length > 0 && " Try "}
+                  {otherDays.map((d, i) => (
+                    <span key={d.key}>
+                      {i > 0 && " or "}
+                      <button
+                        onClick={() => setDayKey(d.key)}
+                        className="text-[#EC8644] font-semibold hover:underline underline-offset-4"
+                      >
+                        {d.weekday} ({counts[d.key]})
+                      </button>
+                    </span>
+                  ))}
+                  {otherDays.length > 0 && "."}
+                </p>
               </div>
-            </div>
-          )}
+            ) : stage.length === 0 ? (
+              <SideEvents sessions={side} wide />
+            ) : (
+              <>
+                <div className="hidden lg:flex gap-8">
+                  <div className="flex-1 min-w-0">
+                    <StageGrid day={day} sessions={stage} />
+                  </div>
+                  {side.length > 0 && (
+                    <aside className="w-[260px] xl:w-[290px] shrink-0 border-l border-[#293C4B]/[0.08] pl-8">
+                      <SideEvents sessions={side} />
+                    </aside>
+                  )}
+                </div>
+                <div className="lg:hidden flex flex-col gap-10">
+                  <StageList sessions={stage} />
+                  <SideEvents sessions={side} />
+                </div>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

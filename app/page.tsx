@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Countdown from "@/components/Countdown";
 import SocialProof from "@/components/SocialProof";
 import Speakers from "@/components/Speakers";
+import Agenda from "@/components/Agenda";
 import Sponsors from "@/components/Sponsors";
 import TweetBoard from "@/components/TweetBoard";
 import FAQ from "@/components/FAQ";
@@ -57,6 +58,7 @@ export default function Home() {
       <SocialProof />
       <Countdown eventDate="2026-11-20T09:00:00" />
       <Speakers />
+      <Agenda />
       <Sponsors />
       <TweetBoard />
       <FAQ items={faqItems} />

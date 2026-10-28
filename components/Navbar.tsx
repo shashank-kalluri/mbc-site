@@ -16,7 +16,7 @@ type NavItem = {
 type NavEntry = NavItem & { children?: NavItem[] };
 
 const navLinks: NavEntry[] = [
-  { href: "/#about", label: "About" },
+  { href: "/#agenda", label: "Agenda" },
   { href: "/#speakers", label: "Speakers" },
   { href: "/#sponsors", label: "Sponsors" },
   { href: "/programs", label: "Programs" },
