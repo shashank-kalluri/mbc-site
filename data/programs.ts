@@ -33,9 +33,9 @@ export const programs: ProgramMeta[] = [
   {
     slug: "hackathon",
     name: "Hackathon",
-    tagline: "One week · $23,000+ in prizes",
+    tagline: "One week · $22,000+ in prizes",
     description:
-      "Build for a week on any chain, then pitch the finals live at UBC 2026. Prizes from Solana, Circle, Gemini, ElevenLabs, QuickNode, and Cursor.",
+      "Build for a week on any chain, then pitch the finals live at UBC 2026. Prizes from Solana, Circle, Gemini, ElevenLabs, QuickNode, and Grok Bot.",
     detail: "Hacking starts Nov 13",
     image: "/photos/hackathon/heads-down.jpg",
     status: "live",
