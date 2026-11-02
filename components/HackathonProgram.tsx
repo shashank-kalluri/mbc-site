@@ -76,32 +76,33 @@ const TICKER = [
   "Agentic payments",
   "DeFi",
   "Consumer apps",
-  "$23,000+ in prizes",
+  "$22,000+ in prizes",
   "Solana",
   "Circle",
   "Gemini",
   "ElevenLabs",
   "QuickNode",
-  "Cursor",
+  "Grok Bot",
   "Finals at UT Austin",
 ];
 
-/** Display order is 2nd, 1st, 3rd so first place stands in the middle. Bar
- *  heights are proportional to the payout. */
+/** Official UBC 2026 Hackathon Winner. Display order is 2nd, 1st, 3rd so first
+ *  place stands in the middle. Bar heights show rank, not payout, so the 3rd
+ *  place bar stays tall enough for its label. */
 const PODIUM = [
-  { place: "2nd", amount: "$1,250", h: "h-[62.5%]", bg: "bg-[#293C4B]", text: "text-white" },
-  { place: "1st", amount: "$2,000", h: "h-full", bg: "bg-[#EC8644]", text: "text-white" },
-  { place: "3rd", amount: "$750", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
+  { place: "2nd", amount: "$1,000", h: "h-[62.5%]", bg: "bg-[#293C4B]", text: "text-white" },
+  { place: "1st", amount: "$2,500", h: "h-full", bg: "bg-[#EC8644]", text: "text-white" },
+  { place: "3rd", amount: "$500", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
 const BOUNTIES: { name: string; prize: string; unit?: string; note: string }[] = [
-  { name: "Gemini", prize: "$5,000", note: "Prediction markets · $1,000 each to 5 teams" },
-  { name: "Solana", prize: "$2,750", note: "Best build on Solana · $1,500 / $750 / $500" },
-  { name: "Arc", prize: "$2,750", note: "Best build on Arc · $1,500 / $750 / $500" },
+  { name: "Gemini", prize: "$4,000", note: "Prediction markets · $2,500 / $1,000 / $500" },
+  { name: "Solana", prize: "$4,500", note: "Best use of Solana · $1,500 per main track" },
+  { name: "Arc", prize: "$3,000", note: "Best use of Arc · $1,000 per main track" },
   { name: "QuickNode", prize: "$500", note: "Best build using QuickNode Streams" },
-  { name: "Cursor", prize: "Keyboard", unit: "per member", note: "Best build with Cursor and the Grok Imagine or Voice API wins a Cursor mechanical keyboard" },
-  { name: "ElevenLabs", prize: "~$900", unit: "per member", note: "Best voice or audio build gets 3 months of Scale. Main track winners get 3 months of Pro." },
-  { name: "Everyone", prize: "$50", unit: "per team", note: "Per team that submits, plus ElevenLabs Creator, QuickNode's $49 plan, and Cursor credits (first 300)" },
+  { name: "Grok Bot", prize: "Keyboard", unit: "per member", note: "Best use of Grok Bot wins a mechanical keyboard per member, plus Grok Bot swag" },
+  { name: "ElevenLabs", prize: "3 months", unit: "of Scale", note: "Best project gets 3 months of Scale per member. The 1st-place Official Winner gets 3 months of Pro per member." },
+  { name: "Everyone", prize: "Perks", unit: "per team", note: "Teams with a complete, working submission get 1 month of ElevenLabs Creator, plus a QuickNode $49/mo plan and X Premium (Cursor, Grok, X, and more) for up to 300 participants." },
 ];
 
 const WEEK = [
@@ -109,7 +110,7 @@ const WEEK = [
   { date: "Nov 13", title: "Hacking starts", note: "12 PM CST · build from anywhere" },
   { date: "Nov 16–19", title: "Workshops", note: "Nightly office hours with sponsor engineers", link: true },
   { date: "Nov 20", title: "Submit", note: "12 PM CST on Devpost · finalists told by midnight" },
-  { date: "Nov 21", title: "Finals at UBC", note: "Top 3 per track pitch live in Austin" },
+  { date: "Nov 21", title: "Finals at UBC", note: "Up to 13 teams pitch live in Austin" },
 ];
 
 /** Photos from the MBC 2025 hackathon. */
@@ -126,7 +127,7 @@ const HACKATHON_FAQ = [
   {
     question: "Can I submit to more than one track?",
     answer:
-      "Each project enters exactly one main track. After that, you can submit the same project to as many bounties as you like, as long as it meets each bounty's requirements.",
+      "Each project enters exactly one main track. After that, you can submit the same project to as many bounties as you like, as long as it meets each bounty's requirements. The one exception is the chain awards: teams may compete for Best use of Solana or Best use of Arc, not both.",
   },
   {
     question: "Do I need a team?",
@@ -135,7 +136,7 @@ const HACKATHON_FAQ = [
   {
     question: "What do I submit?",
     answer:
-      "Your project name, description, and team on Devpost, plus a GitHub repo, a video pitch of up to 3 minutes, and a README with your technical docs. Some tracks ask for extras, like a contract address.",
+      "Your project name, description, and team on Devpost, plus a public GitHub repo, a working demo or deployed app, a 2–3 minute demo video, and a README with your technical docs. Some tracks ask for extras, like a contract address.",
     link: { href: GUIDE_URL, label: "Track requirements in the guide" },
   },
   {
@@ -146,7 +147,7 @@ const HACKATHON_FAQ = [
   {
     question: "How are projects judged?",
     answer:
-      "Judges look for technical rigor, real impact, strong UX, focused execution, a clear presentation, and a path to real users. The top 3 teams in each track pitch live for 5 minutes, plus 2 minutes of Q&A.",
+      "Projects are judged on technical execution, product and UX, innovation, impact and potential, and demo. Up to 13 teams pitch live for 5 minutes, plus 2 minutes of Q&A: 3 from each main track (the top contenders for Track Winner, Best use of Solana, and Best use of Arc), the top 3 overall contenders, and the 1st-place Gemini team.",
   },
   {
     question: "Can I use AI tools? Who owns my project?",
@@ -427,7 +428,7 @@ export default function HackathonProgram() {
               transition={{ delay: 0.5, type: "spring", stiffness: 140, damping: 12 }}
               className="absolute right-5 bottom-1 sm:right-10 sm:bottom-0 lg:static lg:mb-6"
             >
-              <Sticker rim="ONE WEEK ✦ THREE TRACKS ✦ BIG PRIZES ✦ " value="$23K" label="in prizes" />
+              <Sticker rim="ONE WEEK ✦ THREE TRACKS ✦ BIG PRIZES ✦ " value="$22,000+" label="in prizes" />
             </motion.div>
           </div>
         </div>
@@ -497,15 +498,36 @@ export default function HackathonProgram() {
                   className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
                   style={{ fontSize: "clamp(52px, 6vw, 92px)" }}
                 >
-                  $23,000<span className="text-[#EC8644]">+</span>
+                  $22,000<span className="text-[#EC8644]">+</span>
                 </p>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  $12,000 across three main tracks from Solana and Circle, plus $11,000 in
-                  bounties and perks.
+                  $17,500 from Solana and Circle, plus $4,500 in cash sponsor bounties and
+                  additional perks.
                 </p>
 
-                <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-4">
-                  Every main track pays
+                <div className="flex items-center justify-between gap-4 rounded-2xl bg-[#F4F3EF] px-5 py-4 mt-8">
+                  <div>
+                    <p className="text-[#293C4B] font-semibold">Track Winner</p>
+                    <p className="text-[#5A6B78] text-[13px] leading-snug mt-0.5">
+                      One winner in each of the three main tracks
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-right">
+                    <span className="block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight text-2xl sm:text-3xl">
+                      $2,000
+                    </span>
+                    <span className="block text-[#9CADB7] text-[10px] font-semibold tracking-[0.16em] uppercase">
+                      per track
+                    </span>
+                  </span>
+                </div>
+
+                <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-2">
+                  Official UBC 2026 Hackathon Winner
+                </p>
+                <p className="text-[#5A6B78] text-[13px] leading-snug mb-4 max-w-md">
+                  Every submission is automatically eligible, and it stacks with other prizes.
+                  1st place also gets 3 months of ElevenLabs Pro per member.
                 </p>
                 <div className="flex-1 min-h-44 sm:min-h-52 flex items-end gap-2 sm:gap-3">
                   {PODIUM.map((p, i) => (
@@ -583,7 +605,7 @@ export default function HackathonProgram() {
                         <span className="shrink-0 text-right">
                           <span
                             className={`block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight ${
-                              b.prize.startsWith("$") || b.prize.startsWith("~") ? "text-2xl" : "text-lg"
+                              b.prize.startsWith("$") ? "text-2xl" : "text-lg"
                             } sm:text-3xl`}
                           >
                             {b.prize}
@@ -597,6 +619,10 @@ export default function HackathonProgram() {
                       </li>
                     ))}
                   </ul>
+                  <p className="text-white/50 text-[13px] leading-snug mt-5">
+                    Teams may compete for one chain award, Best use of Solana or Best use of
+                    Arc, not both.
+                  </p>
                 </div>
               </div>
             </Reveal>

@@ -76,7 +76,14 @@ export function Sticker({
         ))}
       </motion.svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-        <span className="font-[var(--font-zuume)] font-black text-[19px] sm:text-[27px] lg:text-[38px] tracking-tight leading-none">
+        <span
+          className={`font-[var(--font-zuume)] font-black tracking-tight leading-none ${
+            // Long values like "$22,000+" step down so they clear the rim text
+            value.length > 5
+              ? "text-[13px] sm:text-[19px] lg:text-[27px]"
+              : "text-[19px] sm:text-[27px] lg:text-[38px]"
+          }`}
+        >
           {value}
         </span>
         <span className="text-[7px] sm:text-[9px] lg:text-[11px] font-semibold tracking-[0.2em] uppercase mt-0.5 sm:mt-1 text-white/85">
