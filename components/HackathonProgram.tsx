@@ -205,8 +205,8 @@ const PERKS: { logo: Logo; name: string; text: string; limited?: boolean }[] = [
 
 /** One project stacking prizes. `bar` is each prize's accent color. */
 const STACK_EXAMPLE: { label: string; amount: number; bar: string }[] = [
-  { label: "1st overall", amount: 2500, bar: "#1A2A36" },
-  { label: "DeFi Track Winner", amount: 2000, bar: "#9CADB7" },
+  { label: "1st overall", amount: 2500, bar: "#EC8644" },
+  { label: "DeFi Track Winner", amount: 2000, bar: "#293C4B" },
   { label: "Best use of Solana", amount: 1500, bar: "linear-gradient(180deg, #9945FF, #14F195)" },
   { label: "Gemini bounty, 1st", amount: 2500, bar: "#00DCFA" },
 ];
@@ -869,63 +869,50 @@ export default function HackathonProgram() {
           </div>
 
           <Reveal>
-            <div className="relative mt-4 overflow-hidden rounded-3xl bg-[#EC8644] text-[#1A2A36] p-8 sm:p-10">
-              <div
-                aria-hidden
-                className="absolute inset-0 opacity-[0.16] pointer-events-none"
-                style={{
-                  backgroundImage: "radial-gradient(rgba(255,255,255,0.95) 1px, transparent 1px)",
-                  backgroundSize: "24px 24px",
-                }}
-              />
-              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="mt-4 rounded-3xl bg-white text-[#293C4B] p-8 sm:p-10">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="block w-6 h-[2px] bg-[#1A2A36]/50" />
-                    <span className="text-[#1A2A36]/70 text-xs font-medium tracking-[0.22em] uppercase">
-                      Prize pool
-                    </span>
-                  </div>
+                  <Eyebrow>Prize pool</Eyebrow>
                   <h3
                     className="font-[var(--font-zuume)] font-black tracking-tight leading-[0.95]"
                     style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
                   >
                     All prizes stack
                   </h3>
-                  <p className="text-[#1A2A36]/75 text-[15px] leading-relaxed mt-3 max-w-xl">
+                  <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-xl">
                     One project can win across categories and take home several prizes.
                   </p>
                 </div>
                 <div className="shrink-0 lg:text-right">
                   <p
-                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.85]"
+                    className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.85]"
                     style={{ fontSize: "clamp(56px, 6.5vw, 96px)" }}
                   >
-                    $22,000<span className="text-[#1A2A36]">+</span>
+                    $22,000<span className="text-[#EC8644]">+</span>
                   </p>
-                  <p className="text-[#1A2A36]/70 text-[11px] font-semibold tracking-[0.18em] uppercase mt-4">
+                  <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.18em] uppercase mt-4">
                     In cash prizes, plus sponsor perks
                   </p>
                 </div>
               </div>
 
-              <p className="relative text-[#1A2A36]/80 text-[13px] leading-snug mt-8 mb-3">
-                <span className="font-semibold text-[#1A2A36]">Example:</span> a DeFi prediction
+              <p className="text-[#5A6B78] text-[13px] leading-snug mt-8 mb-3">
+                <span className="font-semibold text-[#293C4B]">Example:</span> a DeFi prediction
                 market built on Solana with Gemini&rsquo;s API could win all four of these.
               </p>
               {/* Two-up grid on phones; one row joined by + and = on desktop */}
-              <div className="relative grid grid-cols-2 gap-2 lg:flex lg:items-stretch lg:gap-3">
+              <div className="grid grid-cols-2 gap-2 lg:flex lg:items-stretch lg:gap-3">
                 {STACK_EXAMPLE.map((e, i) => (
                   <div key={e.label} className="contents">
                     {i > 0 && (
                       <span
                         aria-hidden
-                        className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-white text-2xl leading-none"
+                        className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
                       >
                         +
                       </span>
                     )}
-                    <div className="relative flex-1 overflow-hidden rounded-xl bg-white pl-5 pr-4 py-3">
+                    <div className="relative flex-1 overflow-hidden rounded-xl bg-[#F4F3EF] pl-5 pr-4 py-3">
                       <span className="absolute left-0 inset-y-0 w-1" style={{ background: e.bar }} />
                       <p className="text-[#5A6B78] text-[12px] leading-snug">{e.label}</p>
                       <p className="font-[var(--font-zuume)] font-black text-2xl tracking-tight leading-none mt-1">
@@ -936,12 +923,12 @@ export default function HackathonProgram() {
                 ))}
                 <span
                   aria-hidden
-                  className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-white text-2xl leading-none"
+                  className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
                 >
                   =
                 </span>
-                <div className="col-span-2 flex items-center justify-between gap-3 rounded-xl bg-[#1A2A36] px-4 py-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0 lg:min-w-40">
-                  <p className="text-white/70 text-[12px] leading-snug">One team takes home</p>
+                <div className="col-span-2 flex items-center justify-between gap-3 rounded-xl bg-[#EC8644] px-4 py-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0 lg:min-w-40">
+                  <p className="text-white/85 text-[12px] leading-snug">One team takes home</p>
                   <p className="font-[var(--font-zuume)] font-black text-white text-2xl tracking-tight leading-none lg:mt-1">
                     {usd(STACK_EXAMPLE.reduce((sum, e) => sum + e.amount, 0))}
                   </p>
