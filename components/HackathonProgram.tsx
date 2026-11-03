@@ -123,7 +123,8 @@ const PODIUM = [
   { place: "3rd", amount: "$500", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
-type Logo = { src: string; w: number; h: number; height: number };
+/** `label` is set beside the image, for sponsors whose logo is an icon only. */
+type Logo = { src: string; w: number; h: number; height: number; label?: string };
 type Prize = { name: string; prize: string; unit?: string; note: string; logo?: Logo };
 
 /** Awarded separately in each of the three main tracks. */
@@ -175,7 +176,7 @@ const BOUNTIES: Prize[] = [
   },
   {
     name: "Grok Bot",
-    logo: { src: "/sponsors/grok.svg", w: 87, h: 32, height: 22 },
+    logo: { src: "/sponsors/grok-mark.svg", w: 34, h: 32, height: 19, label: "Grok Bot" },
     prize: "Keyboard",
     unit: "per member",
     note: "A mechanical keyboard per member plus swag, for projects where Grok Bot does real work.",
@@ -440,15 +441,22 @@ function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
     >
       <div>
         {p.logo ? (
-          <Image
-            src={p.logo.src}
-            alt={p.name}
-            width={p.logo.w}
-            height={p.logo.h}
-            style={{ height: p.logo.height }}
-            className={`w-auto mb-2 ${dark ? "brightness-0 invert" : ""}`}
-            unoptimized
-          />
+          <span className="flex items-center gap-2 mb-2">
+            <Image
+              src={p.logo.src}
+              alt={p.logo.label ? "" : p.name}
+              width={p.logo.w}
+              height={p.logo.h}
+              style={{ height: p.logo.height }}
+              className={`w-auto ${dark ? "brightness-0 invert" : ""}`}
+              unoptimized
+            />
+            {p.logo.label && (
+              <span className={`text-[17px] font-semibold tracking-tight leading-none ${dark ? "text-white" : "text-[#293C4B]"}`}>
+                {p.logo.label}
+              </span>
+            )}
+          </span>
         ) : (
           <p className={`font-semibold ${dark ? "text-white" : "text-[#293C4B]"}`}>{p.name}</p>
         )}
