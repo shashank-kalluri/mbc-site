@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import FAQ from "@/components/FAQ";
@@ -201,14 +200,6 @@ const PERKS: { logo: Logo; name: string; text: string; limited?: boolean }[] = [
     text: "X Premium (Cursor, Grok, X, and more)",
     limited: true,
   },
-];
-
-/** The guide's example of one project stacking prizes. */
-const STACK_EXAMPLE = [
-  { label: "DeFi Track Winner", prize: "$2,000" },
-  { label: "Best use of Solana", prize: "$1,500" },
-  { label: "QuickNode bounty", prize: "$500" },
-  { label: "Official Winner", prize: "up to $2,500" },
 ];
 
 const WEEK = [
@@ -698,8 +689,7 @@ export default function HackathonProgram() {
                 className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
                 style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
               >
-                $22,000<span className="text-[#EC8644]">+</span>
-                <span className="sr-only"> in prizes</span>
+                How prizes work
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-lg">
                 Enter one main track, then add one chain award and any bounties. Every team is
@@ -866,27 +856,34 @@ export default function HackathonProgram() {
           </div>
 
           <Reveal>
-            <div className="mt-4 rounded-3xl bg-[#EC8644]/10 border border-[#EC8644]/20 p-6 sm:p-8">
-              <p className="text-[#293C4B] font-semibold">Example: how prizes stack</p>
-              <p className="text-[#5A6B78] text-sm leading-relaxed mt-1">
-                A DeFi project built on Solana that uses QuickNode Streams could win all of these.
-              </p>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-5">
-                {STACK_EXAMPLE.map((e, i) => (
-                  <Fragment key={e.label}>
-                    {i > 0 && (
-                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl" aria-hidden>
-                        +
-                      </span>
-                    )}
-                    <span className="inline-flex items-baseline gap-2 rounded-full bg-white px-4 py-2 shadow-[0_6px_16px_-10px_rgba(26,42,54,0.4)]">
-                      <span className="text-[#293C4B] text-sm font-semibold">{e.label}</span>
-                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-xl tracking-tight">
-                        {e.prize}
-                      </span>
-                    </span>
-                  </Fragment>
-                ))}
+            <div className="relative mt-4 overflow-hidden rounded-3xl bg-[#EC8644] px-7 py-10 sm:px-12 sm:py-14 lg:px-16">
+              <div
+                aria-hidden
+                className="absolute inset-0 opacity-[0.16] pointer-events-none"
+                style={{
+                  backgroundImage: "radial-gradient(rgba(255,255,255,0.95) 1px, transparent 1px)",
+                  backgroundSize: "24px 24px",
+                }}
+              />
+              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 lg:gap-10">
+                <motion.p
+                  initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ type: "spring", stiffness: 120, damping: 14 }}
+                  style={{ fontSize: "clamp(54px, 8vw, 116px)", originX: 0 }}
+                  className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.82]"
+                >
+                  $22,000<span className="text-[#1A2A36]">+</span>
+                </motion.p>
+                <p
+                  className="shrink-0 whitespace-nowrap font-[var(--font-zuume)] font-black text-[#1A2A36] tracking-tight leading-[0.95] lg:text-right lg:pb-2"
+                  style={{ fontSize: "clamp(26px, 2.8vw, 40px)" }}
+                >
+                  in cash prizes,
+                  <br />
+                  plus sponsor perks
+                </p>
               </div>
             </div>
           </Reveal>
