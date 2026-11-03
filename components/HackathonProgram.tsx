@@ -72,7 +72,8 @@ const TRACKS: {
   },
 ];
 
-/** The three headline sponsors. `h` evens out the logos' visual weight. */
+/** The three headline sponsors, shown in the hero. `hero` evens out the
+ *  logos' visual weight. */
 const SPONSORS = [
   {
     name: "Solana Foundation",
@@ -80,11 +81,6 @@ const SPONSORS = [
     w: 844,
     h: 144,
     hero: 30,
-    card: 40,
-    prize: "$4,500",
-    award: "Best use of Solana",
-    body: "Solana awards $1,500 for the best use of Solana in each of the three main tracks. Deploy on Solana (devnet is fine) to compete.",
-    extra: "Also funds the Track Winner and Official Winner prizes with Circle.",
   },
   {
     name: "Circle",
@@ -92,11 +88,6 @@ const SPONSORS = [
     w: 934,
     h: 240,
     hero: 26,
-    card: 34,
-    prize: "$3,000",
-    award: "Best use of Arc",
-    body: "Circle awards $1,000 for the best use of Arc, its blockchain for stablecoin finance, in each of the three main tracks. Deploy on Arc (testnet is fine) to compete.",
-    extra: "Also funds the Track Winner and Official Winner prizes with Solana.",
   },
   {
     name: "Gemini",
@@ -104,11 +95,6 @@ const SPONSORS = [
     w: 797,
     h: 173,
     hero: 22,
-    card: 30,
-    prize: "$4,000",
-    award: "Prediction markets",
-    body: "Gemini awards $2,500, $1,000, and $500 to the best prediction market projects. The bounty is open to every track.",
-    extra: "The 1st-place Gemini team pitches at the finals.",
   },
 ];
 
@@ -503,58 +489,6 @@ export default function HackathonProgram() {
 
       {/* ---------- Ticker ---------- */}
       <Ticker items={TICKER} className="z-10 -mt-7" />
-
-      {/* ---------- Sponsors ---------- */}
-      <section className="pt-20 sm:pt-28">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <Reveal>
-            <Eyebrow>Hackathon sponsors</Eyebrow>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-              <h2
-                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] max-w-2xl"
-                style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
-              >
-                Presented by Solana, Circle, and Gemini
-              </h2>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
-                Solana and Circle put up $17,500, which covers every Track Winner, Official
-                Winner, and chain award. Gemini adds a $4,000 bounty. Engineers from all three
-                run workshops and office hours during the week.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {SPONSORS.map((sp, i) => (
-              <Reveal key={sp.name} i={i} className="h-full">
-                <div className="h-full bg-white rounded-3xl p-7 sm:p-8 flex flex-col">
-                  <div className="h-10 flex items-center">
-                    <Image
-                      src={sp.logo}
-                      alt={sp.name}
-                      width={sp.w}
-                      height={sp.h}
-                      style={{ height: sp.card }}
-                      className="w-auto"
-                      unoptimized
-                    />
-                  </div>
-                  <p className="font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight leading-none text-5xl sm:text-6xl mt-8">
-                    {sp.prize}
-                  </p>
-                  <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase mt-2">
-                    {sp.award}
-                  </p>
-                  <p className="text-[#5A6B78] text-sm leading-relaxed mt-5">{sp.body}</p>
-                  <p className="mt-auto pt-6 text-[#293C4B] text-[13px] font-semibold leading-snug">
-                    {sp.extra}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ---------- Tracks ---------- */}
       <section className="pt-20 sm:pt-28">
