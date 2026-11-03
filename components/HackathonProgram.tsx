@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import FAQ from "@/components/FAQ";
@@ -121,14 +122,78 @@ const PODIUM = [
   { place: "3rd", amount: "$500", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
-const BOUNTIES: { name: string; prize: string; unit?: string; note: string }[] = [
-  { name: "Gemini", prize: "$4,000", note: "Prediction markets · $2,500 / $1,000 / $500" },
-  { name: "Solana", prize: "$4,500", note: "Best use of Solana · $1,500 per main track" },
-  { name: "Circle", prize: "$3,000", note: "Best use of Arc · $1,000 per main track" },
-  { name: "QuickNode", prize: "$500", note: "Best build using QuickNode Streams" },
-  { name: "Grok Bot", prize: "Keyboard", unit: "per member", note: "Best use of Grok Bot wins a mechanical keyboard per member, plus Grok Bot swag" },
-  { name: "ElevenLabs", prize: "3 months", unit: "of Scale", note: "Best project gets 3 months of Scale per member. The 1st-place Official Winner gets 3 months of Pro per member." },
-  { name: "Everyone", prize: "Perks", unit: "per team", note: "Teams with a complete, working submission get 1 month of ElevenLabs Creator, plus a QuickNode $49/mo plan and X Premium (Cursor, Grok, X, and more) for up to 300 participants." },
+type Prize = { name: string; prize: string; unit?: string; note: string };
+
+/** Awarded separately in each of the three main tracks. */
+const TRACK_WINNER: Prize = {
+  name: "Track Winner",
+  prize: "$2,000",
+  unit: "per track",
+  note: "Chosen by the UBC team. Every project competes for it in the track it entered.",
+};
+
+/** Teams pick at most one of these, judged within their main track. */
+const CHAIN_AWARDS: (Prize & { logo: string; w: number; h: number; logoH: number })[] = [
+  {
+    name: "Best use of Solana",
+    logo: `${LOGO_BASE}/solana.png`,
+    w: 844,
+    h: 144,
+    logoH: 24,
+    prize: "$1,500",
+    unit: "per track",
+    note: "Chosen by Solana. For projects built on Solana (devnet is fine).",
+  },
+  {
+    name: "Best use of Arc",
+    logo: `${LOGO_BASE}/circle.png`,
+    w: 934,
+    h: 240,
+    logoH: 24,
+    prize: "$1,000",
+    unit: "per track",
+    note: "Chosen by Circle. For projects built on Arc, Circle's stablecoin-focused Layer-1 (testnet is fine).",
+  },
+];
+
+const BOUNTIES: Prize[] = [
+  {
+    name: "Gemini Prediction Markets",
+    prize: "$4,000",
+    note: "1st $2,500 · 2nd $1,000 · 3rd $500. For projects built on Gemini's prediction market APIs.",
+  },
+  {
+    name: "QuickNode Streams",
+    prize: "$500",
+    note: "For projects that use QuickNode Streams as a core data source.",
+  },
+  {
+    name: "ElevenLabs",
+    prize: "3 months",
+    unit: "of Scale",
+    note: "ElevenLabs Scale for each member, for projects where voice or audio is central.",
+  },
+  {
+    name: "Grok Bot",
+    prize: "Keyboard",
+    unit: "per member",
+    note: "A mechanical keyboard for each member plus Grok Bot swag, for projects where Grok Bot does real work.",
+  },
+];
+
+const PARTICIPATION: Prize = {
+  name: "Participation",
+  prize: "Perks",
+  unit: "per team",
+  note: "Teams with a complete, working submission get 1 month of ElevenLabs Creator, plus a $49/mo QuickNode plan and X Premium (Cursor, Grok, X, and more) for up to 300 participants.",
+};
+
+/** The guide's example of one project stacking prizes. */
+const STACK_EXAMPLE = [
+  { label: "DeFi Track Winner", prize: "$2,000" },
+  { label: "Best use of Solana", prize: "$1,500" },
+  { label: "QuickNode bounty", prize: "$500" },
+  { label: "Official Winner", prize: "up to $2,500" },
 ];
 
 const WEEK = [
@@ -329,6 +394,41 @@ function TrackArt({ kind }: { kind: TrackArtKind }) {
       >
         ❤️
       </motion.span>
+    </div>
+  );
+}
+
+function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
+  return (
+    <div
+      className={`flex items-center justify-between gap-4 rounded-2xl px-5 py-4 ${
+        dark ? "bg-white/[0.06] border border-white/10" : "bg-[#F4F3EF]"
+      }`}
+    >
+      <div>
+        <p className={`font-semibold ${dark ? "text-white" : "text-[#293C4B]"}`}>{p.name}</p>
+        <p className={`text-[13px] leading-snug mt-0.5 ${dark ? "text-white/50" : "text-[#5A6B78]"}`}>
+          {p.note}
+        </p>
+      </div>
+      <span className="shrink-0 text-right">
+        <span
+          className={`block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight ${
+            p.prize.startsWith("$") ? "text-2xl" : "text-lg"
+          } sm:text-3xl`}
+        >
+          {p.prize}
+        </span>
+        {p.unit && (
+          <span
+            className={`block text-[10px] font-semibold tracking-[0.16em] uppercase ${
+              dark ? "text-white/50" : "text-[#9CADB7]"
+            }`}
+          >
+            {p.unit}
+          </span>
+        )}
+      </span>
     </div>
   );
 }
@@ -543,44 +643,90 @@ export default function HackathonProgram() {
       {/* ---------- Prizes ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <Reveal>
+            <Eyebrow>Prizes</Eyebrow>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+              <h2
+                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
+                style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
+              >
+                $22,000<span className="text-[#EC8644]">+</span> in prizes
+              </h2>
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md">
+                Every project enters one main track, where it competes for that track&rsquo;s
+                prizes. Bounties are optional extras, and every submission is automatically
+                considered for Official Winner. All prizes stack, except that a team can&rsquo;t
+                win both Best use of Solana and Best use of Arc.
+              </p>
+            </div>
+          </Reveal>
+
           <div className="grid lg:grid-cols-2 gap-4">
             <Reveal className="h-full">
               <div className="h-full bg-white rounded-3xl p-8 sm:p-10 flex flex-col">
-                <Eyebrow>Prizes</Eyebrow>
-                <p
-                  className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
-                  style={{ fontSize: "clamp(52px, 6vw, 92px)" }}
+                <Eyebrow>In each main track</Eyebrow>
+                <h3
+                  className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
+                  style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
                 >
-                  $22,000<span className="text-[#EC8644]">+</span>
-                </p>
+                  Track prizes
+                </h3>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  $17,500 from Solana and Circle, plus $4,500 in cash sponsor bounties and
-                  additional perks.
+                  Each of the three main tracks has its own winners, so every prize here is
+                  awarded three times.
                 </p>
 
-                <div className="flex items-center justify-between gap-4 rounded-2xl bg-[#F4F3EF] px-5 py-4 mt-8">
-                  <div>
-                    <p className="text-[#293C4B] font-semibold">Track Winner</p>
-                    <p className="text-[#5A6B78] text-[13px] leading-snug mt-0.5">
-                      One winner in each of the three main tracks
+                <div className="mt-8 space-y-3">
+                  <PrizeRow p={TRACK_WINNER} />
+                  <div className="pt-5">
+                    <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase mb-3">
+                      Optional chain award · pick one
                     </p>
+                    {/* Tiles share a height so the "or" badge sits in the gap,
+                        whether they're side by side or stacked */}
+                    <div className="relative grid sm:grid-cols-2 auto-rows-fr gap-3">
+                      {CHAIN_AWARDS.map((c) => (
+                        <div
+                          key={c.name}
+                          className="rounded-2xl border-2 border-[#293C4B]/10 p-5 flex flex-col"
+                        >
+                          <div className="h-7 flex items-center">
+                            <Image
+                              src={c.logo}
+                              alt={c.name.replace("Best use of ", "")}
+                              width={c.w}
+                              height={c.h}
+                              style={{ height: c.logoH }}
+                              className="w-auto"
+                              unoptimized
+                            />
+                          </div>
+                          <p className="text-[#293C4B] font-semibold mt-5">{c.name}</p>
+                          <p className="font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight leading-none text-4xl sm:text-5xl mt-2">
+                            {c.prize}
+                          </p>
+                          <p className="text-[#9CADB7] text-[10px] font-semibold tracking-[0.16em] uppercase mt-1.5">
+                            {c.unit}
+                          </p>
+                          <p className="text-[#5A6B78] text-[13px] leading-snug mt-4">{c.note}</p>
+                        </div>
+                      ))}
+                      <span
+                        aria-hidden
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#293C4B] text-white text-[11px] font-semibold tracking-[0.12em] uppercase flex items-center justify-center ring-4 ring-white"
+                      >
+                        or
+                      </span>
+                    </div>
                   </div>
-                  <span className="shrink-0 text-right">
-                    <span className="block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight text-2xl sm:text-3xl">
-                      $2,000
-                    </span>
-                    <span className="block text-[#9CADB7] text-[10px] font-semibold tracking-[0.16em] uppercase">
-                      per track
-                    </span>
-                  </span>
                 </div>
 
                 <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-2">
                   Official UBC 2026 Hackathon Winner
                 </p>
                 <p className="text-[#5A6B78] text-[13px] leading-snug mb-4 max-w-md">
-                  Every submission is automatically eligible, and it stacks with other prizes.
-                  1st place also gets 3 months of ElevenLabs Pro per member.
+                  Chosen by the UBC team from every submission across all three tracks. You&rsquo;re
+                  entered automatically. 1st place also gets 3 months of ElevenLabs Pro per member.
                 </p>
                 <div className="flex-1 min-h-44 sm:min-h-52 flex items-end gap-2 sm:gap-3">
                   {PODIUM.map((p, i) => (
@@ -602,29 +748,6 @@ export default function HackathonProgram() {
                     </motion.div>
                   ))}
                 </div>
-                <div className="flex items-center gap-6 mt-6">
-                  <span className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase">
-                    Backed by
-                  </span>
-                  <Image
-                    src={`${LOGO_BASE}/solana.png`}
-                    alt="Solana"
-                    width={120}
-                    height={18}
-                    style={{ height: 16 }}
-                    className="w-auto"
-                    unoptimized
-                  />
-                  <Image
-                    src={`${LOGO_BASE}/circle.png`}
-                    alt="Circle"
-                    width={120}
-                    height={24}
-                    style={{ height: 22 }}
-                    className="w-auto"
-                    unoptimized
-                  />
-                </div>
               </div>
             </Reveal>
 
@@ -638,48 +761,57 @@ export default function HackathonProgram() {
                   }}
                 />
                 <div className="relative">
-                  <Eyebrow>Bounties &amp; perks</Eyebrow>
+                  <Eyebrow>Optional</Eyebrow>
                   <h3
-                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95] mb-8"
+                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95]"
                     style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
                   >
-                    Extra ways to win
+                    Sponsor bounties
                   </h3>
-                  <ul className="space-y-3">
-                    {BOUNTIES.map((b) => (
-                      <li
-                        key={b.name}
-                        className="flex items-center justify-between gap-4 rounded-2xl bg-white/[0.06] border border-white/10 px-5 py-4 hover:bg-white/[0.1] transition-colors"
-                      >
-                        <div>
-                          <p className="text-white font-semibold">{b.name}</p>
-                          <p className="text-white/50 text-[13px] leading-snug mt-0.5">{b.note}</p>
-                        </div>
-                        <span className="shrink-0 text-right">
-                          <span
-                            className={`block font-[var(--font-zuume)] font-black text-[#EC8644] tracking-tight ${
-                              b.prize.startsWith("$") ? "text-2xl" : "text-lg"
-                            } sm:text-3xl`}
-                          >
-                            {b.prize}
-                          </span>
-                          {b.unit && (
-                            <span className="block text-white/50 text-[10px] font-semibold tracking-[0.16em] uppercase">
-                              {b.unit}
-                            </span>
-                          )}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-white/50 text-[13px] leading-snug mt-5">
-                    Teams may compete for one chain award, Best use of Solana or Best use of
-                    Arc, not both.
+                  <p className="text-white/50 text-[15px] leading-relaxed mt-3 max-w-md">
+                    Enter as many bounties as your project qualifies for, from any track. Each one
+                    is judged by the sponsor and a UBC team representative.
                   </p>
+                  <div className="mt-8 space-y-3">
+                    {BOUNTIES.map((b) => (
+                      <PrizeRow key={b.name} p={b} dark />
+                    ))}
+                  </div>
+
+                  <p className="text-white/40 text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-3">
+                    For every complete submission
+                  </p>
+                  <PrizeRow p={PARTICIPATION} dark />
                 </div>
               </div>
             </Reveal>
           </div>
+
+          <Reveal>
+            <div className="mt-4 rounded-3xl bg-[#EC8644]/10 border border-[#EC8644]/20 p-6 sm:p-8">
+              <p className="text-[#293C4B] font-semibold">Example: how prizes stack</p>
+              <p className="text-[#5A6B78] text-sm leading-relaxed mt-1">
+                A DeFi project built on Solana that uses QuickNode Streams could win all of these.
+              </p>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-5">
+                {STACK_EXAMPLE.map((e, i) => (
+                  <Fragment key={e.label}>
+                    {i > 0 && (
+                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl" aria-hidden>
+                        +
+                      </span>
+                    )}
+                    <span className="inline-flex items-baseline gap-2 rounded-full bg-white px-4 py-2 shadow-[0_6px_16px_-10px_rgba(26,42,54,0.4)]">
+                      <span className="text-[#293C4B] text-sm font-semibold">{e.label}</span>
+                      <span className="font-[var(--font-zuume)] font-black text-[#EC8644] text-xl tracking-tight">
+                        {e.prize}
+                      </span>
+                    </span>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
