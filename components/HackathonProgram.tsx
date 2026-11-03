@@ -131,7 +131,7 @@ const TRACK_WINNER: Prize = {
   name: "Track Winner",
   prize: "$2,000",
   unit: "per track",
-  note: "Chosen by the UBC team. Every project competes for it in the track it entered.",
+  note: "Chosen by the UBC team in each track.",
 };
 
 /** Teams pick at most one of these, judged within their main track. */
@@ -178,7 +178,7 @@ const BOUNTIES: Prize[] = [
     logo: { src: "/sponsors/grok.svg", w: 87, h: 32, height: 22 },
     prize: "Keyboard",
     unit: "per member",
-    note: "A mechanical keyboard for each member plus Grok Bot swag, for projects where Grok Bot does real work.",
+    note: "A mechanical keyboard per member plus swag, for projects where Grok Bot does real work.",
   },
 ];
 
@@ -695,15 +695,15 @@ export default function HackathonProgram() {
             <Eyebrow>Prizes</Eyebrow>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <h2
-                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
-                style={{ fontSize: "clamp(64px, 9vw, 128px)" }}
+                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
+                style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
               >
                 $22,000<span className="text-[#EC8644]">+</span>
                 <span className="sr-only"> in prizes</span>
               </h2>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm md:mb-3">
-                Every project enters one main track and can add one chain award and any bounties.
-                Every team is considered for Official Winner, and all prizes stack.
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-lg">
+                Enter one main track, then add one chain award and any bounties. Every team is
+                also in the running for Official Winner.
               </p>
             </div>
           </Reveal>
@@ -719,8 +719,8 @@ export default function HackathonProgram() {
                   Main prizes
                 </h3>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  Track Winner and the chain awards are given in each of the three main tracks.
-                  Official Winner is chosen from every submission across all of them.
+                  Track Winner and chain awards are given in each main track. Official Winner is
+                  chosen across all of them.
                 </p>
 
                 <div className="mt-8">
@@ -774,8 +774,8 @@ export default function HackathonProgram() {
                   Official UBC 2026 Hackathon Winner
                 </p>
                 <p className="text-[#5A6B78] text-[13px] leading-snug mb-4 max-w-md">
-                  Chosen by the UBC team from every submission across all three tracks. You&rsquo;re
-                  entered automatically. 1st place also gets 3 months of ElevenLabs Pro per member.
+                  Chosen by the UBC team from all submissions. 1st place also gets 3 months of
+                  ElevenLabs Pro per member.
                 </p>
                 <div className="flex-1 min-h-44 sm:min-h-52 flex items-end gap-2 sm:gap-3">
                   {PODIUM.map((p, i) => (
@@ -818,8 +818,8 @@ export default function HackathonProgram() {
                     Sponsor bounties
                   </h3>
                   <p className="text-white/50 text-[15px] leading-relaxed mt-3 max-w-md">
-                    Enter as many bounties as your project qualifies for, from any track. Each one
-                    is judged by the sponsor and a UBC team representative.
+                    Enter as many as you qualify for. Each is judged by the sponsor and a UBC team
+                    representative.
                   </p>
                   <div className="mt-8 space-y-3">
                     {BOUNTIES.map((b) => (
