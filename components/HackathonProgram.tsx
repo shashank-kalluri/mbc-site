@@ -13,6 +13,7 @@ import {
   Layers,
   Smartphone,
   Plus,
+  Trophy,
 } from "lucide-react";
 
 /** Full rules, track requirements, and resources live in the guide; this page
@@ -201,6 +202,32 @@ const PERKS: { logo: Logo; name: string; text: string; limited?: boolean }[] = [
     limited: true,
   },
 ];
+
+/** One project stacking prizes, from the guide. `bar` is each prize's accent color. */
+const STACK_EXAMPLE: {
+  label: string;
+  amount: number;
+  bar: string;
+  logo?: Logo;
+  Icon?: typeof Bot;
+}[] = [
+  { label: "Official Winner, 1st place", amount: 2500, bar: "#EC8644", Icon: Trophy },
+  { label: "DeFi Track Winner", amount: 2000, bar: "#9CADB7", Icon: Layers },
+  {
+    label: "Best use of Solana",
+    amount: 1500,
+    bar: "linear-gradient(90deg, #9945FF, #14F195)",
+    logo: { src: `${LOGO_BASE}/solana.png`, w: 844, h: 144, height: 22 },
+  },
+  {
+    label: "Gemini Prediction Markets, 1st",
+    amount: 2500,
+    bar: "#00DCFA",
+    logo: { src: `${LOGO_BASE}/gemini.png`, w: 797, h: 173, height: 17 },
+  },
+];
+
+const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 const WEEK = [
   { date: "Nov 8", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors" },
@@ -452,20 +479,12 @@ function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
 }
 
 /** Divider with a plus sign, showing that the prizes on either side stack. */
-function StackPlus({ label }: { label: string }) {
+function StackPlus() {
   return (
-    <div className="flex items-center gap-3 my-5">
+    <div className="flex items-center gap-3 my-5" aria-hidden>
       <span className="flex-1 h-px bg-[#293C4B]/10" />
-      <span className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="w-7 h-7 rounded-full bg-[#EC8644] text-white flex items-center justify-center"
-        >
-          <Plus size={16} strokeWidth={3} />
-        </span>
-        <span className="text-[#EC8644] text-[11px] font-semibold tracking-[0.16em] uppercase">
-          {label}
-        </span>
+      <span className="w-7 h-7 rounded-full bg-[#EC8644] text-white flex items-center justify-center">
+        <Plus size={16} strokeWidth={3} />
       </span>
       <span className="flex-1 h-px bg-[#293C4B]/10" />
     </div>
@@ -708,17 +727,19 @@ export default function HackathonProgram() {
                 >
                   Main prizes
                 </h3>
-                <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  Track Winner and chain awards are given in each main track. Official Winner is
-                  chosen across all of them.
-                </p>
 
                 <div className="mt-8">
+                  <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl tracking-tight leading-none">
+                    Track prizes
+                  </p>
+                  <p className="text-[#5A6B78] text-[13px] leading-snug mt-1.5 mb-4">
+                    Awarded separately in each of the three main tracks.
+                  </p>
                   <PrizeRow p={TRACK_WINNER} />
-                  <StackPlus label="Optional" />
+                  <StackPlus />
                   <div>
                     <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase mb-3">
-                      Chain award · pick one
+                      Chain award · optional, pick one
                     </p>
                     {/* Tiles share a height so the "or" badge sits in the gap,
                         whether they're side by side or stacked */}
@@ -757,15 +778,16 @@ export default function HackathonProgram() {
                       </span>
                     </div>
                   </div>
-                  <StackPlus label="Automatic" />
                 </div>
 
-                <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mb-2">
+                <span className="block h-px bg-[#293C4B]/10 my-8" />
+
+                <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl tracking-tight leading-none">
                   Official UBC 2026 Hackathon Winner
                 </p>
-                <p className="text-[#5A6B78] text-[13px] leading-snug mb-4 max-w-md">
-                  Chosen by the UBC team from all submissions. 1st place also gets 3 months of
-                  ElevenLabs Pro per member.
+                <p className="text-[#5A6B78] text-[13px] leading-snug mt-1.5 mb-5 max-w-md">
+                  Chosen by the UBC team from every submission, across all tracks. 1st place also
+                  gets 3 months of ElevenLabs Pro per member.
                 </p>
                 <div className="flex-1 min-h-44 sm:min-h-52 flex items-end gap-2 sm:gap-3">
                   {PODIUM.map((p, i) => (
@@ -854,6 +876,70 @@ export default function HackathonProgram() {
               </div>
             </Reveal>
           </div>
+
+          <Reveal>
+            <div className="mt-4 rounded-3xl bg-[#1A2A36] p-8 sm:p-10">
+              <Eyebrow>Example</Eyebrow>
+              <h3
+                className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95]"
+                style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
+              >
+                One project can win all of these
+              </h3>
+              <p className="text-white/50 text-[15px] leading-relaxed mt-3 max-w-xl">
+                A DeFi prediction market built on Solana with Gemini&rsquo;s Prediction Markets API
+                could stack every prize below.
+              </p>
+              <div className="flex flex-col lg:flex-row lg:items-stretch gap-2 lg:gap-3 mt-8">
+                {STACK_EXAMPLE.map((e, i) => (
+                  <div key={e.label} className="contents">
+                    {i > 0 && (
+                      <span
+                        aria-hidden
+                        className="self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-3xl leading-none"
+                      >
+                        +
+                      </span>
+                    )}
+                    <div className="relative flex-1 overflow-hidden rounded-2xl bg-white/[0.06] border border-white/10 p-5">
+                      <span className="absolute inset-x-0 top-0 h-1" style={{ background: e.bar }} />
+                      <div className="h-6 flex items-center">
+                        {e.logo ? (
+                          <Image
+                            src={e.logo.src}
+                            alt=""
+                            width={e.logo.w}
+                            height={e.logo.h}
+                            style={{ height: e.logo.height }}
+                            className="w-auto brightness-0 invert"
+                            unoptimized
+                          />
+                        ) : (
+                          e.Icon && <e.Icon size={20} className="text-white/80" />
+                        )}
+                      </div>
+                      <p className="text-white/60 text-[13px] leading-snug mt-4">{e.label}</p>
+                      <p className="font-[var(--font-zuume)] font-black text-white text-3xl sm:text-4xl tracking-tight leading-none mt-1.5">
+                        {usd(e.amount)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <span
+                  aria-hidden
+                  className="self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-3xl leading-none"
+                >
+                  =
+                </span>
+                <div className="rounded-2xl bg-[#EC8644] p-5 flex flex-col justify-end lg:min-w-44">
+                  <p className="text-white/85 text-[13px] leading-snug">One team takes home</p>
+                  <p className="font-[var(--font-zuume)] font-black text-white text-4xl sm:text-5xl tracking-tight leading-none mt-1.5">
+                    {usd(STACK_EXAMPLE.reduce((sum, e) => sum + e.amount, 0))}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
 
           <Reveal>
             <div className="relative mt-4 overflow-hidden rounded-3xl bg-[#EC8644] px-7 py-10 sm:px-12 sm:py-14 lg:px-16">
