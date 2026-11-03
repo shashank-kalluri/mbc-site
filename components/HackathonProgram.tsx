@@ -182,12 +182,26 @@ const BOUNTIES: Prize[] = [
   },
 ];
 
-const PARTICIPATION: Prize = {
-  name: "Participation",
-  prize: "Perks",
-  unit: "per team",
-  note: "Teams with a complete, working submission get 1 month of ElevenLabs Creator, plus a $49/mo QuickNode plan and X Premium (Cursor, Grok, X, and more) for up to 300 participants.",
-};
+/** Participation perks. `limited` ones are capped at 300 participants. */
+const PERKS: { logo: Logo; name: string; text: string; limited?: boolean }[] = [
+  {
+    name: "ElevenLabs",
+    logo: { src: "/sponsors/elevenlabs.svg", w: 116, h: 15, height: 13 },
+    text: "1 month of Creator",
+  },
+  {
+    name: "QuickNode",
+    logo: { src: "/sponsors/quicknode.svg", w: 87, h: 14, height: 15 },
+    text: "A $49/mo plan",
+    limited: true,
+  },
+  {
+    name: "X",
+    logo: { src: "/sponsors/x.svg", w: 24, h: 24, height: 17 },
+    text: "X Premium (Cursor, Grok, X, and more)",
+    limited: true,
+  },
+];
 
 /** The guide's example of one project stacking prizes. */
 const STACK_EXAMPLE = [
@@ -697,16 +711,16 @@ export default function HackathonProgram() {
           <div className="grid lg:grid-cols-2 gap-4">
             <Reveal className="h-full">
               <div className="h-full bg-white rounded-3xl p-8 sm:p-10 flex flex-col">
-                <Eyebrow>In each main track</Eyebrow>
+                <Eyebrow>Every team</Eyebrow>
                 <h3
                   className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
                   style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
                 >
-                  Track prizes
+                  Main prizes
                 </h3>
                 <p className="text-[#5A6B78] text-[15px] leading-relaxed mt-3 max-w-md">
-                  Each of the three main tracks has its own winners, so every prize here is
-                  awarded three times.
+                  Track Winner and the chain awards are given in each of the three main tracks.
+                  Official Winner is chosen from every submission across all of them.
                 </p>
 
                 <div className="mt-8">
@@ -816,7 +830,36 @@ export default function HackathonProgram() {
                   <p className="text-white/40 text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-3">
                     For every complete submission
                   </p>
-                  <PrizeRow p={PARTICIPATION} dark />
+                  <div className="rounded-2xl bg-white/[0.06] border border-white/10 px-5 py-5">
+                    <p className="text-white font-semibold">Participation perks</p>
+                    <p className="text-white/50 text-[13px] leading-snug mt-0.5">
+                      Every team with a complete, working submission gets these.
+                    </p>
+                    <ul className="mt-4 border-t border-white/10 divide-y divide-white/10">
+                      {PERKS.map((pk) => (
+                        <li key={pk.name} className="flex items-center gap-4 py-3.5">
+                          <span className="w-24 sm:w-28 shrink-0 flex items-center">
+                            <Image
+                              src={pk.logo.src}
+                              alt={pk.name}
+                              width={pk.logo.w}
+                              height={pk.logo.h}
+                              style={{ height: pk.logo.height }}
+                              className="w-auto"
+                              unoptimized
+                            />
+                          </span>
+                          <span className="text-white/80 text-sm leading-snug">
+                            {pk.text}
+                            {pk.limited && <span className="text-[#EC8644]">*</span>}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-white/40 text-[12px] leading-snug mt-1">
+                      <span className="text-[#EC8644]">*</span> For up to 300 participants.
+                    </p>
+                  </div>
                 </div>
               </div>
             </Reveal>
