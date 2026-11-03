@@ -15,9 +15,9 @@ const SIGNUP_URL = "https://luma.com/z1bgn7z8";
 /** Full competition memo: tracks, format, report structure, and judging. */
 const MEMO_URL =
   "https://docs.google.com/document/d/1n_DFfKbDEzRWKLzivAMEYfUhppSXo_ZRtOPZiMajqug/edit?usp=sharing";
-/** Set this once the submission link is live and the locked submit buttons
- *  turn into real links. */
-const SUBMIT_URL: string | null = null;
+/** Report submission form. Set to null to lock the submit buttons again. */
+const SUBMIT_URL: string | null =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdeYdyU_AWRAw5o5F5myFWyxsbtSQDvz_ZLMYGU2EIWIwgDHw/viewform?usp=dialog";
 /** Competition chat. Join after signing up on Luma. */
 const TELEGRAM_URL = "https://t.me/+AN2V5Da8qh9mYmVh";
 /** Main UBC 2026 registration. Only attendees can compete. */
@@ -162,7 +162,8 @@ const RESEARCH_FAQ = [
   {
     question: "Where do I submit my report?",
     answer:
-      "Reports are due Nov 9 at 11:59 PM ET. The submission link isn't live yet. We'll post it here and in the Telegram once it's ready.",
+      "Submit your report through the Google Form by Nov 9 at 11:59 PM ET.",
+    link: { href: SUBMIT_URL, label: "Open the submission form" },
   },
   {
     question: "Can I use AI?",
