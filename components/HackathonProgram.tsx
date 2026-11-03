@@ -13,7 +13,6 @@ import {
   Layers,
   Smartphone,
   Plus,
-  Trophy,
 } from "lucide-react";
 
 /** Full rules, track requirements, and resources live in the guide; this page
@@ -176,7 +175,7 @@ const BOUNTIES: Prize[] = [
   },
   {
     name: "Grok Bot",
-    logo: { src: "/sponsors/grok-mark.svg", w: 34, h: 32, height: 19, label: "Grok Bot" },
+    logo: { src: "/sponsors/grok-bot.svg", w: 150, h: 150, height: 19, label: "Grok Bot" },
     prize: "Keyboard",
     unit: "per member",
     note: "A mechanical keyboard per member plus swag, for projects where Grok Bot does real work.",
@@ -204,28 +203,12 @@ const PERKS: { logo: Logo; name: string; text: string; limited?: boolean }[] = [
   },
 ];
 
-/** One project stacking prizes, from the guide. `bar` is each prize's accent color. */
-const STACK_EXAMPLE: {
-  label: string;
-  amount: number;
-  bar: string;
-  logo?: Logo;
-  Icon?: typeof Bot;
-}[] = [
-  { label: "Official Winner, 1st place", amount: 2500, bar: "#EC8644", Icon: Trophy },
-  { label: "DeFi Track Winner", amount: 2000, bar: "#9CADB7", Icon: Layers },
-  {
-    label: "Best use of Solana",
-    amount: 1500,
-    bar: "linear-gradient(90deg, #9945FF, #14F195)",
-    logo: { src: `${LOGO_BASE}/solana.png`, w: 844, h: 144, height: 22 },
-  },
-  {
-    label: "Gemini Prediction Markets, 1st",
-    amount: 2500,
-    bar: "#00DCFA",
-    logo: { src: `${LOGO_BASE}/gemini.png`, w: 797, h: 173, height: 17 },
-  },
+/** One project stacking prizes. `bar` is each prize's accent color. */
+const STACK_EXAMPLE: { label: string; amount: number; bar: string }[] = [
+  { label: "1st overall", amount: 2500, bar: "#EC8644" },
+  { label: "DeFi Track Winner", amount: 2000, bar: "#9CADB7" },
+  { label: "Best use of Solana", amount: 1500, bar: "linear-gradient(180deg, #9945FF, #14F195)" },
+  { label: "Gemini bounty, 1st", amount: 2500, bar: "#00DCFA" },
 ];
 
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
@@ -452,7 +435,7 @@ function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
               unoptimized
             />
             {p.logo.label && (
-              <span className={`text-[17px] font-semibold tracking-tight leading-none ${dark ? "text-white" : "text-[#293C4B]"}`}>
+              <span className={`text-[17px] font-medium tracking-tight leading-none ${dark ? "text-white" : "text-[#293C4B]"}`}>
                 {p.logo.label}
               </span>
             )}
@@ -886,48 +869,58 @@ export default function HackathonProgram() {
           </div>
 
           <Reveal>
-            <div className="mt-4 rounded-3xl bg-[#1A2A36] p-8 sm:p-10">
-              <Eyebrow>Example</Eyebrow>
-              <h3
-                className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95]"
-                style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
-              >
-                One project can win all of these
-              </h3>
-              <p className="text-white/50 text-[15px] leading-relaxed mt-3 max-w-xl">
-                A DeFi prediction market built on Solana with Gemini&rsquo;s Prediction Markets API
-                could stack every prize below.
-              </p>
-              <div className="flex flex-col lg:flex-row lg:items-stretch gap-2 lg:gap-3 mt-8">
+            <div className="relative mt-4 overflow-hidden rounded-3xl bg-[#1A2A36] p-8 sm:p-10">
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 50% 80% at 100% 0%, rgba(236,134,68,0.22) 0%, rgba(236,134,68,0) 70%)",
+                }}
+              />
+              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div>
+                  <Eyebrow>Example</Eyebrow>
+                  <h3
+                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.95]"
+                    style={{ fontSize: "clamp(30px, 3.4vw, 44px)" }}
+                  >
+                    All prizes stack
+                  </h3>
+                  <p className="text-white/50 text-[15px] leading-relaxed mt-3 max-w-xl">
+                    One project can win across categories. A DeFi prediction market built on Solana
+                    with Gemini&rsquo;s API could win all four of these.
+                  </p>
+                </div>
+                <div className="shrink-0 lg:text-right">
+                  <p
+                    className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.85]"
+                    style={{ fontSize: "clamp(56px, 6.5vw, 96px)" }}
+                  >
+                    $22,000<span className="text-[#EC8644]">+</span>
+                  </p>
+                  <p className="text-white/60 text-[11px] font-semibold tracking-[0.18em] uppercase mt-4">
+                    In cash prizes, plus sponsor perks
+                  </p>
+                </div>
+              </div>
+
+              {/* Two-up grid on phones; one row joined by + and = on desktop */}
+              <div className="relative grid grid-cols-2 gap-2 mt-8 lg:flex lg:items-stretch lg:gap-3">
                 {STACK_EXAMPLE.map((e, i) => (
                   <div key={e.label} className="contents">
                     {i > 0 && (
                       <span
                         aria-hidden
-                        className="self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-3xl leading-none"
+                        className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
                       >
                         +
                       </span>
                     )}
-                    <div className="relative flex-1 overflow-hidden rounded-2xl bg-white/[0.06] border border-white/10 p-5">
-                      <span className="absolute inset-x-0 top-0 h-1" style={{ background: e.bar }} />
-                      <div className="h-6 flex items-center">
-                        {e.logo ? (
-                          <Image
-                            src={e.logo.src}
-                            alt=""
-                            width={e.logo.w}
-                            height={e.logo.h}
-                            style={{ height: e.logo.height }}
-                            className="w-auto brightness-0 invert"
-                            unoptimized
-                          />
-                        ) : (
-                          e.Icon && <e.Icon size={20} className="text-white/80" />
-                        )}
-                      </div>
-                      <p className="text-white/60 text-[13px] leading-snug mt-4">{e.label}</p>
-                      <p className="font-[var(--font-zuume)] font-black text-white text-3xl sm:text-4xl tracking-tight leading-none mt-1.5">
+                    <div className="relative flex-1 overflow-hidden rounded-xl bg-white/[0.06] border border-white/10 pl-5 pr-4 py-3">
+                      <span className="absolute left-0 inset-y-0 w-1" style={{ background: e.bar }} />
+                      <p className="text-white/60 text-[12px] leading-snug">{e.label}</p>
+                      <p className="font-[var(--font-zuume)] font-black text-white text-2xl tracking-tight leading-none mt-1">
                         {usd(e.amount)}
                       </p>
                     </div>
@@ -935,49 +928,16 @@ export default function HackathonProgram() {
                 ))}
                 <span
                   aria-hidden
-                  className="self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-3xl leading-none"
+                  className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
                 >
                   =
                 </span>
-                <div className="rounded-2xl bg-[#EC8644] p-5 flex flex-col justify-end lg:min-w-44">
-                  <p className="text-white/85 text-[13px] leading-snug">One team takes home</p>
-                  <p className="font-[var(--font-zuume)] font-black text-white text-4xl sm:text-5xl tracking-tight leading-none mt-1.5">
+                <div className="col-span-2 flex items-center justify-between gap-3 rounded-xl bg-[#EC8644] px-4 py-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0 lg:min-w-40">
+                  <p className="text-white/85 text-[12px] leading-snug">One team takes home</p>
+                  <p className="font-[var(--font-zuume)] font-black text-white text-2xl tracking-tight leading-none lg:mt-1">
                     {usd(STACK_EXAMPLE.reduce((sum, e) => sum + e.amount, 0))}
                   </p>
                 </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div className="relative mt-4 overflow-hidden rounded-3xl bg-[#EC8644] px-7 py-10 sm:px-12 sm:py-14 lg:px-16">
-              <div
-                aria-hidden
-                className="absolute inset-0 opacity-[0.16] pointer-events-none"
-                style={{
-                  backgroundImage: "radial-gradient(rgba(255,255,255,0.95) 1px, transparent 1px)",
-                  backgroundSize: "24px 24px",
-                }}
-              />
-              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 lg:gap-10">
-                <motion.p
-                  initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ type: "spring", stiffness: 120, damping: 14 }}
-                  style={{ fontSize: "clamp(54px, 8vw, 116px)", originX: 0 }}
-                  className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.82]"
-                >
-                  $22,000<span className="text-[#1A2A36]">+</span>
-                </motion.p>
-                <p
-                  className="shrink-0 whitespace-nowrap font-[var(--font-zuume)] font-black text-[#1A2A36] tracking-tight leading-[0.95] lg:text-right lg:pb-2"
-                  style={{ fontSize: "clamp(26px, 2.8vw, 40px)" }}
-                >
-                  in cash prizes,
-                  <br />
-                  plus sponsor perks
-                </p>
               </div>
             </div>
           </Reveal>

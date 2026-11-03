@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><defs><mask id="eyes"><rect width="150" height="150" fill="#fff"/><g stroke="#000" stroke-width="15" stroke-linecap="round"><line x1="72" y1="41" x2="87" y2="61"/><line x1="107" y1="25" x2="121" y2="44"/></g></mask></defs><circle cx="75" cy="75" r="74" fill="#fff" mask="url(#eyes)"/></svg>
