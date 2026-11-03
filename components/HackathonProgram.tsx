@@ -13,6 +13,7 @@ import {
   Bot,
   Layers,
   Smartphone,
+  Plus,
 } from "lucide-react";
 
 /** Full rules, track requirements, and resources live in the guide; this page
@@ -122,7 +123,8 @@ const PODIUM = [
   { place: "3rd", amount: "$500", h: "h-[37.5%]", bg: "bg-[#9CADB7]", text: "text-[#1A2A36]" },
 ];
 
-type Prize = { name: string; prize: string; unit?: string; note: string };
+type Logo = { src: string; w: number; h: number; height: number };
+type Prize = { name: string; prize: string; unit?: string; note: string; logo?: Logo };
 
 /** Awarded separately in each of the three main tracks. */
 const TRACK_WINNER: Prize = {
@@ -133,48 +135,47 @@ const TRACK_WINNER: Prize = {
 };
 
 /** Teams pick at most one of these, judged within their main track. */
-const CHAIN_AWARDS: (Prize & { logo: string; w: number; h: number; logoH: number })[] = [
+const CHAIN_AWARDS: (Prize & { logo: Logo })[] = [
   {
     name: "Best use of Solana",
-    logo: `${LOGO_BASE}/solana.png`,
-    w: 844,
-    h: 144,
-    logoH: 24,
+    logo: { src: `${LOGO_BASE}/solana.png`, w: 844, h: 144, height: 24 },
     prize: "$1,500",
     unit: "per track",
     note: "Chosen by Solana. For projects built on Solana (devnet is fine).",
   },
   {
     name: "Best use of Arc",
-    logo: `${LOGO_BASE}/circle.png`,
-    w: 934,
-    h: 240,
-    logoH: 24,
+    logo: { src: `${LOGO_BASE}/circle.png`, w: 934, h: 240, height: 24 },
     prize: "$1,000",
     unit: "per track",
     note: "Chosen by Circle. For projects built on Arc, Circle's stablecoin-focused Layer-1 (testnet is fine).",
   },
 ];
 
+/** Logos render white on the dark card. `height` evens out their visual weight. */
 const BOUNTIES: Prize[] = [
   {
     name: "Gemini Prediction Markets",
+    logo: { src: `${LOGO_BASE}/gemini.png`, w: 797, h: 173, height: 18 },
     prize: "$4,000",
-    note: "1st $2,500 · 2nd $1,000 · 3rd $500. For projects built on Gemini's prediction market APIs.",
+    note: "1st $2,500 · 2nd $1,000 · 3rd $500, for projects built on Gemini's prediction market APIs.",
   },
   {
     name: "QuickNode Streams",
+    logo: { src: "/sponsors/quicknode.svg", w: 87, h: 14, height: 16 },
     prize: "$500",
     note: "For projects that use QuickNode Streams as a core data source.",
   },
   {
     name: "ElevenLabs",
+    logo: { src: "/sponsors/elevenlabs.svg", w: 116, h: 15, height: 14 },
     prize: "3 months",
     unit: "of Scale",
     note: "ElevenLabs Scale for each member, for projects where voice or audio is central.",
   },
   {
     name: "Grok Bot",
+    logo: { src: "/sponsors/grok.svg", w: 87, h: 32, height: 22 },
     prize: "Keyboard",
     unit: "per member",
     note: "A mechanical keyboard for each member plus Grok Bot swag, for projects where Grok Bot does real work.",
@@ -406,7 +407,19 @@ function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
       }`}
     >
       <div>
-        <p className={`font-semibold ${dark ? "text-white" : "text-[#293C4B]"}`}>{p.name}</p>
+        {p.logo ? (
+          <Image
+            src={p.logo.src}
+            alt={p.name}
+            width={p.logo.w}
+            height={p.logo.h}
+            style={{ height: p.logo.height }}
+            className={`w-auto mb-2 ${dark ? "brightness-0 invert" : ""}`}
+            unoptimized
+          />
+        ) : (
+          <p className={`font-semibold ${dark ? "text-white" : "text-[#293C4B]"}`}>{p.name}</p>
+        )}
         <p className={`text-[13px] leading-snug mt-0.5 ${dark ? "text-white/50" : "text-[#5A6B78]"}`}>
           {p.note}
         </p>
@@ -429,6 +442,27 @@ function PrizeRow({ p, dark = false }: { p: Prize; dark?: boolean }) {
           </span>
         )}
       </span>
+    </div>
+  );
+}
+
+/** Divider with a plus sign, showing that the prizes on either side stack. */
+function StackPlus({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3 my-5">
+      <span className="flex-1 h-px bg-[#293C4B]/10" />
+      <span className="flex items-center gap-2">
+        <span
+          aria-hidden
+          className="w-7 h-7 rounded-full bg-[#EC8644] text-white flex items-center justify-center"
+        >
+          <Plus size={16} strokeWidth={3} />
+        </span>
+        <span className="text-[#EC8644] text-[11px] font-semibold tracking-[0.16em] uppercase">
+          {label}
+        </span>
+      </span>
+      <span className="flex-1 h-px bg-[#293C4B]/10" />
     </div>
   );
 }
@@ -647,16 +681,15 @@ export default function HackathonProgram() {
             <Eyebrow>Prizes</Eyebrow>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <h2
-                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95]"
-                style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}
+                className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-none"
+                style={{ fontSize: "clamp(64px, 9vw, 128px)" }}
               >
-                $22,000<span className="text-[#EC8644]">+</span> in prizes
+                $22,000<span className="text-[#EC8644]">+</span>
+                <span className="sr-only"> in prizes</span>
               </h2>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md">
-                Every project enters one main track, where it competes for that track&rsquo;s
-                prizes. Bounties are optional extras, and every submission is automatically
-                considered for Official Winner. All prizes stack, except that a team can&rsquo;t
-                win both Best use of Solana and Best use of Arc.
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm md:mb-3">
+                Every project enters one main track and can add one chain award and any bounties.
+                Every team is considered for Official Winner, and all prizes stack.
               </p>
             </div>
           </Reveal>
@@ -676,11 +709,12 @@ export default function HackathonProgram() {
                   awarded three times.
                 </p>
 
-                <div className="mt-8 space-y-3">
+                <div className="mt-8">
                   <PrizeRow p={TRACK_WINNER} />
-                  <div className="pt-5">
+                  <StackPlus label="Optional" />
+                  <div>
                     <p className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.16em] uppercase mb-3">
-                      Optional chain award · pick one
+                      Chain award · pick one
                     </p>
                     {/* Tiles share a height so the "or" badge sits in the gap,
                         whether they're side by side or stacked */}
@@ -692,11 +726,11 @@ export default function HackathonProgram() {
                         >
                           <div className="h-7 flex items-center">
                             <Image
-                              src={c.logo}
+                              src={c.logo.src}
                               alt={c.name.replace("Best use of ", "")}
-                              width={c.w}
-                              height={c.h}
-                              style={{ height: c.logoH }}
+                              width={c.logo.w}
+                              height={c.logo.h}
+                              style={{ height: c.logo.height }}
                               className="w-auto"
                               unoptimized
                             />
@@ -719,9 +753,10 @@ export default function HackathonProgram() {
                       </span>
                     </div>
                   </div>
+                  <StackPlus label="Automatic" />
                 </div>
 
-                <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mt-10 mb-2">
+                <p className="text-[#9CADB7] text-[11px] font-medium tracking-[0.18em] uppercase mb-2">
                   Official UBC 2026 Hackathon Winner
                 </p>
                 <p className="text-[#5A6B78] text-[13px] leading-snug mb-4 max-w-md">
