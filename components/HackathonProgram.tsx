@@ -896,42 +896,48 @@ export default function HackathonProgram() {
                 </div>
               </div>
 
-              <p className="text-[#5A6B78] text-[13px] leading-snug mt-8 mb-3">
-                <span className="font-semibold text-[#293C4B]">Example:</span> a DeFi prediction
-                market built on Solana with Gemini&rsquo;s API could win all four of these.
-              </p>
-              {/* Two-up grid on phones; one row joined by + and = on desktop */}
-              <div className="grid grid-cols-2 gap-2 lg:flex lg:items-stretch lg:gap-3">
-                {STACK_EXAMPLE.map((e, i) => (
-                  <div key={e.label} className="contents">
-                    {i > 0 && (
-                      <span
-                        aria-hidden
-                        className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
-                      >
-                        +
-                      </span>
-                    )}
-                    <div className="relative flex-1 overflow-hidden rounded-xl bg-[#F4F3EF] pl-5 pr-4 py-3">
-                      <span className="absolute left-0 inset-y-0 w-1" style={{ background: e.bar }} />
-                      <p className="text-[#5A6B78] text-[12px] leading-snug">{e.label}</p>
-                      <p className="font-[var(--font-zuume)] font-black text-2xl tracking-tight leading-none mt-1">
-                        {usd(e.amount)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                <span
-                  aria-hidden
-                  className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
-                >
-                  =
+              {/* Dashed frame and stamp mark the math below as a sample, not a rule */}
+              <div className="relative mt-10 rounded-2xl border-2 border-dashed border-[#293C4B]/15 px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
+                <span className="absolute -top-4 left-4 sm:left-5 -rotate-3 rounded-md border-2 border-[#EC8644] bg-white px-3 py-1.5 font-[var(--font-zuume)] font-black text-[#EC8644] text-lg uppercase tracking-[0.14em] leading-none shadow-[0_6px_14px_-8px_rgba(236,134,68,0.6)]">
+                  Example
                 </span>
-                <div className="col-span-2 flex items-center justify-between gap-3 rounded-xl bg-[#EC8644] px-4 py-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0 lg:min-w-40">
-                  <p className="text-white/85 text-[12px] leading-snug">One team takes home</p>
-                  <p className="font-[var(--font-zuume)] font-black text-white text-2xl tracking-tight leading-none lg:mt-1">
-                    {usd(STACK_EXAMPLE.reduce((sum, e) => sum + e.amount, 0))}
-                  </p>
+                <p className="text-[#5A6B78] text-[13px] leading-snug mb-3">
+                  A DeFi prediction market built on Solana with Gemini&rsquo;s API could win all four
+                  of these.
+                </p>
+                {/* Two-up grid on phones; one row joined by + and = on desktop */}
+                <div className="grid grid-cols-2 gap-2 lg:flex lg:items-stretch lg:gap-3">
+                  {STACK_EXAMPLE.map((e, i) => (
+                    <div key={e.label} className="contents">
+                      {i > 0 && (
+                        <span
+                          aria-hidden
+                          className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
+                        >
+                          +
+                        </span>
+                      )}
+                      <div className="relative flex-1 overflow-hidden rounded-xl bg-[#F4F3EF] pl-5 pr-4 py-3">
+                        <span className="absolute left-0 inset-y-0 w-1" style={{ background: e.bar }} />
+                        <p className="text-[#5A6B78] text-[12px] leading-snug">{e.label}</p>
+                        <p className="font-[var(--font-zuume)] font-black text-2xl tracking-tight leading-none mt-1">
+                          {usd(e.amount)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  <span
+                    aria-hidden
+                    className="hidden lg:block self-center font-[var(--font-zuume)] font-black text-[#EC8644] text-2xl leading-none"
+                  >
+                    =
+                  </span>
+                  <div className="col-span-2 flex items-center justify-between gap-3 rounded-xl bg-[#EC8644] px-4 py-3 lg:flex-col lg:items-start lg:justify-center lg:gap-0 lg:min-w-40">
+                    <p className="text-white/85 text-[12px] leading-snug">One team takes home</p>
+                    <p className="font-[var(--font-zuume)] font-black text-white text-2xl tracking-tight leading-none lg:mt-1">
+                      {usd(STACK_EXAMPLE.reduce((sum, e) => sum + e.amount, 0))}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
