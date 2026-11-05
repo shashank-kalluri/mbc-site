@@ -214,7 +214,7 @@ const STACK_EXAMPLE: { label: string; amount: number; bar: string }[] = [
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 const WEEK = [
-  { date: "Nov 8", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors" },
+  { date: "Nov 12", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors" },
   { date: "Nov 13", title: "Hacking starts", note: "12 PM CST · build from anywhere" },
   { date: "Nov 16–19", title: "Workshops", note: "Nightly office hours with sponsor engineers", link: true },
   { date: "Nov 20", title: "Submit", note: "12 PM CST on Devpost · finalists told by midnight" },
@@ -264,7 +264,7 @@ const HACKATHON_FAQ = [
   {
     question: "Where can I get help?",
     answer:
-      "Ask in the Telegram, join the kickoff call on Nov 8, or drop into nightly office hours with sponsor engineers Nov 16–19.",
+      "Ask in the Telegram, join the kickoff call on Thursday, Nov 12, or drop into nightly office hours with sponsor engineers Nov 16–19.",
     link: { href: SCHEDULE_URL, label: "Workshop & office hours schedule" },
   },
 ];
