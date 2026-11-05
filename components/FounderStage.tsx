@@ -42,7 +42,7 @@ const SPONSORS = [
   { name: "Circle", logo: `${LOGO_BASE}/circle.png`, h: 24 },
   { name: "Gemini", logo: `${LOGO_BASE}/gemini.png`, h: 22 },
   { name: "Ledger", logo: `${LOGO_BASE}/ledger.png`, h: 24 },
-  { name: "MoonPay", logo: "/sponsors/moonpay-black.svg", h: 20 },
+  { name: "MoonPay", logo: `${LOGO_BASE}/moonpay-black.svg`, h: 20 },
   { name: "Franklin Templeton", logo: `${LOGO_BASE}/ft.png`, h: 22 },
 ];
 
