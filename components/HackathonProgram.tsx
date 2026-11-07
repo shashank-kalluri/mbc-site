@@ -23,6 +23,7 @@ const SCHEDULE_URL =
   "https://docs.google.com/document/d/1eI8S0gBu6xI36DFqgqGZlO1qX6YYzFTEXBx9L5ve_zA/edit?usp=sharing";
 const DEVPOST_URL = "https://ubc-hackathon-2026.devpost.com/";
 const TELEGRAM_URL = "https://t.me/+Q0hy2P7nbIk2YWIx";
+const KICKOFF_URL = "https://luma.com/plb6gvf0";
 
 const LOGO_BASE =
   "https://xshoggmlvwtjesmqjrmu.supabase.co/storage/v1/object/public/images/partnership-logos";
@@ -214,9 +215,9 @@ const STACK_EXAMPLE: { label: string; amount: number; bar: string }[] = [
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 const WEEK = [
-  { date: "Nov 12", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors" },
+  { date: "Nov 12", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors", link: { href: KICKOFF_URL, label: "RSVP on Luma" } },
   { date: "Nov 13", title: "Hacking starts", note: "12 PM CST · build from anywhere" },
-  { date: "Nov 16–19", title: "Workshops", note: "Nightly office hours with sponsor engineers", link: true },
+  { date: "Nov 16–19", title: "Workshops", note: "Nightly office hours with sponsor engineers", link: { href: SCHEDULE_URL, label: "Full schedule" } },
   { date: "Nov 20", title: "Submit", note: "12 PM CST on Devpost · finalists told by midnight" },
   { date: "Nov 21", title: "Finals at UBC", note: "Up to 13 teams pitch live in Austin" },
 ];
@@ -1004,12 +1005,12 @@ export default function HackathonProgram() {
                   <p className="text-[#5A6B78] text-sm leading-relaxed mt-1">{w.note}</p>
                   {w.link && (
                     <a
-                      href={SCHEDULE_URL}
+                      href={w.link.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 mt-3 text-[#EC8644] text-sm font-semibold hover:underline underline-offset-4"
                     >
-                      <CalendarDays size={15} /> Full schedule
+                      <CalendarDays size={15} /> {w.link.label}
                     </a>
                   )}
                 </motion.li>
