@@ -551,6 +551,21 @@ export default function HackathonProgram() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             <div>
               <motion.div custom={0} variants={fadeUp} initial="hidden" animate="show">
+                <a
+                  href={KICKOFF_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs sm:text-sm px-4 py-2 rounded-2xl sm:rounded-full hover:bg-white/15 hover:border-white/40 transition-colors"
+                >
+                  <CalendarDays size={15} className="text-[#EC8644] shrink-0" />
+                  <span>
+                    Join the kickoff call on Thursday, Nov 12 at 6 PM CST.{" "}
+                    <span className="font-semibold text-[#EC8644] group-hover:underline underline-offset-4">
+                      RSVP on Luma
+                    </span>
+                  </span>
+                  <ArrowUpRight size={15} className="text-[#EC8644] shrink-0" />
+                </a>
                 <div className="flex items-center gap-3 mb-5">
                   <span className="block w-6 h-[2px] bg-[#EC8644]" />
                   <span className="text-[#EC8644] text-xs font-medium tracking-[0.22em] uppercase">
