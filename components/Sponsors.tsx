@@ -109,18 +109,20 @@ export default function Sponsors() {
 
         {!loading && partners && partners.length > 0 && (
           <div className="flex flex-col gap-12">
-            {[...new Set(partners.map((p) => p.tier))].map((tier) => (
+            {[...new Set(partners.map((p) => p.tier))].map((tier, i, tiers) => (
               <div key={tier} className="flex flex-wrap items-center gap-x-12 gap-y-8">
                 {partners
                   .filter((p) => p.tier === tier)
                   .map((p) => (
                     <PartnerLogo key={p.id} p={p} />
                   ))}
+                {i === tiers.length - 1 && (
+                  <span className="text-[#293C4B] text-lg font-[var(--font-zuume)] font-black tracking-tight">
+                    ... and more!
+                  </span>
+                )}
               </div>
             ))}
-            <span className="text-[#293C4B] text-lg font-[var(--font-zuume)] font-black tracking-tight">
-              ... and more!
-            </span>
           </div>
         )}
       </div>
