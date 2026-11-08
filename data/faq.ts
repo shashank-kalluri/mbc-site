@@ -7,7 +7,7 @@ export const faqItems = [
   {
     question: "Where is UBC being hosted?",
     answer:
-      "The University Blockchain Conference is being hosted at UT Austin in Austin, Texas. Exact venue details coming soon.",
+      "The University Blockchain Conference is being hosted at the AT&T Hotel and Conference Center at UT Austin, 1900 University Ave, Austin, Texas.",
   },
   {
     question: "When is UBC 2026?",

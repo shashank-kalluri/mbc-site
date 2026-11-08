@@ -55,10 +55,12 @@ export default function Countdown({ eventDate }: CountdownProps) {
             <div key={label} className="flex items-end">
               <div className="flex flex-col">
                 <span
-                  className="font-[var(--font-zuume)] font-black text-[#EC8644] leading-none tabular-nums"
+                  className={`font-[var(--font-zuume)] font-black text-[#EC8644] leading-none tabular-nums transition-opacity duration-300 ${
+                    mounted ? "opacity-100" : "opacity-0"
+                  }`}
                   style={{ fontSize: "clamp(48px, 9vw, 140px)" }}
                 >
-                  {mounted ? pad(value) : "00"}
+                  {pad(value)}
                 </span>
                 <span className="text-white/30 text-xs font-medium uppercase tracking-[0.18em] mt-1.5 pl-1">
                   {label}

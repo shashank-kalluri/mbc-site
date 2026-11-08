@@ -215,8 +215,7 @@ const STACK_EXAMPLE: { label: string; amount: number; bar: string }[] = [
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 const WEEK = [
-  { date: "Nov 12", title: "Kickoff call", note: "6 PM CST · tracks and Q&A with sponsors", link: { href: KICKOFF_URL, label: "RSVP on Luma" } },
-  { date: "Nov 13", title: "Hacking starts", note: "12 PM CST · build from anywhere" },
+  { date: "Nov 12", title: "Kickoff + hacking starts", note: "6 PM CST · tracks, sponsor Q&A, then build from anywhere", link: { href: KICKOFF_URL, label: "RSVP on Luma" } },
   { date: "Nov 16–19", title: "Workshops", note: "Nightly office hours with sponsor engineers", link: { href: SCHEDULE_URL, label: "Full schedule" } },
   { date: "Nov 20", title: "Submit", note: "12 PM CST on Devpost · finalists told by midnight" },
   { date: "Nov 21", title: "Finals at UBC", note: "Up to 13 teams pitch live in Austin" },
@@ -559,7 +558,7 @@ export default function HackathonProgram() {
                 >
                   <CalendarDays size={15} className="text-[#EC8644] shrink-0" />
                   <span>
-                    Join the kickoff call on Thursday, Nov 12 at 6 PM CST.{" "}
+                    Hacking kicks off with a call on Thursday, Nov 12 at 6 PM CST.{" "}
                     <span className="font-semibold text-[#EC8644] group-hover:underline underline-offset-4">
                       RSVP on Luma
                     </span>
@@ -609,7 +608,7 @@ export default function HackathonProgram() {
                 animate="show"
                 className="text-white/35 text-[11px] sm:text-xs tracking-[0.2em] uppercase mt-9"
               >
-                Online Nov 13–20 · Finals Nov 21 at UT Austin
+                Online Nov 12–20 · Finals Nov 21 at UT Austin
               </motion.p>
 
               <motion.div
@@ -984,7 +983,7 @@ export default function HackathonProgram() {
             </Reveal>
           </div>
 
-          <ol className="relative grid gap-8 lg:grid-cols-5 lg:gap-4">
+          <ol className="relative grid gap-8 lg:grid-cols-4 lg:gap-4">
             {/* Connector: vertical on mobile, horizontal on desktop */}
             <span
               aria-hidden
@@ -1066,7 +1065,7 @@ export default function HackathonProgram() {
                     Let&rsquo;s hack<span className="text-[#EC8644]">.</span>
                   </h2>
                   <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
-                    Pick your track, find a team (or go solo), and start building on Nov 13.
+                    Pick your track, find a team (or go solo), and start building on Nov 12.
                     Questions? Ask in the Telegram or drop into office hours.
                   </p>
                   <div className="mt-9">

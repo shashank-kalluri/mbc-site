@@ -77,7 +77,7 @@ const BENEFITS = [
 const LOGISTICS = [
   { Icon: Timer, label: "Applications close", value: "October 25, reviewed on a rolling basis" },
   { Icon: CalendarDays, label: "When", value: "November 20–21, 2026, Demo Day likely the 21st" },
-  { Icon: MapPin, label: "Where", value: "AT&T Center at UT Austin" },
+  { Icon: MapPin, label: "Where", value: "AT&T Hotel and Conference Center at UT Austin" },
   { Icon: Ticket, label: "Eligibility", value: "UBC 2026 attendees only" },
 ];
 

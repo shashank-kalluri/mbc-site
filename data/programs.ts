@@ -25,7 +25,7 @@ export const programs: ProgramMeta[] = [
     name: "Student Founder Stage",
     tagline: "Demo day for founders under 25",
     description:
-      "Select founders under 25 present to accelerators, investors, mentors, and builders at UBC 2026 — with a shot at a non-dilutive grant from College.xyz.",
+      "Select founders under 25 present to accelerators, investors, mentors, and builders at UBC 2026 — with a shot at a $10,000 non-dilutive grant from USC VEDA and College.xyz.",
     detail: "Applications close Oct 25",
     image: "/photos/keynote.jpg",
     status: "live",
@@ -36,7 +36,7 @@ export const programs: ProgramMeta[] = [
     tagline: "One week · $22,000+ in prizes",
     description:
       "Build for a week on any chain, then pitch the finals live at UBC 2026. Prizes from Solana, Circle, Gemini, ElevenLabs, QuickNode, and Grok Bot.",
-    detail: "Hacking starts Nov 13",
+    detail: "Hacking starts Nov 12",
     image: "/photos/hackathon/heads-down.jpg",
     status: "live",
   },
