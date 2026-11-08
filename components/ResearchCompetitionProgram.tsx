@@ -6,7 +6,7 @@ import { Caveat } from "next/font/google";
 import Marquee from "react-fast-marquee";
 import FAQ from "@/components/FAQ";
 import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
-import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Lightbulb, Check, Lock } from "lucide-react";
+import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Lightbulb, Check, Lock, Upload } from "lucide-react";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
@@ -228,17 +228,25 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+const GHOST_BUTTON =
+  "inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors";
+
+/** Once submissions open, the submit button leads and Luma sign-up steps back. */
 function CtaButtons() {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <a
-        href={SIGNUP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
-      >
-        Sign up on Luma <ArrowUpRight size={17} />
-      </a>
+      {SUBMIT_URL ? (
+        <SubmitButton />
+      ) : (
+        <a
+          href={SIGNUP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
+        >
+          Sign up on Luma <ArrowUpRight size={17} />
+        </a>
+      )}
       <a
         href={MEMO_URL}
         target="_blank"
@@ -247,12 +255,12 @@ function CtaButtons() {
       >
         <FileText size={17} /> Read the memo
       </a>
-      <a
-        href={TELEGRAM_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors"
-      >
+      {SUBMIT_URL && (
+        <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer" className={GHOST_BUTTON}>
+          Sign up on Luma <ArrowUpRight size={17} />
+        </a>
+      )}
+      <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className={GHOST_BUTTON}>
         <Send size={16} /> Join the Telegram
       </a>
     </div>
@@ -269,9 +277,12 @@ function SubmitButton({ dark = false }: { dark?: boolean }) {
         href={SUBMIT_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${base} bg-[#EC8644] text-white hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25`}
+        className={`${base} bg-[#EC8644] text-white hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25 ring-4 ring-[#EC8644]/25`}
       >
-        Submit your report <ArrowUpRight size={17} />
+        <Upload size={17} /> Submit your report
+        <span className="text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full bg-white/20">
+          Due Nov 9
+        </span>
       </a>
     );
   }
@@ -827,7 +838,7 @@ export default function ResearchCompetitionProgram() {
                 </p>
                 <div className="mt-9 space-y-3">
                   <CtaButtons />
-                  <SubmitButton dark />
+                  {!SUBMIT_URL && <SubmitButton dark />}
                 </div>
               </div>
             </div>
