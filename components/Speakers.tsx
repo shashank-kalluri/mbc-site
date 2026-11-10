@@ -115,8 +115,10 @@ function MoreSpeakersCard() {
         />
         <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[#EC8644]" />
       </div>
-      <h3 className="mt-3 text-[#293C4B] text-sm font-semibold leading-snug">&hellip; and more!</h3>
-      <p className="mt-0.5 text-[#6B7F8C] text-xs leading-snug">More speakers announced soon.</p>
+      <h3 className="mt-3 text-[#293C4B] text-sm font-semibold leading-snug">&hellip; and many more!</h3>
+      <p className="mt-0.5 text-[#6B7F8C] text-xs leading-snug">
+        More founders, investors, builders and speakers are joining the lineup.
+      </p>
     </article>
   );
 }
