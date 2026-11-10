@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaGlobe, FaLinkedinIn, FaPenNib, FaXTwitter } from "react-icons/fa6";
+import { FaChevronDown, FaGlobe, FaLinkedinIn, FaPenNib, FaXTwitter } from "react-icons/fa6";
 import { getSpeakers } from "@/lib/api/speakers";
 
 type Speaker = {
@@ -45,6 +45,10 @@ const EXTRA_LINKS: Record<string, { href: string; label: string; Icon: typeof Fa
   "henry-zhang": [{ href: "https://henrylzhang.com/", label: "Henry Zhang's website", Icon: FaGlobe }],
 };
 
+/** Speakers shown before "See all". 24 fills whole rows at 3, 4 and 6 columns. */
+const INITIAL_COUNT = 24;
+const PHOTO_SIZES = "(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 200px";
+
 function rank(s: Speaker) {
   const i = TOP_SPEAKERS.indexOf(s.slug ?? "");
   if (i !== -1) return i;
@@ -60,75 +64,59 @@ function SpeakerCard({ s }: { s: Speaker }) {
   ].filter((l) => l.href);
 
   return (
-    <article className="group relative overflow-hidden rounded-2xl bg-[#243040]">
-      {/* Photo */}
-      <div className="relative aspect-[3/4] overflow-hidden">
+    <article className="group">
+      {/* Photo. The navy backing shows behind placeholder.png, a white silhouette on transparency. */}
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-[#2C3B4B] ring-1 ring-[#293C4B]/10">
         <Image
           src={s.image_url || "/speakers/placeholder.png"}
           alt={s.name}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-500 ease-out"
+          sizes={PHOTO_SIZES}
+          className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
         />
-        {/* Gradient for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-        {/* Orange left bar — visible on hover */}
-        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#EC8644] scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom" />
-        {/* Text overlaid */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="text-white font-bold text-base sm:text-lg leading-tight font-[var(--font-zuume)] tracking-tight">
-            {s.name}
-          </h3>
-          <p className="text-white/55 text-xs mt-0.5 line-clamp-1 font-medium">
-            {[s.title, s.company].filter(Boolean).join(" · ")}
-          </p>
-          {links.length > 0 && (
-            <div className="flex items-center gap-1 mt-2 -ml-1.5">
-              {links.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  title={label}
-                  className="p-1.5 rounded-md text-white/60 hover:text-[#EC8644] hover:bg-white/10 transition-colors"
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
+        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[#EC8644] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
       </div>
+      <h3 className="mt-3 text-[#293C4B] text-sm font-semibold leading-snug">{s.name}</h3>
+      <p className="mt-0.5 text-[#6B7F8C] text-xs leading-snug line-clamp-2">
+        {[s.title, s.company].filter(Boolean).join(" · ")}
+      </p>
+      {links.length > 0 && (
+        <div className="flex items-center gap-0.5 mt-1.5 -ml-1">
+          {links.map(({ href, label, Icon }) => (
+            <a
+              key={label}
+              href={href!}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              title={label}
+              className="p-1 rounded text-[#9CADB7] hover:text-[#EC8644] transition-colors"
+            >
+              <Icon className="w-3 h-3" />
+            </a>
+          ))}
+        </div>
+      )}
     </article>
   );
 }
 
-/** Trailing tile signalling the lineup isn't final. placeholder.png is a white
- *  silhouette on transparency, so it sits on the same dark card as a real photo. */
+/** Trailing tile signalling the lineup isn't final. */
 function MoreSpeakersCard() {
   return (
-    <article className="relative overflow-hidden rounded-2xl bg-[#2C3B4B]">
-      <div className="relative aspect-[3/4] overflow-hidden">
+    <article>
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-[#2C3B4B]">
         <Image
           src="/speakers/placeholder.png"
           alt=""
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover opacity-25 scale-[0.78] -translate-y-[8%]"
+          sizes={PHOTO_SIZES}
+          className="object-cover opacity-25 scale-[0.78] translate-y-[6%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#EC8644]" />
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="text-white font-bold text-base sm:text-lg leading-tight font-[var(--font-zuume)] tracking-tight">
-            &hellip; and more!
-          </h3>
-          <p className="text-white/55 text-xs mt-0.5 line-clamp-1 font-medium">
-            Full 2026 lineup announced soon
-          </p>
-        </div>
+        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[#EC8644]" />
       </div>
+      <h3 className="mt-3 text-[#293C4B] text-sm font-semibold leading-snug">&hellip; and more!</h3>
+      <p className="mt-0.5 text-[#6B7F8C] text-xs leading-snug">More speakers announced soon.</p>
     </article>
   );
 }
@@ -136,6 +124,16 @@ function MoreSpeakersCard() {
 export default function Speakers() {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+
+  const hasMore = speakers.length > INITIAL_COUNT;
+  const visible = showAll ? speakers : speakers.slice(0, INITIAL_COUNT);
+
+  function toggleShowAll() {
+    // Collapsing from the bottom of a long grid would strand the reader below the section.
+    if (showAll) document.getElementById("speakers")?.scrollIntoView({ behavior: "smooth" });
+    setShowAll(!showAll);
+  }
 
   useEffect(() => {
     getSpeakers()
@@ -177,12 +175,27 @@ export default function Speakers() {
         ) : speakers.length === 0 ? (
           <p className="text-[#9CADB7] text-sm">Speaker lineup announced soon.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {speakers.map((s) => (
-              <SpeakerCard key={s.id} s={s} />
-            ))}
-            <MoreSpeakersCard />
-          </div>
+          <>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-8">
+              {visible.map((s) => (
+                <SpeakerCard key={s.id} s={s} />
+              ))}
+              {(!hasMore || showAll) && <MoreSpeakersCard />}
+            </div>
+            {hasMore && (
+              <div className="mt-10 flex justify-center">
+                <button
+                  type="button"
+                  onClick={toggleShowAll}
+                  aria-expanded={showAll}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#293C4B]/20 bg-white px-6 py-2.5 text-sm font-semibold text-[#293C4B] hover:border-[#EC8644] hover:text-[#EC8644] transition-colors"
+                >
+                  {showAll ? "Show fewer speakers" : `See all ${speakers.length} speakers`}
+                  <FaChevronDown className={`w-3 h-3 transition-transform ${showAll ? "rotate-180" : ""}`} />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
