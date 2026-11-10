@@ -7,6 +7,7 @@ import { getSpeakers } from "@/lib/api/speakers";
 
 type Speaker = {
   id: number | string;
+  slug?: string | null;
   name: string;
   title?: string | null;
   company?: string | null;
@@ -16,6 +17,29 @@ type Speaker = {
   company_url?: string | null;
   featured?: boolean | null;
 };
+
+/** Headliners shown first, in this order. Everyone else follows alphabetically,
+ *  with photos ahead of placeholders. */
+const TOP_SPEAKERS = [
+  "keith-grossman",
+  "richard-widmann",
+  "vibhu-norby",
+  "scott-aaronson",
+  "alok-vasudev",
+  "nemil-dalal",
+  "lucas-bruder",
+  "ariel-wengroff",
+  "dan-guido",
+  "joe-kelly",
+  "dan-held",
+  "catrina-wang",
+];
+
+function rank(s: Speaker) {
+  const i = TOP_SPEAKERS.indexOf(s.slug ?? "");
+  if (i !== -1) return i;
+  return TOP_SPEAKERS.length + (s.image_url ? 0 : 1);
+}
 
 function SpeakerCard({ s }: { s: Speaker }) {
   const links = [
@@ -107,7 +131,8 @@ export default function Speakers() {
       .then((data) => {
         const all = (data ?? []) as Speaker[];
         const featured = all.filter((s) => s.featured);
-        setSpeakers(featured.length >= 3 ? featured : all.slice(0, 11));
+        // Array sort is stable, so ties keep the alphabetical order from the query.
+        setSpeakers(featured.length >= 3 ? [...featured].sort((a, b) => rank(a) - rank(b)) : all.slice(0, 11));
       })
       .catch(() => setSpeakers([]))
       .finally(() => setLoading(false));
