@@ -41,6 +41,7 @@ const EXTRA_LINKS: Record<string, { href: string; label: string; Icon: typeof Fa
     { href: "https://www.scottaaronson.com/", label: "Scott Aaronson's website", Icon: FaGlobe },
     { href: "https://scottaaronson.blog/", label: "Scott Aaronson's blog", Icon: FaPenNib },
   ],
+  "cory-levy": [{ href: "https://corylevy.com/", label: "Cory Levy's website", Icon: FaGlobe }],
 };
 
 function rank(s: Speaker) {
