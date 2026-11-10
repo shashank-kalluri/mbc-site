@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaGlobe, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { FaGlobe, FaLinkedinIn, FaPenNib, FaXTwitter } from "react-icons/fa6";
 import { getSpeakers } from "@/lib/api/speakers";
 
 type Speaker = {
@@ -35,6 +35,14 @@ const TOP_SPEAKERS = [
   "catrina-wang",
 ];
 
+/** Links the speakers table has no column for, keyed by slug. */
+const EXTRA_LINKS: Record<string, { href: string; label: string; Icon: typeof FaGlobe }[]> = {
+  "scott-aaronson": [
+    { href: "https://www.scottaaronson.com/", label: "Scott Aaronson's website", Icon: FaGlobe },
+    { href: "https://scottaaronson.blog/", label: "Scott Aaronson's blog", Icon: FaPenNib },
+  ],
+};
+
 function rank(s: Speaker) {
   const i = TOP_SPEAKERS.indexOf(s.slug ?? "");
   if (i !== -1) return i;
@@ -46,6 +54,7 @@ function SpeakerCard({ s }: { s: Speaker }) {
     { href: s.company_url, label: `${s.company || "Company"} website`, Icon: FaGlobe },
     { href: s.x_url, label: `${s.name} on X`, Icon: FaXTwitter },
     { href: s.linkedin_url, label: `${s.name} on LinkedIn`, Icon: FaLinkedinIn },
+    ...(EXTRA_LINKS[s.slug ?? ""] ?? []),
   ].filter((l) => l.href);
 
   return (
