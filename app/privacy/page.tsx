@@ -73,8 +73,10 @@ const SECTIONS: Section[] = [
           &ldquo;List me in the Students tab&rdquo; on your profile.
         </p>
         <p>
-          Coffee chat matching is off unless you turn it on. If you do, we use your profile to match
-          you with another attendee and email you both about the match.
+          Coffee chat matching is off unless you turn it on, and you need to be signed in to use it. If
+          you do, we keep your answers and phone number privately with your account, use them to match
+          you with another attendee, share your name, school, phone number and LinkedIn with your match,
+          and email you both about the match.
         </p>
       </>
     ),
@@ -138,7 +140,8 @@ const SECTIONS: Section[] = [
         <p>
           You can use the guide without an account, in which case you are not listed. If you sign in,
           you can turn off the Students tab listing and coffee chat matching at any time from your
-          profile, and you can sign out at any time.
+          profile, and you can sign out at any time. &ldquo;Reset my guide&rdquo; on your profile erases
+          everything you saved, on your phone and in your account.
         </p>
         <p>
           To see, correct or delete the information we hold about you, or to delete your guide
