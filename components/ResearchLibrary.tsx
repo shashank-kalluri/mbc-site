@@ -14,6 +14,7 @@ import {
   TrendingDown,
   TrendingUp,
   X,
+  ChevronDown,
 } from "lucide-react";
 import {
   RESEARCH_TRACKS,
@@ -94,6 +95,8 @@ const byCount = (values: string[]) => {
 };
 
 const TOKENS = byCount(researchReports.map((r) => r.token));
+/** How many of the most-covered tokens show before "Show all". */
+const TOP_TOKEN_COUNT = 12;
 const SCHOOLS = byCount(researchReports.flatMap((r) => r.schools)).sort((a, b) => a[0].localeCompare(b[0]));
 const PROJECT = Object.fromEntries(researchReports.map((r) => [r.token, r.project]));
 
@@ -111,6 +114,7 @@ const EMPTY: Filters = { q: "", track: "", token: "", school: "" };
 export default function ResearchLibrary() {
   const [filters, setFilters] = useState<Filters>(EMPTY);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [allTokens, setAllTokens] = useState(false);
   const [ready, setReady] = useState(false);
 
   // Read filters and the open report from the URL so any view can be shared as a link.
@@ -316,9 +320,25 @@ export default function ResearchLibrary() {
 
           {/* Token */}
           <div className="mt-4 pt-4 border-t border-dashed border-[#293C4B]/15">
-            <p className="text-[#5A6B78] text-[11px] font-semibold tracking-[0.16em] uppercase mb-2.5">Token</p>
+            <div className="flex items-center justify-between gap-3 mb-2.5">
+              <p className="text-[#5A6B78] text-[11px] font-semibold tracking-[0.16em] uppercase">
+                {allTokens ? `All ${TOKENS.length} tokens` : "Most covered tokens"}
+              </p>
+              <button
+                type="button"
+                aria-expanded={allTokens}
+                onClick={() => setAllTokens((v) => !v)}
+                className="inline-flex items-center gap-1 text-[13px] font-semibold text-[#EC8644] hover:underline underline-offset-4"
+              >
+                {allTokens ? "Show fewer" : `Show all ${TOKENS.length}`}
+                <ChevronDown size={15} className={`transition-transform ${allTokens ? "rotate-180" : ""}`} />
+              </button>
+            </div>
             <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by token">
-              {TOKENS.map(([token, n]) => {
+              {TOKENS.filter(
+                // A selected token stays visible even when it's outside the top list.
+                ([token], i) => allTokens || i < TOP_TOKEN_COUNT || token === filters.token,
+              ).map(([token, n]) => {
                 const on = filters.token === token;
                 return (
                   <button
