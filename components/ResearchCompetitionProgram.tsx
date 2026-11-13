@@ -113,9 +113,9 @@ const CRITERIA = [
 ];
 
 const DATES = [
-  { date: "Oct 22", title: "Kickoff town hall", note: "8 PM ET on Google Meet. We'll walk through the tracks and rules and take questions." },
-  { date: "Oct 29", title: "Research tools demo", note: "8 PM ET. Blockworks and Allium show off their tools." },
-  { date: "Nov 9", title: "Reports due", note: "11:59 PM ET. Judges read reports through Nov 15." },
+  { date: "Oct 22", done: true, title: "Kickoff town hall", note: "8 PM ET on Google Meet. We'll walk through the tracks and rules and take questions." },
+  { date: "Oct 29", done: true, title: "Research tools demo", note: "8 PM ET. Blockworks and Allium show off their tools." },
+  { date: "Nov 9", done: true, title: "Reports due", note: "11:59 PM ET. Judges read reports through Nov 15." },
   { date: "Nov 16", title: "Finalists announced", note: "We'll tell the top 3 teams in each track they're presenting." },
   { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch in person in Austin." },
   { date: "Nov 21", title: "Winners announced", note: "At the UBC closing ceremony." },
@@ -556,6 +556,81 @@ export default function ResearchCompetitionProgram() {
         </div>
       </section>
 
+      {/* ---------- Key dates ---------- */}
+      <section className="pt-20 sm:pt-28">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14">
+            <Reveal>
+              <Eyebrow>Key dates</Eyebrow>
+              <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
+                From kickoff to finals
+              </h2>
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
+                Reports are in, and the judges are reading them now. Finalists hear back on Nov 16
+                and pitch in person at UBC on Nov 20.
+              </p>
+            </Reveal>
+            <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
+              <Polaroid {...PHOTOS.headsDown} tilt={-4} className="flex-1 max-w-56" />
+              <Polaroid {...PHOTOS.pitch} tilt={3} className="flex-1 max-w-56 mt-6" />
+            </Reveal>
+          </div>
+
+          <ol className="relative grid gap-8 lg:grid-cols-6 lg:gap-4">
+            {/* Connector: vertical on mobile, horizontal on desktop */}
+            <span
+              aria-hidden
+              className="absolute left-[9px] top-2 bottom-2 border-l-2 border-dashed border-[#293C4B]/15 lg:left-2 lg:right-2 lg:top-[9px] lg:bottom-auto lg:border-l-0 lg:border-t-2"
+            />
+            {DATES.map((d, i) => {
+              const finals = d.date === "Nov 20";
+              const next = !d.done && DATES[i - 1]?.done;
+              return (
+                <motion.li
+                  key={d.title}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.25 }}
+                  className="relative pl-10 lg:pl-0 lg:pt-10"
+                >
+                  <span
+                    className={`absolute left-0 top-0 grid place-items-center w-5 h-5 rounded-full border-[3px] ${
+                      finals
+                        ? "bg-[#EC8644] border-[#EC8644] shadow-[0_0_0_6px_rgba(236,134,68,0.18)]"
+                        : d.done
+                          ? "bg-[#9CADB7] border-[#9CADB7] text-white"
+                          : next
+                            ? "bg-[#F4F3EF] border-[#EC8644] shadow-[0_0_0_6px_rgba(236,134,68,0.18)]"
+                            : "bg-[#F4F3EF] border-[#293C4B]"
+                    }`}
+                  >
+                    {d.done && <Check size={10} strokeWidth={4} />}
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p
+                      className={`font-[var(--font-zuume)] font-black text-3xl sm:text-4xl tracking-tight leading-none ${
+                        finals ? "text-[#EC8644]" : d.done ? "text-[#9CADB7]" : "text-[#293C4B]"
+                      }`}
+                    >
+                      {d.date}
+                    </p>
+                    {next && (
+                      <span className="text-[10px] font-semibold tracking-[0.14em] uppercase px-2 py-0.5 rounded-full bg-[#EC8644] text-white">
+                        Up next
+                      </span>
+                    )}
+                  </div>
+                  <p className={`font-semibold mt-2 ${d.done ? "text-[#5A6B78]" : "text-[#293C4B]"}`}>{d.title}</p>
+                  <p className={`text-sm leading-relaxed mt-1 ${d.done ? "text-[#9CADB7]" : "text-[#5A6B78]"}`}>{d.note}</p>
+                </motion.li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
       {/* ---------- Submissions closed ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
@@ -568,8 +643,7 @@ export default function ResearchCompetitionProgram() {
               <span className="h-px flex-1 bg-[#293C4B]/15" />
             </div>
             <p className="text-center text-[#5A6B78] text-sm leading-relaxed max-w-xl mx-auto mt-4">
-              Reports were due Nov 9. Finalists will be announced Nov 16 and pitch at UBC on Nov 20. The
-              competition details below are kept for reference.
+              Reports were due Nov 9. The competition details below are kept for reference.
             </p>
           </Reveal>
         </div>
@@ -842,66 +916,6 @@ export default function ResearchCompetitionProgram() {
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* ---------- Key dates ---------- */}
-      <section className="pt-20 sm:pt-28">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14">
-            <Reveal>
-              <Eyebrow>Key dates</Eyebrow>
-              <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
-                From kickoff to finals
-              </h2>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
-                You can do all the research from home. Both calls are linked on the Luma page.
-              </p>
-            </Reveal>
-            <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
-              <Polaroid {...PHOTOS.headsDown} tilt={-4} className="flex-1 max-w-56" />
-              <Polaroid {...PHOTOS.pitch} tilt={3} className="flex-1 max-w-56 mt-6" />
-            </Reveal>
-          </div>
-
-          <ol className="relative grid gap-8 lg:grid-cols-6 lg:gap-4">
-            {/* Connector: vertical on mobile, horizontal on desktop */}
-            <span
-              aria-hidden
-              className="absolute left-[9px] top-2 bottom-2 border-l-2 border-dashed border-[#293C4B]/15 lg:left-2 lg:right-2 lg:top-[9px] lg:bottom-auto lg:border-l-0 lg:border-t-2"
-            />
-            {DATES.map((d, i) => {
-              const finals = d.date === "Nov 20";
-              return (
-                <motion.li
-                  key={d.title}
-                  custom={i}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.25 }}
-                  className="relative pl-10 lg:pl-0 lg:pt-10"
-                >
-                  <span
-                    className={`absolute left-0 top-0 w-5 h-5 rounded-full border-[3px] ${
-                      finals
-                        ? "bg-[#EC8644] border-[#EC8644] shadow-[0_0_0_6px_rgba(236,134,68,0.18)]"
-                        : "bg-[#F4F3EF] border-[#293C4B]"
-                    }`}
-                  />
-                  <p
-                    className={`font-[var(--font-zuume)] font-black text-3xl sm:text-4xl tracking-tight leading-none ${
-                      finals ? "text-[#EC8644]" : "text-[#293C4B]"
-                    }`}
-                  >
-                    {d.date}
-                  </p>
-                  <p className="text-[#293C4B] font-semibold mt-2">{d.title}</p>
-                  <p className="text-[#5A6B78] text-sm leading-relaxed mt-1">{d.note}</p>
-                </motion.li>
-              );
-            })}
-          </ol>
         </div>
       </section>
 

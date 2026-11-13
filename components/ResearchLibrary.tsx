@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Sticker } from "@/components/Scrapbook";
 import {
   ArrowLeft,
   ArrowUpRight,
-  FileText,
   GraduationCap,
   Link2,
   Search,
   TrendingDown,
   TrendingUp,
-  Users,
   X,
 } from "lucide-react";
 import {
@@ -28,6 +28,46 @@ const TRACK_STYLE: Record<ResearchTrack, { chip: string; Icon: typeof TrendingUp
   "long-over-250m": { chip: "bg-[#1A2A36] text-white", Icon: TrendingUp },
   "short-over-1b": { chip: "bg-[#F4F3EF] text-[#293C4B] ring-1 ring-[#293C4B]/15", Icon: TrendingDown },
 };
+
+/** Each card's cover takes its track's color, matching the track cards on the competition page. */
+const COVER: Record<ResearchTrack, { bg: string; text: string; muted: string; chip: string; dots: string }> = {
+  "long-under-250m": {
+    bg: "bg-[#EC8644]",
+    text: "text-white",
+    muted: "text-white/75",
+    chip: "bg-white/20 text-white",
+    dots: "rgba(255,255,255,0.9)",
+  },
+  "long-over-250m": {
+    bg: "bg-[#1A2A36]",
+    text: "text-white",
+    muted: "text-white/60",
+    chip: "bg-white/10 text-white/85",
+    dots: "rgba(255,255,255,0.9)",
+  },
+  "short-over-1b": {
+    bg: "bg-[#4F6D82]",
+    text: "text-white",
+    muted: "text-white/70",
+    chip: "bg-white/15 text-white",
+    dots: "rgba(255,255,255,0.9)",
+  },
+};
+
+const AVATAR_COLORS = ["bg-[#EC8644]", "bg-[#293C4B]", "bg-[#9CADB7]", "bg-[#D4703A]", "bg-[#1A2A36]"];
+
+const initials = (name: string) =>
+  name
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+/** A stable color per student, so the same person looks the same on every card. */
+const avatarColor = (name: string) =>
+  AVATAR_COLORS[[...name].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % AVATAR_COLORS.length];
 
 const trackLabel = (t: ResearchTrack) => RESEARCH_TRACKS.find((x) => x.id === t)!.label;
 
@@ -133,6 +173,20 @@ export default function ResearchLibrary() {
     <div className="bg-[#F4F3EF] min-h-screen overflow-x-hidden">
       {/* ---------- Header ---------- */}
       <section className="relative bg-[#1A2A36] overflow-hidden">
+        <Image
+          src="/photos/research-talk.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center opacity-30"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(26,42,54,0.75) 0%, rgba(26,42,54,0.88) 55%, #1A2A36 100%)",
+          }}
+        />
         <div
           className="absolute inset-0 opacity-[0.12] pointer-events-none"
           style={{
@@ -147,7 +201,16 @@ export default function ResearchLibrary() {
               "radial-gradient(ellipse 60% 90% at 90% 0%, rgba(236,134,68,0.22) 0%, rgba(236,134,68,0) 70%)",
           }}
         />
-        <div className="relative max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16 pt-28 pb-14 sm:pt-36 sm:pb-16">
+        <div className="relative max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6, rotate: -30 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 140, damping: 12 }}
+            className="hidden md:block absolute right-10 lg:right-16 bottom-14"
+            aria-hidden
+          >
+            <Sticker rim="READ ✦ SEARCH ✦ LEARN ✦ SHARE ✦ " value={String(researchReports.length)} label="reports" />
+          </motion.div>
           <Link
             href="/programs/research-competition"
             className="inline-flex items-center gap-1.5 text-white/55 text-sm font-medium hover:text-white transition-colors"
@@ -305,10 +368,16 @@ export default function ResearchLibrary() {
           </div>
         ) : (
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {results.map((r) => (
-              <li key={r.id}>
-                <ReportCard report={r} onOpen={() => setOpenId(r.id)} />
-              </li>
+            {results.map((r, i) => (
+              <motion.li
+                key={r.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ delay: (i % 3) * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <ReportCard report={r} tilt={i % 2 ? 0.8 : -0.8} onOpen={() => setOpenId(r.id)} />
+              </motion.li>
             ))}
           </ul>
         )}
@@ -329,46 +398,91 @@ function TrackChip({ track }: { track: ResearchTrack }) {
   );
 }
 
-function ReportCard({ report: r, onOpen }: { report: ResearchReport; onOpen: () => void }) {
+function Avatars({ names }: { names: string[] }) {
+  const shown = names.slice(0, 4);
   return (
-    <article className="group relative h-full bg-white rounded-3xl p-6 flex flex-col transition-all hover:-translate-y-1 hover:shadow-[0_24px_48px_-28px_rgba(26,42,54,0.5)]">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-4xl tracking-tight leading-none">
-            ${r.token}
-          </p>
-          <p className="text-[#5A6B78] text-xs mt-1 truncate">{r.project}</p>
+    <span className="flex -space-x-2 shrink-0" aria-hidden>
+      {shown.map((n) => (
+        <span
+          key={n}
+          className={`grid place-items-center w-7 h-7 rounded-full ring-2 ring-white text-white text-[10px] font-bold ${avatarColor(n)}`}
+        >
+          {initials(n)}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function ReportCard({ report: r, tilt, onOpen }: { report: ResearchReport; tilt: number; onOpen: () => void }) {
+  const reduce = useReducedMotion();
+  const c = COVER[r.track];
+  const { Icon } = TRACK_STYLE[r.track];
+  return (
+    <motion.article
+      whileHover={reduce ? undefined : { y: -6, rotate: tilt }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="group relative h-full bg-white rounded-3xl p-2 flex flex-col shadow-[0_1px_0_rgba(26,42,54,0.04)] hover:shadow-[0_28px_50px_-28px_rgba(26,42,54,0.55)] transition-shadow"
+    >
+      {/* Cover */}
+      <div className={`relative overflow-hidden rounded-[18px] px-5 pt-4 pb-5 ${c.bg} ${c.text}`}>
+        <div
+          className="absolute inset-0 opacity-[0.1] pointer-events-none"
+          style={{ backgroundImage: `radial-gradient(${c.dots} 1px, transparent 1px)`, backgroundSize: "18px 18px" }}
+        />
+        <Icon
+          aria-hidden
+          strokeWidth={1.5}
+          className="absolute -right-5 -bottom-7 w-36 h-36 opacity-[0.14] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:translate-x-1"
+        />
+        <div className="relative flex items-center justify-between gap-3">
+          <span className={`inline-flex items-center gap-1 text-[10px] font-semibold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full ${c.chip}`}>
+            <Icon size={12} strokeWidth={2.5} />
+            {trackLabel(r.track)}
+          </span>
+          <span className={`text-[11px] font-semibold ${c.muted}`}>{r.pages} pages</span>
         </div>
-        <TrackChip track={r.track} />
-      </div>
-
-      <h3 className="text-[#293C4B] font-semibold leading-snug mt-5 line-clamp-3">
-        {/* The stretched button makes the whole card open the reader. */}
-        <button type="button" onClick={onOpen} className="text-left after:absolute after:inset-0 after:rounded-3xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#EC8644]">
-          {r.title}
-        </button>
-      </h3>
-
-      <div className="mt-4 space-y-2 text-sm">
-        <p className="flex items-start gap-2 text-[#293C4B]">
-          <Users size={15} className="text-[#9CADB7] shrink-0 mt-0.5" />
-          <span>{listNames(r.team)}</span>
+        <p
+          className="relative font-[var(--font-zuume)] font-black tracking-tight leading-[0.9] mt-6"
+          style={{ fontSize: "clamp(44px, 4.2vw, 56px)" }}
+        >
+          ${r.token}
         </p>
-        <p className="flex items-start gap-2 text-[#5A6B78]">
-          <GraduationCap size={15} className="text-[#9CADB7] shrink-0 mt-0.5" />
-          <span>{r.schools.length ? r.schools.join(" · ") : "School not listed"}</span>
-        </p>
+        <p className={`relative text-xs font-medium mt-1 ${c.muted}`}>{r.project}</p>
       </div>
 
-      <div className="mt-auto pt-6 flex items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-1.5 text-[#9CADB7] text-xs font-medium">
-          <FileText size={14} /> {r.pages} pages
-        </span>
-        <span className="inline-flex items-center gap-1 text-[#EC8644] text-sm font-semibold group-hover:underline underline-offset-4">
-          Read report <ArrowUpRight size={15} />
-        </span>
+      {/* Body */}
+      <div className="flex-1 flex flex-col px-4 pt-4 pb-3">
+        <h3 className="text-[#293C4B] text-[15px] font-semibold leading-snug line-clamp-3">
+          {/* The stretched button makes the whole card open the reader. */}
+          <button
+            type="button"
+            onClick={onOpen}
+            className="text-left after:absolute after:inset-0 after:rounded-3xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#EC8644]"
+          >
+            {r.title}
+          </button>
+        </h3>
+
+        <div className="flex items-center gap-3 mt-4">
+          <Avatars names={r.team} />
+          <p className="text-[#293C4B] text-[13px] leading-snug line-clamp-2">{listNames(r.team)}</p>
+        </div>
+        <p className="flex items-start gap-2 text-[#5A6B78] text-[13px] mt-2.5">
+          <GraduationCap size={15} className="text-[#9CADB7] shrink-0 mt-px" />
+          <span>{r.schools.join(" · ")}</span>
+        </p>
+
+        <div className="mt-auto pt-5 flex items-center justify-between border-t border-dashed border-[#293C4B]/12">
+          <span className="pt-3 text-[#293C4B] text-sm font-semibold group-hover:text-[#EC8644] transition-colors">
+            Read report
+          </span>
+          <span className="mt-3 grid place-items-center w-8 h-8 rounded-full bg-[#F4F3EF] text-[#293C4B] transition-all group-hover:bg-[#EC8644] group-hover:text-white group-hover:rotate-45">
+            <ArrowUpRight size={16} />
+          </span>
+        </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
