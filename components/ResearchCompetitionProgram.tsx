@@ -232,7 +232,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 const GHOST_BUTTON =
   "inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors";
 
-/** Submissions are closed, so the report library leads and the submit button is grayed out. */
+/** Submissions are closed, so the report library leads. */
 function CtaButtons() {
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -242,7 +242,6 @@ function CtaButtons() {
       >
         <BookOpen size={17} /> Read the reports
       </Link>
-      <SubmitButton dark />
       <a
         href={MEMO_URL}
         target="_blank"
@@ -576,6 +575,9 @@ export default function ResearchCompetitionProgram() {
         </div>
       </section>
 
+      {/* Everything below is the original competition brief, kept for reference.
+          It's desaturated and faded so it reads as archived next to the library above. */}
+      <div className="saturate-[0.15] opacity-80">
       {/* ---------- Tracks ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
@@ -961,6 +963,7 @@ export default function ResearchCompetitionProgram() {
       </section>
 
       <FAQ items={RESEARCH_FAQ} />
+      </div>
 
       {/* ---------- CTA ---------- */}
       <section className="pb-20 sm:pb-28">
