@@ -649,9 +649,6 @@ export default function ResearchCompetitionProgram() {
         </div>
       </section>
 
-      {/* Everything below is the original competition brief, kept for reference.
-          It's desaturated and faded so it reads as archived next to the library above. */}
-      <div className="saturate-[0.15] opacity-80">
       {/* ---------- Tracks ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
@@ -977,7 +974,6 @@ export default function ResearchCompetitionProgram() {
       </section>
 
       <FAQ items={RESEARCH_FAQ} />
-      </div>
 
       {/* ---------- CTA ---------- */}
       <section className="pb-20 sm:pb-28">
