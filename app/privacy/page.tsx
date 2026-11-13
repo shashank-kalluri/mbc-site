@@ -57,7 +57,9 @@ const SECTIONS: Section[] = [
         </p>
         <p>
           If you sign in with Google, Google shares your name, email address and profile photo with
-          us. We use them to create your guide account and show who is signed in. While you are
+          us. If you sign in with your email instead, we collect your email address and the name you
+          enter, and we email you a one-time code to finish signing in. We use this information to
+          create your guide account and show who is signed in. While you are
           signed in, the things you save in the guide are stored in your account so they appear on
           any device you sign in on. This can include your schedule, notes, goals, check-ins, your
           profile, and contact details you add for people you meet.
@@ -109,7 +111,7 @@ const SECTIONS: Section[] = [
           <li>Vercel hosts the website and the guide, and provides page-view analytics.</li>
           <li>Supabase handles guide sign-in and stores guide accounts and saved items.</li>
           <li>Google provides sign-in with Google.</li>
-          <li>Resend sends our emails, such as speaker confirmations and coffee chat matches.</li>
+          <li>Resend sends our emails, such as sign-in codes, speaker confirmations and coffee chat matches.</li>
           <li>Luma handles ticketing and registration.</li>
         </ul>
         <p>They process information on our behalf and only as needed to provide their service.</p>
