@@ -143,7 +143,10 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <p className="text-white/20 text-xs">
-            © {new Date().getFullYear()} University Blockchain Conference. All rights reserved.
+            © {new Date().getFullYear()} University Blockchain Conference. All rights reserved.{" "}
+            <Link href="/privacy" className="hover:text-white/50 transition-colors">
+              Privacy Policy
+            </Link>
           </p>
           <p className="text-white/20 text-xs">
             Built with ♥ in Ann Arbor, MI

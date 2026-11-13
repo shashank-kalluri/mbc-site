@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${BASE}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
     ...livePrograms().map((p) => ({
       url: `${BASE}/programs/${p.slug}`,
       lastModified: new Date(),
