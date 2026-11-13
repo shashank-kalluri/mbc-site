@@ -2,11 +2,13 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Caveat } from "next/font/google";
 import Marquee from "react-fast-marquee";
 import FAQ from "@/components/FAQ";
 import { Polaroid, Sticker, Ticker } from "@/components/Scrapbook";
-import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Lightbulb, Check, Lock, Upload } from "lucide-react";
+import { ArrowUpRight, Send, TrendingUp, TrendingDown, FileText, Mic, Wrench, Lightbulb, Check, Lock, BookOpen, Search, GraduationCap } from "lucide-react";
+import { RESEARCH_TRACKS, researchReports } from "@/data/researchReports";
 
 const handwriting = Caveat({ subsets: ["latin"], weight: ["700"], display: "swap" });
 
@@ -15,9 +17,8 @@ const SIGNUP_URL = "https://luma.com/z1bgn7z8";
 /** Full competition memo: tracks, format, report structure, and judging. */
 const MEMO_URL =
   "https://docs.google.com/document/d/1n_DFfKbDEzRWKLzivAMEYfUhppSXo_ZRtOPZiMajqug/edit?usp=sharing";
-/** Report submission form. Set to null to lock the submit buttons again. */
-const SUBMIT_URL: string | null =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdeYdyU_AWRAw5o5F5myFWyxsbtSQDvz_ZLMYGU2EIWIwgDHw/viewform?usp=dialog";
+/** Every submitted report, searchable. Submissions closed Nov 9. */
+const REPORTS_PATH = "/programs/research-competition/reports";
 /** Competition chat. Join after signing up on Luma. */
 const TELEGRAM_URL = "https://t.me/+AN2V5Da8qh9mYmVh";
 /** Main UBC 2026 registration. Only attendees can compete. */
@@ -160,10 +161,10 @@ const RESEARCH_FAQ = [
     link: { href: MEMO_URL, label: "Read the competition memo" },
   },
   {
-    question: "Where do I submit my report?",
+    question: "Can I still submit a report?",
     answer:
-      "Submit your report through the Google Form by Nov 9 at 11:59 PM ET.",
-    link: { href: SUBMIT_URL, label: "Open the submission form" },
+      "No. Submissions closed on Nov 9 at 11:59 PM ET. You can read every report that was submitted in the report library.",
+    link: { href: REPORTS_PATH, label: "Browse the reports" },
   },
   {
     question: "Can I use AI?",
@@ -231,22 +232,17 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 const GHOST_BUTTON =
   "inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-white/10 backdrop-blur-sm text-white text-sm sm:text-base font-semibold border border-white/40 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/20 hover:border-white/60 transition-colors";
 
-/** Once submissions open, the submit button leads and Luma sign-up steps back. */
+/** Submissions are closed, so the report library leads and the submit button is grayed out. */
 function CtaButtons() {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {SUBMIT_URL ? (
-        <SubmitButton />
-      ) : (
-        <a
-          href={SIGNUP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25"
-        >
-          Sign up on Luma <ArrowUpRight size={17} />
-        </a>
-      )}
+      <Link
+        href={REPORTS_PATH}
+        className="inline-flex items-center gap-2 shrink-0 whitespace-nowrap bg-[#EC8644] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25 ring-4 ring-[#EC8644]/25"
+      >
+        <BookOpen size={17} /> Read the reports
+      </Link>
+      <SubmitButton dark />
       <a
         href={MEMO_URL}
         target="_blank"
@@ -255,11 +251,6 @@ function CtaButtons() {
       >
         <FileText size={17} /> Read the memo
       </a>
-      {SUBMIT_URL && (
-        <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer" className={GHOST_BUTTON}>
-          Sign up on Luma <ArrowUpRight size={17} />
-        </a>
-      )}
       <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className={GHOST_BUTTON}>
         <Send size={16} /> Join the Telegram
       </a>
@@ -267,25 +258,8 @@ function CtaButtons() {
   );
 }
 
-/** Locked until SUBMIT_URL is set. `dark` styles it for the navy CTA panel. */
+/** Grayed out now that submissions have closed. `dark` styles it for navy panels. */
 function SubmitButton({ dark = false }: { dark?: boolean }) {
-  const base =
-    "inline-flex items-center gap-2 shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full";
-  if (SUBMIT_URL) {
-    return (
-      <a
-        href={SUBMIT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${base} bg-[#EC8644] text-white hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/25 ring-4 ring-[#EC8644]/25`}
-      >
-        <Upload size={17} /> Submit your report
-        <span className="text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full bg-white/20">
-          Due Nov 9
-        </span>
-      </a>
-    );
-  }
   // Both labels share one grid cell, so the button stays the width of the
   // longer one while they cross-fade on hover or keyboard focus.
   const swap = "col-start-1 row-start-1 flex items-center gap-2 transition-all duration-300 ease-out";
@@ -294,9 +268,9 @@ function SubmitButton({ dark = false }: { dark?: boolean }) {
       role="button"
       tabIndex={0}
       aria-disabled="true"
-      aria-label="Submit your report. Submission link opening soon."
-      className={`group ${base} cursor-not-allowed select-none border border-dashed outline-none ${
-        dark ? "border-white/30 text-white/45" : "border-[#293C4B]/25 text-[#293C4B]/45"
+      aria-label="Submit your report. Submissions closed on Nov 9."
+      className={`group inline-flex items-center gap-2 shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full cursor-not-allowed select-none border outline-none ${
+        dark ? "bg-white/[0.06] border-white/15 text-white/40" : "bg-[#293C4B]/[0.05] border-[#293C4B]/15 text-[#293C4B]/40"
       }`}
     >
       <Lock size={15} className="shrink-0" />
@@ -307,21 +281,55 @@ function SubmitButton({ dark = false }: { dark?: boolean }) {
           Submit your report
           <span
             className={`text-[10px] font-semibold tracking-[0.16em] uppercase px-2 py-0.5 rounded-full ${
-              dark ? "bg-white/10 text-white/60" : "bg-[#293C4B]/[0.06] text-[#293C4B]/60"
+              dark ? "bg-white/10 text-white/50" : "bg-[#293C4B]/[0.06] text-[#293C4B]/50"
             }`}
           >
-            Link TBD
+            Closed
           </span>
         </span>
         <span
           className={`${swap} translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100`}
         >
-          Submission link opening soon
+          Submissions closed Nov 9
         </span>
       </span>
     </span>
   );
 }
+
+const LIBRARY_STATS = [
+  { value: researchReports.length, label: "reports" },
+  { value: new Set(researchReports.map((r) => r.token)).size, label: "tokens" },
+  { value: new Set(researchReports.flatMap((r) => r.schools)).size, label: "schools" },
+];
+
+const TRACK_SPLIT = RESEARCH_TRACKS.map((t, i) => ({
+  ...t,
+  count: researchReports.filter((r) => r.track === t.id).length,
+  bar: ["bg-[#EC8644]", "bg-[#1A2A36]", "bg-[#9CADB7]"][i],
+}));
+
+/** The most-covered tokens, shown as shortcuts into the filtered library. */
+const TOP_TOKENS = Object.entries(
+  researchReports.reduce<Record<string, number>>((acc, r) => ({ ...acc, [r.token]: (acc[r.token] ?? 0) + 1 }), {}),
+)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .slice(0, 8);
+
+/** A few reports to preview in the library mock-up. */
+const PREVIEW_REPORTS = [
+  "GEODNET: The token of real-time geospatial positioning",
+  "Ondo not ONDO: A winning business doesn't mean a winning token",
+  "Short PUMP: I ran bots inside token factories",
+]
+  .map((title) => researchReports.find((r) => r.title === title))
+  .filter((r) => r !== undefined);
+
+const PREVIEW_CHIP: Record<string, string> = {
+  "long-under-250m": "bg-[#EC8644] text-white",
+  "long-over-250m": "bg-[#1A2A36] text-white",
+  "short-over-1b": "bg-[#F4F3EF] text-[#293C4B] ring-1 ring-[#293C4B]/15",
+};
 
 const DOT_GRID = {
   backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
@@ -404,7 +412,7 @@ export default function ResearchCompetitionProgram() {
                 animate="show"
                 className="text-white/35 text-[11px] sm:text-xs tracking-[0.2em] uppercase mt-9"
               >
-                Kickoff Oct 22 · Reports due Nov 9 · Finals Nov 20 at UT Austin
+                Submissions closed Nov 9 · Finalists announced Nov 16 · Finals Nov 20 at UT Austin
               </motion.p>
             </div>
 
@@ -424,6 +432,149 @@ export default function ResearchCompetitionProgram() {
 
       {/* ---------- Ticker ---------- */}
       <Ticker items={TICKER} className="z-10 -mt-7" />
+
+      {/* ---------- Report library ---------- */}
+      <section className="pt-20 sm:pt-28">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
+          <div className="grid lg:grid-cols-[1fr_1.15fr] gap-12 lg:gap-14 items-center">
+            <Reveal>
+              <Eyebrow>Report library</Eyebrow>
+              <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
+                Read every report from this year&rsquo;s competition
+              </h2>
+              <p className="text-[#5A6B78] text-[15px] sm:text-base leading-relaxed max-w-lg mt-5">
+                All {researchReports.length} written reports are now public. You can search them by token,
+                school, or student, filter by long or short, and read any of them right on the page. It&rsquo;s a
+                good way to see how other students built their case before the finals.
+              </p>
+
+              <dl className="flex gap-10 mt-8">
+                {LIBRARY_STATS.map((s) => (
+                  <div key={s.label}>
+                    <dt className="sr-only">{s.label}</dt>
+                    <dd className="font-[var(--font-zuume)] font-black text-[#293C4B] text-5xl tracking-tight leading-none">
+                      {s.value}
+                    </dd>
+                    <dd className="text-[#5A6B78] text-[11px] font-semibold tracking-[0.18em] uppercase mt-1.5">
+                      {s.label}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-8 max-w-lg">
+                <div className="flex h-3 rounded-full overflow-hidden gap-0.5" aria-hidden>
+                  {TRACK_SPLIT.map((t) => (
+                    <span key={t.id} className={t.bar} style={{ flexGrow: t.count }} />
+                  ))}
+                </div>
+                <ul className="flex flex-wrap gap-x-5 gap-y-1.5 mt-3">
+                  {TRACK_SPLIT.map((t) => (
+                    <li key={t.id}>
+                      <Link
+                        href={`${REPORTS_PATH}?track=${t.id}`}
+                        className="inline-flex items-center gap-1.5 text-sm text-[#5A6B78] hover:text-[#EC8644] transition-colors"
+                      >
+                        <span className={`w-2.5 h-2.5 rounded-full ${t.bar}`} />
+                        {t.label} <span className="text-[#293C4B] font-semibold">{t.count}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <Link
+                href={REPORTS_PATH}
+                className="inline-flex items-center gap-2 mt-9 bg-[#293C4B] text-white text-sm sm:text-base font-semibold px-6 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-[#1A2A36] transition-colors shadow-lg shadow-[#293C4B]/20"
+              >
+                <BookOpen size={17} /> Browse all {researchReports.length} reports <ArrowUpRight size={16} />
+              </Link>
+            </Reveal>
+
+            {/* A preview of the library itself */}
+            <Reveal i={1}>
+              <motion.div
+                initial={{ rotate: 1.2 }}
+                whileHover={reduce ? undefined : { rotate: 0, y: -4 }}
+                transition={{ type: "spring", stiffness: 220, damping: 20 }}
+                className="relative bg-white rounded-3xl p-5 sm:p-7 shadow-[0_24px_48px_-24px_rgba(26,42,54,0.45)]"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#EC8644]/35 rotate-[-3deg]"
+                />
+                <Link
+                  href={REPORTS_PATH}
+                  className="flex items-center gap-3 h-11 rounded-full bg-[#F4F3EF] px-4 text-[#9CADB7] text-sm hover:ring-2 hover:ring-[#EC8644]/40 transition"
+                >
+                  <Search size={16} /> Search by token, school, or student
+                </Link>
+                <p className="text-[#5A6B78] text-[11px] font-semibold tracking-[0.16em] uppercase mt-5 mb-2.5">
+                  Most covered tokens
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {TOP_TOKENS.map(([token, n]) => (
+                    <Link
+                      key={token}
+                      href={`${REPORTS_PATH}?token=${token}`}
+                      className="inline-flex items-center gap-1 h-8 px-3 rounded-full text-[13px] font-semibold bg-white text-[#293C4B] ring-1 ring-[#293C4B]/12 hover:ring-[#EC8644] hover:text-[#EC8644] transition-colors"
+                    >
+                      ${token} <span className="text-[11px] text-[#9CADB7]">{n}</span>
+                    </Link>
+                  ))}
+                </div>
+                <ul className="mt-5 space-y-2.5">
+                  {PREVIEW_REPORTS.map((r) => (
+                    <li key={r.id}>
+                      <Link
+                        href={`${REPORTS_PATH}?report=${r.id}`}
+                        className="group flex items-start gap-4 rounded-2xl border border-[#293C4B]/10 p-4 hover:border-[#EC8644]/60 transition-colors"
+                      >
+                        <span className="font-[var(--font-zuume)] font-black text-[#293C4B] text-2xl tracking-tight leading-none w-[5.5rem] shrink-0 pt-0.5">
+                          ${r.token}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-[#293C4B] text-sm font-semibold leading-snug line-clamp-2 group-hover:text-[#EC8644] transition-colors">
+                            {r.title}
+                          </span>
+                          <span className="flex items-center gap-1.5 text-[#5A6B78] text-xs mt-1 truncate">
+                            <GraduationCap size={13} className="shrink-0 text-[#9CADB7]" />
+                            {r.schools.join(" · ")}
+                          </span>
+                        </span>
+                        <span
+                          className={`hidden sm:inline-block shrink-0 text-[9px] font-semibold tracking-[0.14em] uppercase px-2 py-1 rounded-full ${PREVIEW_CHIP[r.track]}`}
+                        >
+                          {RESEARCH_TRACKS.find((t) => t.id === r.track)!.short}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Submissions closed ---------- */}
+      <section className="pt-20 sm:pt-28">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
+          <Reveal>
+            <div className="flex items-center gap-4">
+              <span className="h-px flex-1 bg-[#293C4B]/15" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#293C4B] text-white text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase px-4 py-2 whitespace-nowrap">
+                <Lock size={13} /> Submissions are closed
+              </span>
+              <span className="h-px flex-1 bg-[#293C4B]/15" />
+            </div>
+            <p className="text-center text-[#5A6B78] text-sm leading-relaxed max-w-xl mx-auto mt-4">
+              Reports were due Nov 9. Finalists will be announced Nov 16 and pitch at UBC on Nov 20. The
+              competition details below are kept for reference.
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ---------- Tracks ---------- */}
       <section className="pt-20 sm:pt-28">
@@ -825,7 +976,7 @@ export default function ResearchCompetitionProgram() {
               />
               <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={DOT_GRID} />
               <div className="relative">
-                <Eyebrow>Reports due Nov 9</Eyebrow>
+                <Eyebrow>Submissions are closed</Eyebrow>
                 <h2
                   className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.9]"
                   style={{ fontSize: "clamp(44px, 7vw, 96px)" }}
@@ -833,12 +984,11 @@ export default function ResearchCompetitionProgram() {
                   Make your call<span className="text-[#EC8644]">.</span>
                 </h2>
                 <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mt-5">
-                  Sign up on Luma and join the Telegram so you don&rsquo;t miss updates. You&rsquo;ll
-                  also need to be registered for UBC 2026 to compete.
+                  Every report from this year&rsquo;s competition is in the report library. Finalists
+                  pitch live at UBC on Nov 20, and winners are announced at the closing ceremony.
                 </p>
-                <div className="mt-9 space-y-3">
+                <div className="mt-9">
                   <CtaButtons />
-                  {!SUBMIT_URL && <SubmitButton dark />}
                 </div>
               </div>
             </div>

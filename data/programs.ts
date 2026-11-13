@@ -46,7 +46,7 @@ export const programs: ProgramMeta[] = [
     tagline: "Franklin Crypto · $10,000 prize pool",
     description:
       "Write an investment thesis on one crypto asset, then pitch it live to judges from Franklin Templeton and top funds at UBC 2026.",
-    detail: "Reports due Nov 9",
+    detail: "Submissions closed · Read the reports",
     image: "/photos/research-talk.jpg",
     status: "live",
   },

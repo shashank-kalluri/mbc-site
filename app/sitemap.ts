@@ -35,6 +35,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${BASE}/programs/research-competition/reports`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     ...livePrograms().map((p) => ({
       url: `${BASE}/programs/${p.slug}`,
       lastModified: new Date(),
