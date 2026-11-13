@@ -63,10 +63,15 @@ const SECTIONS: Section[] = [
           profile, and contact details you add for people you meet.
         </p>
         <p>
-          Your profile can include your name, school, and LinkedIn, Instagram and X links. If you
-          turn on &ldquo;List me in the Students tab&rdquo;, that profile is visible to other people
-          using the guide. If you turn on coffee chat matching, we use your profile to match you with
-          another attendee and email you both about the match. Both are off unless you turn them on.
+          When you sign in, your name is listed in the guide&rsquo;s Students tab so other attendees
+          can find you. Anything else you add to your profile, such as your school, year, major, and
+          LinkedIn, Instagram and X links, shows on that listing too. Your email address and phone
+          number are never listed. You can take yourself off the list at any time by turning off
+          &ldquo;List me in the Students tab&rdquo; on your profile.
+        </p>
+        <p>
+          Coffee chat matching is off unless you turn it on. If you do, we use your profile to match
+          you with another attendee and email you both about the match.
         </p>
       </>
     ),
@@ -128,8 +133,9 @@ const SECTIONS: Section[] = [
     body: (
       <>
         <p>
-          You can use the guide without an account. You can turn off the Students tab listing and
-          coffee chat matching at any time from your profile, and you can sign out at any time.
+          You can use the guide without an account, in which case you are not listed. If you sign in,
+          you can turn off the Students tab listing and coffee chat matching at any time from your
+          profile, and you can sign out at any time.
         </p>
         <p>
           To see, correct or delete the information we hold about you, or to delete your guide
