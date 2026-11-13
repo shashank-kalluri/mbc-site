@@ -65,9 +65,10 @@ const SECTIONS: Section[] = [
           profile, and contact details you add for people you meet.
         </p>
         <p>
-          When you sign in, your name is listed in the guide&rsquo;s Students tab so other attendees
-          can find you. Anything else you add to your profile, such as your school, year, major, and
-          LinkedIn, Instagram and X links, shows on that listing too. Your email address and phone
+          When you sign in and your profile has your email address and school, your name and school
+          are listed in the guide&rsquo;s Students tab so other attendees can find you. Anything else
+          you add to your profile, such as your year, major, and LinkedIn, Instagram and X links,
+          shows on that listing too. Your email address and phone
           number are never listed. You can take yourself off the list at any time by turning off
           &ldquo;List me in the Students tab&rdquo; on your profile.
         </p>
