@@ -181,7 +181,7 @@ export default function Hero() {
               href="https://guide.universityblockchain.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 whitespace-nowrap border border-white/50 text-white text-sm sm:text-base font-semibold px-5 sm:px-7 py-2.5 sm:py-3 rounded-full hover:bg-white/10 hover:border-white/80 transition-colors"
+              className="btn-holo shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-5 sm:px-7 py-2.5 sm:py-3 rounded-full"
             >
               Attendee Guide
             </a>
