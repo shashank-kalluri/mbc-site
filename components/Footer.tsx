@@ -54,14 +54,24 @@ export default function Footer() {
               Nov 20–21, 2026 · UT Austin, Texas
             </p>
           </div>
-          <a
-            href="https://luma.com/n4ad0k9m"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 bg-[#EC8644] text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
-          >
-            Get Tickets →
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="https://luma.com/n4ad0k9m"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 bg-[#EC8644] text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-[#D4703A] transition-colors shadow-lg shadow-[#EC8644]/20"
+            >
+              Get Tickets →
+            </a>
+            <a
+              href="https://guide.universityblockchain.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 border border-white/30 text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-white/10 hover:border-white/60 transition-colors"
+            >
+              Attendee Guide
+            </a>
+          </div>
         </div>
       </div>
 
