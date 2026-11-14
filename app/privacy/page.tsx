@@ -65,6 +65,17 @@ const SECTIONS: Section[] = [
           profile, and contact details you add for people you meet.
         </p>
         <p>
+          When you sign in, we check your email address against the UBC 2026 registrations in Luma,
+          our ticketing service. We also check it against the university email address you gave when
+          you registered. If we find your registration, the guide fills in your profile from your
+          registration answers (your name, school, graduation year, major, LinkedIn, X and goals),
+          which you can change. Your ticket type and check-in QR code are also saved in the guide on
+          your device so you can show them at the door. If we don&rsquo;t find a registration, the
+          guide tells you so. To match university email addresses, we keep a private copy of
+          registered attendees&rsquo; Luma guest IDs and email addresses that only our server can
+          read.
+        </p>
+        <p>
           When you sign in and your profile has your email address and school, your name and school
           are listed in the guide&rsquo;s Students tab so other attendees can find you. Anything else
           you add to your profile, such as your year, major, and LinkedIn, Instagram and X links,
@@ -115,7 +126,7 @@ const SECTIONS: Section[] = [
           <li>Supabase handles guide sign-in and stores guide accounts and saved items.</li>
           <li>Google provides sign-in with Google.</li>
           <li>Resend sends our emails, such as sign-in codes, speaker confirmations and coffee chat matches.</li>
-          <li>Luma handles ticketing and registration.</li>
+          <li>Luma handles ticketing and registration, and tells the guide whether a signed-in account is registered.</li>
         </ul>
         <p>They process information on our behalf and only as needed to provide their service.</p>
       </>
