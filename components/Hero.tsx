@@ -177,14 +177,6 @@ export default function Hero() {
             >
               Get Tickets →
             </a>
-            <a
-              href="https://guide.universityblockchain.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-holo shrink-0 whitespace-nowrap text-sm sm:text-base font-semibold px-5 sm:px-7 py-2.5 sm:py-3 rounded-full"
-            >
-              Attendee Guide
-            </a>
             <ProgramsButton />
           </div>
         </motion.div>

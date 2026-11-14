@@ -25,7 +25,6 @@ const navLinks: NavEntry[] = [
     href: "#",
     label: "Resources",
     children: [
-      { href: "https://guide.universityblockchain.org", label: "Attendee Guide", external: true },
       { href: "/speak", label: "Speak at UBC" },
       { href: "/travel-grants", label: "Travel Grants" },
       {
