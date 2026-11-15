@@ -183,6 +183,9 @@ function StageGrid({ day, sessions }: { day: AgendaDay; sessions: Session[] }) {
         gridTemplateRows: `auto repeat(${rows.length}, auto)`,
       }}
     >
+      <p style={{ gridColumn: 1, gridRow: 1 }} className="text-[#9CADB7] text-[11px] font-semibold tracking-[0.12em] uppercase pt-1">
+        Central
+      </p>
       {columns.map((v, i) => (
         <div key={v} style={{ gridColumn: i + 2, gridRow: 1 }} className="pb-1.5">
           <div className="flex items-center gap-2">
@@ -297,8 +300,9 @@ export default function Agenda() {
             Agenda
           </h2>
           <p className="text-[#9CADB7] text-sm mt-3 max-w-xl">
-            Two days of talks, panels, and workshops at UT Austin, with side events each night. All
-            times are Central, and they may still change.
+            Two days of talks, panels, and workshops at UT Austin, with side events each night.{" "}
+            <span className="text-[#293C4B] font-semibold">All times are Central Time (Austin).</span> They
+            may still change.
           </p>
         </div>
 
