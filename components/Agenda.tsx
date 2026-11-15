@@ -298,7 +298,7 @@ export default function Agenda() {
           </h2>
           <p className="text-[#9CADB7] text-sm mt-3 max-w-xl">
             Two days of talks, panels, and workshops at UT Austin, with side events each night. All
-            times are Central. More sessions will be announced soon.
+            times are Central, and they may still change.
           </p>
         </div>
 
