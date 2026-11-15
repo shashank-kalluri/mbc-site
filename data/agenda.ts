@@ -30,10 +30,10 @@ export type AgendaDay = {
   sessions: Session[];
 };
 
-export const VENUES: Record<Venue, { label: string; place?: string }> = {
+export const VENUES: Record<Venue, { label: string; place?: string; /** Shown on phone cards in place of the label. */ short?: string }> = {
   main: { label: "Main Stage", place: "Zlotnick Ballroom" },
   second: { label: "Student Stage", place: "Zlotnick Ballroom" },
-  workshop: { label: "Workshops", place: "Rowling Hall, Classroom 4.314" },
+  workshop: { label: "Workshops", place: "Rowling Hall, Classroom 4.314", short: "Rowling Hall 4.314" },
   side: { label: "Side events", place: "Off-site" },
 };
 

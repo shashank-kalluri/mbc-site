@@ -77,7 +77,7 @@ function SessionCard({ s, showVenue = false, fill = false }: { s: Session; showV
       <article className={`${fill ? "h-full" : ""} rounded-2xl border border-dashed border-[#293C4B]/15 px-4 py-3.5`}>
         <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#9CADB7]">
           {range(s)}
-          {showVenue && venue && <> · {venue.label}</>}
+          {showVenue && venue && <> · {venue.short ?? venue.label}</>}
         </p>
         <p className="text-[#9CADB7] text-sm font-medium mt-1.5">To be announced</p>
       </article>
@@ -94,7 +94,7 @@ function SessionCard({ s, showVenue = false, fill = false }: { s: Session; showV
       />
       <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#9CADB7]">
         {range(s)}
-        {showVenue && venue && <> · {venue.label}</>}
+        {showVenue && venue && <> · {venue.short ?? venue.label}</>}
       </p>
       <h4 className="text-[#293C4B] font-semibold text-[15px] leading-snug mt-1.5">{headline(s)}</h4>
       {people(s) && (
