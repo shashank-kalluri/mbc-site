@@ -53,7 +53,7 @@ const people = (s: Session) => (s.title ? s.with : undefined);
 const matches = (s: Session, q: string) => {
   if (!q) return true;
   const venue = s.venue === "all" ? "" : VENUES[s.venue].label;
-  return [s.title, ...(s.with ?? []), s.place, venue]
+  return [s.title, ...(s.with ?? []), s.place, s.blurb, venue]
     .filter(Boolean)
     .join(" ")
     .toLowerCase()
@@ -112,23 +112,50 @@ function SessionCard({ s, showVenue = false, fill = false }: { s: Session; showV
   );
 }
 
-function SideEventCard({ s }: { s: Session }) {
+/** Opens the place in Google Maps. */
+const mapsUrl = (s: Session) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.place}, ${s.address}`)}`;
+
+function SideEventCard({ s, day }: { s: Session; day: AgendaDay }) {
   return (
     <article className="rounded-2xl bg-[#1A2A36] px-4 py-3.5">
-      <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45">{range(s)}</p>
+      <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/45">
+        {day.short}, Nov {dayNum(day)} · {range(s)}
+      </p>
       <h4 className="text-white font-semibold text-[15px] leading-snug mt-1.5">{headline(s)}</h4>
-      {(s.place || people(s)) && (
-        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-white/55 text-[13px] mt-1.5">
-          {s.place && (
-            <span className="inline-flex items-center gap-1">
-              <MapPin size={13} className="text-[#EC8644]" />
+      {s.blurb && <p className="text-white/70 text-[13px] leading-snug mt-1.5">{s.blurb}</p>}
+      {s.place && (
+        <p className="text-[13px] mt-2">
+          {s.address ? (
+            <a
+              href={mapsUrl(s)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-start gap-1 text-white/80 underline decoration-white/25 underline-offset-4 hover:text-white hover:decoration-[#EC8644]"
+            >
+              <MapPin size={13} className="text-[#EC8644] shrink-0 mt-[3px]" />
+              {s.place}
+            </a>
+          ) : (
+            <span className="inline-flex items-start gap-1 text-white/55">
+              <MapPin size={13} className="text-[#EC8644] shrink-0 mt-[3px]" />
               {s.place}
             </span>
           )}
-          {people(s) && <span>Hosted by {people(s)!.join(" · ")}</span>}
         </p>
       )}
+      {people(s) && <p className="text-white/45 text-xs mt-1.5">Hosted by {people(s)!.join(" · ")}</p>}
       {s.note && <p className="text-white/45 text-xs leading-relaxed mt-2">{s.note}</p>}
+      {s.rsvp && (
+        <a
+          href={s.rsvp}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 mt-3 text-[#EC8644] text-[13px] font-semibold hover:underline underline-offset-4"
+        >
+          RSVP on Luma <ArrowUpRight size={14} />
+        </a>
+      )}
     </article>
   );
 }
@@ -143,7 +170,7 @@ function Band({ s }: { s: Session }) {
   );
 }
 
-function SideEvents({ sessions, wide = false }: { sessions: Session[]; wide?: boolean }) {
+function SideEvents({ sessions, day, wide = false }: { sessions: Session[]; day: AgendaDay; wide?: boolean }) {
   if (sessions.length === 0) return null;
   return (
     <div>
@@ -155,7 +182,7 @@ function SideEvents({ sessions, wide = false }: { sessions: Session[]; wide?: bo
       </div>
       <div className={wide ? "grid sm:grid-cols-2 lg:grid-cols-3 gap-3" : "flex flex-col gap-3"}>
         {sessions.map((s) => (
-          <SideEventCard key={s.start + headline(s)} s={s} />
+          <SideEventCard key={s.start + headline(s)} s={s} day={day} />
         ))}
       </div>
     </div>
@@ -421,7 +448,7 @@ export default function Agenda() {
                 </p>
               </div>
             ) : stage.length === 0 ? (
-              <SideEvents sessions={side} wide />
+              <SideEvents sessions={side} day={day} wide />
             ) : (
               <>
                 <div className="hidden lg:flex gap-8">
@@ -430,13 +457,13 @@ export default function Agenda() {
                   </div>
                   {side.length > 0 && (
                     <aside className="w-[260px] xl:w-[290px] shrink-0 border-l border-[#293C4B]/[0.08] pl-8">
-                      <SideEvents sessions={side} />
+                      <SideEvents sessions={side} day={day} />
                     </aside>
                   )}
                 </div>
                 <div className="lg:hidden flex flex-col gap-10">
                   <StageList sessions={stage} />
-                  <SideEvents sessions={side} />
+                  <SideEvents sessions={side} day={day} />
                 </div>
               </>
             )}
