@@ -1,7 +1,15 @@
 import { supabase, Speaker } from "@/lib/supabase";
 
+// The speakers section and the agenda both read the list, so a page load fetches it once.
+let allSpeakers: Promise<Speaker[]> | null = null;
+
 // Get all speakers
-export async function getSpeakers(): Promise<Speaker[]> {
+export function getSpeakers(): Promise<Speaker[]> {
+  allSpeakers ??= fetchSpeakers();
+  return allSpeakers;
+}
+
+async function fetchSpeakers(): Promise<Speaker[]> {
   try {
     const { data, error } = await supabase
       .from("speakers")
@@ -10,12 +18,14 @@ export async function getSpeakers(): Promise<Speaker[]> {
 
     if (error) {
       console.error("Error fetching speakers:", error);
+      allSpeakers = null;
       return [];
     }
 
     return data || [];
   } catch (error) {
     console.error("Error fetching speakers:", error);
+    allSpeakers = null;
     return [];
   }
 }

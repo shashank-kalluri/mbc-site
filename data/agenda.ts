@@ -10,8 +10,10 @@ export type Session = {
   venue: Venue | "all";
   /** Left out when the speakers are the headline, or when the slot isn't announced yet. */
   title?: string;
-  /** Speakers and organizations on the session. */
+  /** Speakers on a stage session, or the organizations hosting a side event. */
   with?: string[];
+  /** Whoever moderates a panel. Shown after the speakers. */
+  moderator?: string;
   /** Where an off-site event happens. */
   place?: string;
   /** Street address for an off-site event. With it, the place opens in Google Maps. */
@@ -96,7 +98,8 @@ export const AGENDA: AgendaDay[] = [
         end: "11:25",
         venue: "main",
         title: "The Future of Bitcoin: Will Quantum Computing Break It?",
-        with: ["Dhruv Bansal", "Joe Kelly", "Dan Held (moderator)"],
+        with: ["Dhruv Bansal", "Joe Kelly"],
+        moderator: "Dan Held",
       },
       {
         start: "11:30",
@@ -110,7 +113,8 @@ export const AGENDA: AgendaDay[] = [
         end: "12:35",
         venue: "main",
         title: "The State of the Industry: A Venture Perspective",
-        with: ["Henry Harris", "Neil Harounian", "Lou Mohn", "Zack Rosenblatt (moderator)"],
+        with: ["Henry Harris", "Neil Harounian", "Lou Mohn"],
+        moderator: "Zack Rosenblatt",
       },
       {
         start: "12:40",
@@ -124,28 +128,32 @@ export const AGENDA: AgendaDay[] = [
         end: "14:35",
         venue: "main",
         title: "When Finance Becomes Entertainment",
-        with: ["Henry Zhang", "George Heckman", "Matthew Nay", "Schoen Amidor (moderator)"],
+        with: ["Henry Zhang", "George Heckman", "Matthew Nay"],
+        moderator: "Schoen Amidor",
       },
       {
         start: "14:40",
         end: "15:15",
         venue: "main",
         title: "Agentic Commerce: When AI Starts Spending Money",
-        with: ["Christopher Ries", "Abhay Mavalankar", "Reva Jariwala (moderator)"],
+        with: ["Christopher Ries", "Abhay Mavalankar"],
+        moderator: "Reva Jariwala",
       },
       {
         start: "15:20",
         end: "15:55",
         venue: "main",
         title: "Crypto Goes Institutional: What Does That Even Mean?",
-        with: ["Jesse McGannon", "Jacob McCrum", "Gwénolé Martin", "Agha Khan (moderator)"],
+        with: ["Jesse McGannon", "Jacob McCrum", "Gwénolé Martin"],
+        moderator: "Agha Khan",
       },
       {
         start: "16:00",
         end: "16:35",
         venue: "main",
         title: "How Do Sports Teams Use AI?",
-        with: ["Ariel Wengroff", "Jordan Kolosey", "Evan Solomon (moderator)"],
+        with: ["Ariel Wengroff", "Jordan Kolosey"],
+        moderator: "Evan Solomon",
       },
       { start: "16:40", end: "16:50", venue: "main", title: "Day 1 Closing" },
 
@@ -157,7 +165,8 @@ export const AGENDA: AgendaDay[] = [
         end: "12:25",
         venue: "second",
         title: "Recruiters: How to Get a Job in Crypto",
-        with: ["Grace Reginato", "Kaitlyn Wehner", "Ian Carroll", "Brock Benton (moderator)"],
+        with: ["Grace Reginato", "Kaitlyn Wehner", "Ian Carroll"],
+        moderator: "Brock Benton",
       },
       { start: "12:45", end: "13:00", venue: "second", title: "Startup Soup to Nuts", with: ["Aaron Brogan"] },
       {
@@ -165,7 +174,8 @@ export const AGENDA: AgendaDay[] = [
         end: "14:25",
         venue: "second",
         title: "From Research Paper to Protocol",
-        with: ["Steven Willinger", "Cesare Fracassi (moderator)"],
+        with: ["Steven Willinger"],
+        moderator: "Cesare Fracassi",
       },
       {
         start: "14:30",
@@ -267,7 +277,8 @@ export const AGENDA: AgendaDay[] = [
         end: "11:20",
         venue: "main",
         title: "Solana's Next Chapter",
-        with: ["Vibhu Norby", "Lucas Bruder", "Nathan Liow (moderator)"],
+        with: ["Vibhu Norby", "Lucas Bruder"],
+        moderator: "Nathan Liow",
       },
       {
         start: "11:25",
@@ -302,7 +313,8 @@ export const AGENDA: AgendaDay[] = [
         end: "14:20",
         venue: "main",
         title: "Crypto x AI: Making AI Actually Useful",
-        with: ["Alan Orwick", "Grant El-Deir", "Joe Deng", "Arjun Yenamandra (moderator)"],
+        with: ["Alan Orwick", "Grant El-Deir", "Joe Deng"],
+        moderator: "Arjun Yenamandra",
       },
       {
         start: "14:25",
@@ -316,21 +328,24 @@ export const AGENDA: AgendaDay[] = [
         end: "15:35",
         venue: "main",
         title: "DeFi Under Attack: Can Crypto Solve Its Security Problem?",
-        with: ["Tanner Moore", "Brandon Nebeker", "Oliver Tipton", "Ayman Baba (moderator)"],
+        with: ["Tanner Moore", "Brandon Nebeker", "Oliver Tipton"],
+        moderator: "Ayman Baba",
       },
       {
         start: "15:40",
         end: "16:15",
         venue: "main",
         title: "Is Blockchain a Financial Technology?",
-        with: ["Ori Shimony", "Charles Lin", "Lucas “LTR” Raymond", "Evan Fisher (moderator)"],
+        with: ["Ori Shimony", "Charles Lin", "Lucas “LTR” Raymond"],
+        moderator: "Evan Fisher",
       },
       {
         start: "16:20",
         end: "16:55",
         venue: "main",
         title: "Blockchain Club Presidents Panel",
-        with: ["Neena Naikar", "Caleb Hite", "Jack Korinek", "Evan Thompson (moderator)"],
+        with: ["Neena Naikar", "Caleb Hite", "Jack Korinek"],
+        moderator: "Evan Thompson",
       },
       { start: "17:00", end: "17:20", venue: "main", title: "Closing Ceremony and Awards" },
 
@@ -346,7 +361,8 @@ export const AGENDA: AgendaDay[] = [
         end: "12:25",
         venue: "second",
         title: "From Campus to Company",
-        with: ["Pravesh Mansharamani", "Evan Rama", "Karthik Pelleti", "Nate Levine (moderator)"],
+        with: ["Pravesh Mansharamani", "Evan Rama", "Karthik Pelleti"],
+        moderator: "Nate Levine",
       },
       {
         start: "12:30",
