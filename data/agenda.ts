@@ -149,7 +149,7 @@ export const AGENDA: AgendaDay[] = [
       },
       { start: "16:40", end: "16:50", venue: "main", title: "Day 1 Closing" },
 
-      { start: "10:50", end: "11:05", venue: "second", title: "Stand With Crypto", with: ["Mason Lyndaugh"] },
+      { start: "10:50", end: "11:05", venue: "second", title: "Stand With Crypto", with: ["Mason Lynaugh"] },
       { start: "11:10", end: "11:25", venue: "second", title: "Superteam USA", with: ["Nicky Scanz"] },
       { start: "11:30", end: "11:45", venue: "second", title: "Team1", with: ["Alexander Mangin"] },
       {
