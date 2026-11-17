@@ -474,87 +474,75 @@ export default function ResearchCompetitionProgram() {
       <Ticker items={TICKER} className="z-10 -mt-7" />
 
       {/* ---------- Finalists ---------- */}
-      <section id="finalists" className="pt-16 sm:pt-24 scroll-mt-24">
+      <section id="finalists" className="pt-20 sm:pt-28 scroll-mt-24">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
           <Reveal>
-            <div className="relative bg-[#1A2A36] rounded-3xl p-7 sm:p-12 lg:p-14 overflow-hidden ring-4 ring-[#EC8644]/30 shadow-[0_32px_64px_-32px_rgba(26,42,54,0.6)]">
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 60% 70% at 100% 0%, rgba(236,134,68,0.28) 0%, rgba(236,134,68,0) 70%)",
-                }}
-              />
-              <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={DOT_GRID} />
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 px-2 sm:px-0">
+              <div>
+                <Eyebrow>Finalists announced</Eyebrow>
+                <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
+                  The finalists
+                </h2>
+              </div>
+              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
+                Nine teams pitch live at UT Austin on Nov 20. Winners are announced at the closing
+                ceremony on Nov 21.
+              </p>
+            </div>
+          </Reveal>
 
-              <div className="relative">
-                <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
-                  <div>
-                    <Eyebrow>Finalists announced</Eyebrow>
-                    <h2
-                      className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.88]"
-                      style={{ fontSize: "clamp(52px, 8vw, 112px)" }}
-                    >
-                      The <span className="text-[#EC8644]">finalists.</span>
-                    </h2>
-                  </div>
-                  <p className="text-white/65 text-[15px] sm:text-base leading-relaxed max-w-sm lg:text-right lg:pb-3">
-                    Nine teams pitch live at UT Austin on Nov 20. Winners are announced at the closing
-                    ceremony on Nov 21.
-                  </p>
-                </div>
-
-                <div className="grid lg:grid-cols-3 gap-10 lg:gap-8 mt-10 sm:mt-12">
-                  {FINALISTS.map((t) => (
-                    <div key={`${t.side}-${t.cap}`}>
-                      <div className="flex items-end justify-between gap-3 border-b-2 border-white/80 pb-3">
-                        <div>
-                          <p
-                            className={`flex items-center gap-2 font-[var(--font-zuume)] font-black text-4xl sm:text-5xl tracking-tight leading-none ${
-                              t.side === "Long" ? "text-[#EC8644]" : "text-white"
-                            }`}
-                          >
-                            {t.side} <t.Icon size={26} strokeWidth={2.5} />
-                          </p>
-                          <p className="font-[var(--font-zuume)] font-black text-white text-2xl sm:text-[28px] tracking-tight leading-none mt-1">
-                            {t.cap}
-                          </p>
-                        </div>
-                        <span className="text-white/45 text-[10px] font-semibold tracking-[0.16em] uppercase pb-1">
-                          Market cap
-                        </span>
+          <Reveal i={1}>
+            <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_24px_48px_-28px_rgba(26,42,54,0.35)]">
+              <div className="grid lg:grid-cols-3 gap-10 lg:gap-10">
+                {FINALISTS.map((t) => (
+                  <div key={`${t.side}-${t.cap}`}>
+                    <div className="flex items-end justify-between gap-3 border-b-2 border-[#293C4B] pb-3">
+                      <div>
+                        <p
+                          className={`flex items-center gap-1.5 font-[var(--font-zuume)] font-black text-3xl tracking-tight leading-none ${
+                            t.side === "Long" ? "text-[#EC8644]" : "text-[#293C4B]"
+                          }`}
+                        >
+                          {t.side} <t.Icon size={22} strokeWidth={2.5} />
+                        </p>
+                        <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl tracking-tight leading-none mt-1">
+                          {t.cap}
+                        </p>
                       </div>
-                      <ul>
-                        {t.teams.map((team) => (
-                          <li key={team.token} className="border-b border-white/10">
-                            <Link
-                              href={`${REPORTS_PATH}?report=${team.report}`}
-                              className="group flex items-start gap-4 py-4"
-                            >
-                              <span className="min-w-0 flex-1">
-                                <span className="block font-[var(--font-zuume)] font-black text-white text-[34px] sm:text-[40px] tracking-tight leading-none group-hover:text-[#EC8644] transition-colors">
-                                  <span className="text-[#EC8644]">$</span>
-                                  {team.token}
-                                </span>
-                                <span className="block text-white font-semibold leading-snug mt-2">{team.school}</span>
-                                {team.names.length > 0 && (
-                                  <span className="block text-white/50 text-[13px] leading-snug mt-0.5">
-                                    {team.names.join(", ")}
-                                  </span>
-                                )}
-                              </span>
-                              <ArrowUpRight
-                                size={18}
-                                aria-label="Read the report"
-                                className="text-white/30 shrink-0 group-hover:text-[#EC8644] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
-                              />
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="text-[#9CADB7] text-[10px] font-semibold tracking-[0.16em] uppercase pb-0.5">
+                        Market cap
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <ul>
+                      {t.teams.map((team) => (
+                        <li key={team.token} className="border-b border-[#293C4B]/10 last:border-b-0">
+                          <Link
+                            href={`${REPORTS_PATH}?report=${team.report}`}
+                            className="group flex items-start gap-4 py-4"
+                          >
+                            <span className="min-w-0 flex-1">
+                              <span className="block font-[var(--font-zuume)] font-black text-[#293C4B] text-[28px] sm:text-[32px] tracking-tight leading-none group-hover:text-[#EC8644] transition-colors">
+                                <span className="text-[#EC8644]">$</span>
+                                {team.token}
+                              </span>
+                              <span className="block text-[#293C4B] text-sm font-semibold leading-snug mt-2">{team.school}</span>
+                              {team.names.length > 0 && (
+                                <span className="block text-[#5A6B78] text-[13px] leading-snug mt-0.5">
+                                  {team.names.join(", ")}
+                                </span>
+                              )}
+                            </span>
+                            <ArrowUpRight
+                              size={18}
+                              aria-label="Read the report"
+                              className="text-[#9CADB7] shrink-0 group-hover:text-[#EC8644] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </Reveal>
