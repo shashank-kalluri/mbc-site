@@ -168,6 +168,7 @@ export const AGENDA: AgendaDay[] = [
         with: ["Grace Reginato", "Kaitlyn Wehner", "Ian Carroll"],
         moderator: "Brock Benton",
       },
+      { start: "12:30", end: "12:45", venue: "second", title: "Zcash" },
       { start: "12:45", end: "13:00", venue: "second", title: "Startup Soup to Nuts", with: ["Aaron Brogan"] },
       {
         start: "14:00",
