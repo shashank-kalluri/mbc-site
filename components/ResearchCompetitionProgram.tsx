@@ -60,6 +60,47 @@ const TRACKS = [
   },
 ];
 
+/** Announced Nov 16: the top 3 reports in each track, pitching at UBC on Nov 20.
+ *  `report` is the report's Drive ID in `researchReports`. */
+const FINALISTS = [
+  {
+    Icon: TrendingUp,
+    side: "Long",
+    cap: "Over $250M",
+    teams: [
+      { token: "GRASS", school: "UT Austin", report: "1Apl-g8C0cdMZWmGGKWSvmzLBLEhl7tzM" },
+      { token: "RENDER", school: "Dartmouth", report: "1S1iPHCVbTdLEPxy1IRqniVZZwGMLVBBC" },
+      { token: "PEARL", school: "Oregon", report: "1fSBpGPlPsbSA4eMFpxxag9VLQyL8RUlx" },
+    ],
+  },
+  {
+    Icon: TrendingUp,
+    side: "Long",
+    cap: "Under $250M",
+    teams: [
+      { token: "SYRUP", school: "Kansas", report: "1r3VQ6DueZhPafiaPOHRtfQjefeTQSKDp" },
+      { token: "COW", school: "EPFL", report: "1AuDyJSTqjy4_mV2gShaaDVZUimDGSijz" },
+      { token: "TREAD", school: "Wilfrid Laurier", report: "1oe00HuUvs_-oUgcOWId1EalwL1S1HaHR" },
+    ],
+  },
+  {
+    Icon: TrendingDown,
+    side: "Short",
+    cap: "Over $1B",
+    teams: [
+      { token: "VVV", school: "Cornell", report: "13D7ICfO285rgDnr0LM3RuTwFARQdekoK" },
+      { token: "PUMP", school: "Yale", report: "1l7Chx5bpY0XbWoRlbJPTsqzN36W1ArIt" },
+      { token: "WLFI", school: "St Andrews", report: "1M-ySE082kMyt1eMBryhieTwXSUNUnCyk" },
+    ],
+  },
+].map((t) => ({
+  ...t,
+  teams: t.teams.map((team) => ({
+    ...team,
+    names: researchReports.find((r) => r.id === team.report)?.team ?? [],
+  })),
+}));
+
 const TICKER = [
   "Long under $250M",
   "Long over $250M",
@@ -116,7 +157,7 @@ const DATES = [
   { date: "Oct 22", done: true, title: "Kickoff town hall", note: "8 PM ET on Google Meet. We'll walk through the tracks and rules and take questions." },
   { date: "Oct 29", done: true, title: "Research tools demo", note: "8 PM ET. Blockworks and Allium show off their tools." },
   { date: "Nov 9", done: true, title: "Reports due", note: "11:59 PM ET. Judges read reports through Nov 15." },
-  { date: "Nov 16", title: "Finalists announced", note: "We'll tell the top 3 teams in each track they're presenting." },
+  { date: "Nov 16", done: true, title: "Finalists announced", note: "The top 3 teams in each track are presenting at UBC." },
   { date: "Nov 20", title: "Finals at UBC", note: "Finalists pitch in person in Austin." },
   { date: "Nov 21", title: "Winners announced", note: "At the UBC closing ceremony." },
 ];
@@ -174,7 +215,7 @@ const RESEARCH_FAQ = [
   {
     question: "How are finalists picked?",
     answer:
-      "Judges read every report between Nov 9 and Nov 15. The top 3 teams in each track hear back on Nov 16 and pitch at UBC on Nov 20.",
+      "Judges read every report between Nov 9 and Nov 15 and picked the top 3 teams in each track. Those nine teams pitch at UBC on Nov 20.",
   },
   {
     question: "What research tools do I get?",
@@ -411,7 +452,7 @@ export default function ResearchCompetitionProgram() {
                 animate="show"
                 className="text-white/35 text-[11px] sm:text-xs tracking-[0.2em] uppercase mt-9"
               >
-                Submissions closed Nov 9 · Finalists announced Nov 16 · Finals Nov 20 at UT Austin
+                Finalists announced · Finals Nov 20 at UT Austin · Winners Nov 21
               </motion.p>
             </div>
 
@@ -431,6 +472,94 @@ export default function ResearchCompetitionProgram() {
 
       {/* ---------- Ticker ---------- */}
       <Ticker items={TICKER} className="z-10 -mt-7" />
+
+      {/* ---------- Finalists ---------- */}
+      <section id="finalists" className="pt-16 sm:pt-24 scroll-mt-24">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
+          <Reveal>
+            <div className="relative bg-[#1A2A36] rounded-3xl p-7 sm:p-12 lg:p-14 overflow-hidden ring-4 ring-[#EC8644]/30 shadow-[0_32px_64px_-32px_rgba(26,42,54,0.6)]">
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 60% 70% at 100% 0%, rgba(236,134,68,0.28) 0%, rgba(236,134,68,0) 70%)",
+                }}
+              />
+              <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={DOT_GRID} />
+
+              <div className="relative">
+                <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+                  <div>
+                    <Eyebrow>Finalists announced</Eyebrow>
+                    <h2
+                      className="font-[var(--font-zuume)] font-black text-white tracking-tight leading-[0.88]"
+                      style={{ fontSize: "clamp(52px, 8vw, 112px)" }}
+                    >
+                      The <span className="text-[#EC8644]">finalists.</span>
+                    </h2>
+                  </div>
+                  <p className="text-white/65 text-[15px] sm:text-base leading-relaxed max-w-sm lg:text-right lg:pb-3">
+                    Nine teams pitch live at UT Austin on Nov 20. Winners are announced at the closing
+                    ceremony on Nov 21.
+                  </p>
+                </div>
+
+                <div className="grid lg:grid-cols-3 gap-10 lg:gap-8 mt-10 sm:mt-12">
+                  {FINALISTS.map((t) => (
+                    <div key={`${t.side}-${t.cap}`}>
+                      <div className="flex items-end justify-between gap-3 border-b-2 border-white/80 pb-3">
+                        <div>
+                          <p
+                            className={`flex items-center gap-2 font-[var(--font-zuume)] font-black text-4xl sm:text-5xl tracking-tight leading-none ${
+                              t.side === "Long" ? "text-[#EC8644]" : "text-white"
+                            }`}
+                          >
+                            {t.side} <t.Icon size={26} strokeWidth={2.5} />
+                          </p>
+                          <p className="font-[var(--font-zuume)] font-black text-white text-2xl sm:text-[28px] tracking-tight leading-none mt-1">
+                            {t.cap}
+                          </p>
+                        </div>
+                        <span className="text-white/45 text-[10px] font-semibold tracking-[0.16em] uppercase pb-1">
+                          Market cap
+                        </span>
+                      </div>
+                      <ul>
+                        {t.teams.map((team) => (
+                          <li key={team.token} className="border-b border-white/10">
+                            <Link
+                              href={`${REPORTS_PATH}?report=${team.report}`}
+                              className="group flex items-start gap-4 py-4"
+                            >
+                              <span className="min-w-0 flex-1">
+                                <span className="block font-[var(--font-zuume)] font-black text-white text-[34px] sm:text-[40px] tracking-tight leading-none group-hover:text-[#EC8644] transition-colors">
+                                  <span className="text-[#EC8644]">$</span>
+                                  {team.token}
+                                </span>
+                                <span className="block text-white font-semibold leading-snug mt-2">{team.school}</span>
+                                {team.names.length > 0 && (
+                                  <span className="block text-white/50 text-[13px] leading-snug mt-0.5">
+                                    {team.names.join(", ")}
+                                  </span>
+                                )}
+                              </span>
+                              <ArrowUpRight
+                                size={18}
+                                aria-label="Read the report"
+                                className="text-white/30 shrink-0 group-hover:text-[#EC8644] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
+                              />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ---------- Report library ---------- */}
       <section className="pt-20 sm:pt-28">
@@ -566,8 +695,8 @@ export default function ResearchCompetitionProgram() {
                 From kickoff to finals
               </h2>
               <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-md mt-4">
-                Reports are in, and the judges are reading them now. Finalists hear back on Nov 16
-                and pitch in person at UBC on Nov 20.
+                The judges picked nine finalists from the reports. They pitch in person at UBC on
+                Nov 20, and the winners are announced on Nov 21.
               </p>
             </Reveal>
             <Reveal i={1} className="flex gap-4 sm:gap-6 w-full max-w-md lg:w-[26rem] lg:shrink-0 lg:pr-4">
