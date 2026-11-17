@@ -15,8 +15,10 @@ import {
   TrendingUp,
   X,
   ChevronDown,
+  Crown,
 } from "lucide-react";
 import {
+  FINALIST_IDS,
   RESEARCH_TRACKS,
   type ResearchReport,
   type ResearchTrack,
@@ -100,9 +102,15 @@ const TOP_TOKEN_COUNT = 12;
 const SCHOOLS = byCount(researchReports.flatMap((r) => r.schools)).sort((a, b) => a[0].localeCompare(b[0]));
 const PROJECT = Object.fromEntries(researchReports.map((r) => [r.token, r.project]));
 
-/** Alphabetical by token, then title, so reports on the same asset sit together. */
+/** Finalists first, in track order. The rest alphabetical by token, then title, so reports on the same
+ *  asset sit together. */
+const FINALIST_RANK = new Map(FINALIST_IDS.map((id, i) => [id, i]));
+const isFinalist = (r: ResearchReport) => FINALIST_RANK.has(r.id);
 const SORTED = [...researchReports].sort(
-  (a, b) => a.token.localeCompare(b.token) || a.title.localeCompare(b.title),
+  (a, b) =>
+    (FINALIST_RANK.get(a.id) ?? FINALIST_IDS.length) - (FINALIST_RANK.get(b.id) ?? FINALIST_IDS.length) ||
+    a.token.localeCompare(b.token) ||
+    a.title.localeCompare(b.title),
 );
 
 const listNames = (names: string[]) =>
@@ -386,25 +394,59 @@ export default function ResearchLibrary() {
             <p className="text-[#293C4B] font-semibold">No reports match those filters.</p>
             <p className="text-[#5A6B78] text-sm mt-1">Try a different search, or clear the filters to see every report.</p>
           </div>
+        ) : active ? (
+          <CardGrid reports={results} onOpen={setOpenId} />
         ) : (
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {results.map((r, i) => (
-              <motion.li
-                key={r.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ delay: (i % 3) * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <ReportCard report={r} tilt={i % 2 ? 0.8 : -0.8} onOpen={() => setOpenId(r.id)} />
-              </motion.li>
-            ))}
-          </ul>
+          <>
+            {/* With no filters on, the finalists get their own panel above everything else. */}
+            <div className="relative rounded-[32px] bg-gradient-to-b from-[#FBF1DA] to-[#F4F3EF] ring-1 ring-[#D9A441]/30 px-3 pt-8 pb-4 sm:px-6 sm:pt-10 sm:pb-6">
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 px-2 mb-8">
+                <div>
+                  <p className="inline-flex items-center gap-2 text-[#A9781C] text-[11px] font-semibold tracking-[0.2em] uppercase">
+                    <Crown size={14} strokeWidth={2.25} /> Finalists · Pitching live Nov 20
+                  </p>
+                  <h2
+                    className="font-[var(--font-zuume)] font-black text-[#293C4B] tracking-tight leading-[0.95] mt-2"
+                    style={{ fontSize: "clamp(32px, 4vw, 52px)" }}
+                  >
+                    The finalists
+                  </h2>
+                </div>
+                <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
+                  The judges&rsquo; top 3 reports in each track. These teams pitch at UT Austin on Nov 20, and the
+                  winners are announced Nov 21.
+                </p>
+              </div>
+              <CardGrid reports={results.filter(isFinalist)} onOpen={setOpenId} />
+            </div>
+            <h2 className="text-[#5A6B78] text-[11px] font-semibold tracking-[0.18em] uppercase mt-14 mb-4">
+              Every other report
+            </h2>
+            <CardGrid reports={results.filter((r) => !isFinalist(r))} onOpen={setOpenId} />
+          </>
         )}
       </section>
 
       <AnimatePresence>{open && <Reader report={open} onClose={() => setOpenId(null)} />}</AnimatePresence>
     </div>
+  );
+}
+
+function CardGrid({ reports, onOpen }: { reports: ResearchReport[]; onOpen: (id: string) => void }) {
+  return (
+    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6">
+      {reports.map((r, i) => (
+        <motion.li
+          key={r.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ delay: (i % 3) * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <ReportCard report={r} tilt={i % 2 ? 0.8 : -0.8} onOpen={() => onOpen(r.id)} />
+        </motion.li>
+      ))}
+    </ul>
   );
 }
 
@@ -438,12 +480,24 @@ function ReportCard({ report: r, tilt, onOpen }: { report: ResearchReport; tilt:
   const reduce = useReducedMotion();
   const c = COVER[r.track];
   const { Icon } = TRACK_STYLE[r.track];
+  const finalist = isFinalist(r);
   return (
     <motion.article
       whileHover={reduce ? undefined : { y: -6, rotate: tilt }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      className="group relative h-full bg-white rounded-3xl p-2 flex flex-col shadow-[0_1px_0_rgba(26,42,54,0.04)] hover:shadow-[0_28px_50px_-28px_rgba(26,42,54,0.55)] transition-shadow"
+      className={`group relative h-full bg-white rounded-3xl p-2 flex flex-col shadow-[0_1px_0_rgba(26,42,54,0.04)] hover:shadow-[0_28px_50px_-28px_rgba(26,42,54,0.55)] transition-shadow ${
+        finalist ? "ring-2 ring-[#D9A441]/70 shadow-[0_18px_40px_-26px_rgba(169,120,28,0.55)]" : ""
+      }`}
     >
+      {finalist && (
+        // A little gold crown set on the card's corner
+        <span
+          aria-hidden
+          className="absolute -top-4 -left-3 z-10 grid place-items-center w-10 h-10 rounded-full bg-gradient-to-b from-[#F6D981] to-[#D9A441] text-[#5C3D00] shadow-[0_6px_14px_-4px_rgba(169,120,28,0.7)] ring-2 ring-white -rotate-12 transition-transform duration-300 group-hover:-rotate-[20deg] group-hover:scale-110"
+        >
+          <Crown size={20} strokeWidth={2.25} fill="currentColor" fillOpacity={0.15} />
+        </span>
+      )}
       {/* Cover */}
       <div className={`relative overflow-hidden rounded-[18px] px-5 pt-4 pb-5 ${c.bg} ${c.text}`}>
         <div
@@ -460,7 +514,13 @@ function ReportCard({ report: r, tilt, onOpen }: { report: ResearchReport; tilt:
             <Icon size={12} strokeWidth={2.5} />
             {trackLabel(r.track)}
           </span>
-          <span className={`text-[11px] font-semibold ${c.muted}`}>{r.pages} pages</span>
+          {finalist ? (
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-[0.16em] uppercase px-2.5 py-1 rounded-full bg-gradient-to-b from-[#F6D981] to-[#D9A441] text-[#5C3D00]">
+              Finalist
+            </span>
+          ) : (
+            <span className={`text-[11px] font-semibold ${c.muted}`}>{r.pages} pages</span>
+          )}
         </div>
         <p
           className="relative font-[var(--font-zuume)] font-black tracking-tight leading-[0.9] mt-6"
@@ -556,6 +616,11 @@ function Reader({ report: r, onClose }: { report: ResearchReport; onClose: () =>
                 ${r.token}
               </span>
               <TrackChip track={r.track} />
+              {isFinalist(r) && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full bg-gradient-to-b from-[#F6D981] to-[#D9A441] text-[#5C3D00]">
+                  <Crown size={12} strokeWidth={2.5} /> Finalist
+                </span>
+              )}
             </div>
             <h2 className="text-[#293C4B] font-semibold leading-snug mt-2">{r.title}</h2>
             <p className="text-[#5A6B78] text-sm mt-1">

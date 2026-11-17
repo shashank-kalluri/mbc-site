@@ -60,47 +60,6 @@ const TRACKS = [
   },
 ];
 
-/** Announced Nov 16: the top 3 reports in each track, pitching at UBC on Nov 20.
- *  `report` is the report's Drive ID in `researchReports`. */
-const FINALISTS = [
-  {
-    Icon: TrendingUp,
-    side: "Long",
-    cap: "Over $250M",
-    teams: [
-      { token: "GRASS", school: "UT Austin", report: "1Apl-g8C0cdMZWmGGKWSvmzLBLEhl7tzM" },
-      { token: "RENDER", school: "Dartmouth", report: "1S1iPHCVbTdLEPxy1IRqniVZZwGMLVBBC" },
-      { token: "PEARL", school: "Oregon", report: "1fSBpGPlPsbSA4eMFpxxag9VLQyL8RUlx" },
-    ],
-  },
-  {
-    Icon: TrendingUp,
-    side: "Long",
-    cap: "Under $250M",
-    teams: [
-      { token: "SYRUP", school: "Kansas", report: "1r3VQ6DueZhPafiaPOHRtfQjefeTQSKDp" },
-      { token: "COW", school: "EPFL", report: "1AuDyJSTqjy4_mV2gShaaDVZUimDGSijz" },
-      { token: "TREAD", school: "Wilfrid Laurier", report: "1oe00HuUvs_-oUgcOWId1EalwL1S1HaHR" },
-    ],
-  },
-  {
-    Icon: TrendingDown,
-    side: "Short",
-    cap: "Over $1B",
-    teams: [
-      { token: "VVV", school: "Cornell", report: "13D7ICfO285rgDnr0LM3RuTwFARQdekoK" },
-      { token: "PUMP", school: "Yale", report: "1l7Chx5bpY0XbWoRlbJPTsqzN36W1ArIt" },
-      { token: "WLFI", school: "St Andrews", report: "1M-ySE082kMyt1eMBryhieTwXSUNUnCyk" },
-    ],
-  },
-].map((t) => ({
-  ...t,
-  teams: t.teams.map((team) => ({
-    ...team,
-    names: researchReports.find((r) => r.id === team.report)?.team ?? [],
-  })),
-}));
-
 const TICKER = [
   "Long under $250M",
   "Long over $250M",
@@ -473,82 +432,6 @@ export default function ResearchCompetitionProgram() {
       {/* ---------- Ticker ---------- */}
       <Ticker items={TICKER} className="z-10 -mt-7" />
 
-      {/* ---------- Finalists ---------- */}
-      <section id="finalists" className="pt-20 sm:pt-28 scroll-mt-24">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
-          <Reveal>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 px-2 sm:px-0">
-              <div>
-                <Eyebrow>Finalists announced</Eyebrow>
-                <h2 className={H2} style={{ fontSize: "clamp(34px, 4.4vw, 60px)" }}>
-                  The finalists
-                </h2>
-              </div>
-              <p className="text-[#5A6B78] text-[15px] leading-relaxed max-w-sm">
-                Nine teams pitch live at UT Austin on Nov 20. Winners are announced at the closing
-                ceremony on Nov 21.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal i={1}>
-            <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_24px_48px_-28px_rgba(26,42,54,0.35)]">
-              <div className="grid lg:grid-cols-3 gap-10 lg:gap-10">
-                {FINALISTS.map((t) => (
-                  <div key={`${t.side}-${t.cap}`}>
-                    <div className="flex items-end justify-between gap-3 border-b-2 border-[#293C4B] pb-3">
-                      <div>
-                        <p
-                          className={`flex items-center gap-1.5 font-[var(--font-zuume)] font-black text-3xl tracking-tight leading-none ${
-                            t.side === "Long" ? "text-[#EC8644]" : "text-[#293C4B]"
-                          }`}
-                        >
-                          {t.side} <t.Icon size={22} strokeWidth={2.5} />
-                        </p>
-                        <p className="font-[var(--font-zuume)] font-black text-[#293C4B] text-xl tracking-tight leading-none mt-1">
-                          {t.cap}
-                        </p>
-                      </div>
-                      <span className="text-[#9CADB7] text-[10px] font-semibold tracking-[0.16em] uppercase pb-0.5">
-                        Market cap
-                      </span>
-                    </div>
-                    <ul>
-                      {t.teams.map((team) => (
-                        <li key={team.token} className="border-b border-[#293C4B]/10 last:border-b-0">
-                          <Link
-                            href={`${REPORTS_PATH}?report=${team.report}`}
-                            className="group flex items-start gap-4 py-4"
-                          >
-                            <span className="min-w-0 flex-1">
-                              <span className="block font-[var(--font-zuume)] font-black text-[#293C4B] text-[28px] sm:text-[32px] tracking-tight leading-none group-hover:text-[#EC8644] transition-colors">
-                                <span className="text-[#EC8644]">$</span>
-                                {team.token}
-                              </span>
-                              <span className="block text-[#293C4B] text-sm font-semibold leading-snug mt-2">{team.school}</span>
-                              {team.names.length > 0 && (
-                                <span className="block text-[#5A6B78] text-[13px] leading-snug mt-0.5">
-                                  {team.names.join(", ")}
-                                </span>
-                              )}
-                            </span>
-                            <ArrowUpRight
-                              size={18}
-                              aria-label="Read the report"
-                              className="text-[#9CADB7] shrink-0 group-hover:text-[#EC8644] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
-                            />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ---------- Report library ---------- */}
       <section className="pt-20 sm:pt-28">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-10 lg:px-16">
@@ -559,9 +442,9 @@ export default function ResearchCompetitionProgram() {
                 Read every report from this year&rsquo;s competition
               </h2>
               <p className="text-[#5A6B78] text-[15px] sm:text-base leading-relaxed max-w-lg mt-5">
-                All {researchReports.length} written reports are now public. You can search them by token,
-                school, or student, filter by long or short, and read any of them right on the page. It&rsquo;s a
-                good way to see how other students built their case before the finals.
+                All {researchReports.length} written reports are now public, with the nine finalists pinned at
+                the top. You can search them by token, school, or student, filter by long or short, and read any
+                of them right on the page.
               </p>
 
               <dl className="flex gap-10 mt-8">

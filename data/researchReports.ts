@@ -24,6 +24,20 @@ export const RESEARCH_TRACKS: { id: ResearchTrack; label: string; short: string 
   { id: "short-over-1b", label: "Short over $1B", short: "Short >$1B" },
 ];
 
+/** The nine finalists, announced Nov 16: the top 3 reports in each track, pitching at UBC on Nov 20.
+ *  Drive IDs, in track order (long over $250M, long under $250M, short over $1B). */
+export const FINALIST_IDS = [
+  "1Apl-g8C0cdMZWmGGKWSvmzLBLEhl7tzM", // GRASS, UT Austin
+  "1S1iPHCVbTdLEPxy1IRqniVZZwGMLVBBC", // RENDER, Dartmouth
+  "1fSBpGPlPsbSA4eMFpxxag9VLQyL8RUlx", // PRL, Oregon
+  "1r3VQ6DueZhPafiaPOHRtfQjefeTQSKDp", // SYRUP, Kansas
+  "1AuDyJSTqjy4_mV2gShaaDVZUimDGSijz", // COW, EPFL
+  "1oe00HuUvs_-oUgcOWId1EalwL1S1HaHR", // TREAD, Wilfrid Laurier
+  "13D7ICfO285rgDnr0LM3RuTwFARQdekoK", // VVV, Cornell
+  "1l7Chx5bpY0XbWoRlbJPTsqzN36W1ArIt", // PUMP, Yale
+  "1M-ySE082kMyt1eMBryhieTwXSUNUnCyk", // WLFI, St Andrews
+];
+
 export const SUBMISSIONS_FOLDER_URL =
   "https://drive.google.com/drive/folders/1_7fQPNVCh8Zn4kV6yLhwdZGZd6WhrmVh";
 
