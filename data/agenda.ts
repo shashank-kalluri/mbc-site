@@ -88,18 +88,17 @@ export const AGENDA: AgendaDay[] = [
       { start: "10:00", end: "10:15", venue: "main", title: "Opening Remarks" },
       {
         start: "10:20",
-        end: "10:45",
+        end: "10:50",
         venue: "main",
         title: "Fireside: AI Accountability & Agentic Payments",
         with: ["Rich Widmann", "Catrina Wang"],
       },
       {
-        start: "10:50",
+        start: "10:55",
         end: "11:25",
         venue: "main",
-        title: "The Future of Bitcoin: Will Quantum Computing Break It?",
-        with: ["Dhruv Bansal", "Joe Kelly"],
-        moderator: "Dan Held",
+        title: "Building Companies in Bitcoin",
+        with: ["Dan Held", "Joe Kelly"],
       },
       {
         start: "11:30",
@@ -136,7 +135,7 @@ export const AGENDA: AgendaDay[] = [
         end: "15:15",
         venue: "main",
         title: "Agentic Commerce: When AI Starts Spending Money",
-        with: ["Christopher Ries", "Abhay Mavalankar"],
+        with: ["Christopher Ries", "Abhay Mavalankar", "Charles Lin"],
         moderator: "Reva Jariwala",
       },
       {
@@ -157,8 +156,8 @@ export const AGENDA: AgendaDay[] = [
       },
       { start: "16:40", end: "16:50", venue: "main", title: "Day 1 Closing" },
 
-      { start: "10:50", end: "11:05", venue: "second", title: "Stand With Crypto", with: ["Mason Lynaugh"] },
-      { start: "11:10", end: "11:25", venue: "second", title: "Superteam USA", with: ["Nicky Scanz"] },
+      { start: "10:50", end: "11:05", venue: "second", title: "Stand With Crypto" },
+      { start: "11:10", end: "11:25", venue: "second", title: "Superteam USA", with: ["Zach Zelle"] },
       { start: "11:30", end: "11:45", venue: "second", title: "Team1", with: ["Alexandre Mangin"] },
       {
         start: "11:50",
@@ -168,7 +167,7 @@ export const AGENDA: AgendaDay[] = [
         with: ["Grace Reginato", "Kaitlyn Wehner", "Ian Carroll"],
         moderator: "Brock Benton",
       },
-      { start: "12:30", end: "12:45", venue: "second", title: "Zcash" },
+      { start: "12:30", end: "12:45", venue: "second", title: "Zcash", with: ["Daniel Sequeira"] },
       { start: "12:45", end: "13:00", venue: "second", title: "Startup Soup to Nuts", with: ["Aaron Brogan"] },
       {
         start: "14:00",
@@ -337,7 +336,7 @@ export const AGENDA: AgendaDay[] = [
         end: "16:15",
         venue: "main",
         title: "Is Blockchain a Financial Technology?",
-        with: ["Ori Shimony", "Charles Lin", "Lucas “LTR” Raymond"],
+        with: ["Ori Shimony", "Lucas “LTR” Raymond"],
         moderator: "Evan Fisher",
       },
       {
@@ -374,13 +373,13 @@ export const AGENDA: AgendaDay[] = [
       },
       {
         start: "13:30",
-        end: "15:25",
+        end: "15:45",
         venue: "second",
         title: "Student Founder Stage (Batch 2)",
         href: "/programs/founder-stage",
       },
       {
-        start: "15:25",
+        start: "15:55",
         end: "16:55",
         venue: "second",
         title: "Student Founder Stage (Batch 1)",
