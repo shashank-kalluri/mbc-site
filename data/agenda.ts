@@ -350,7 +350,7 @@ export const AGENDA: AgendaDay[] = [
       { start: "17:00", end: "17:20", venue: "main", title: "Closing Ceremony and Awards" },
 
       {
-        start: "10:15",
+        start: "10:00",
         end: "11:45",
         venue: "second",
         title: "Hackathon Finals",
