@@ -127,7 +127,7 @@ export const AGENDA: AgendaDay[] = [
         end: "14:35",
         venue: "main",
         title: "When Finance Becomes Entertainment",
-        with: ["Henry Zhang", "George Heckman", "Matthew Nay"],
+        with: ["Preston Ellis", "George Heckman", "Matthew Nay"],
         moderator: "Schoen Amidor",
       },
       {
