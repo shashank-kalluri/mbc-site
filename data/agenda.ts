@@ -375,14 +375,14 @@ export const AGENDA: AgendaDay[] = [
         start: "13:30",
         end: "15:45",
         venue: "second",
-        title: "Student Founder Stage (Batch 2)",
+        title: "Student Founder Stage: Pre-Seed",
         href: "/programs/founder-stage",
       },
       {
         start: "15:55",
         end: "16:55",
         venue: "second",
-        title: "Student Founder Stage (Batch 1)",
+        title: "Student Founder Stage: Venture-Backed",
         href: "/programs/founder-stage",
       },
 
