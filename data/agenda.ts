@@ -90,7 +90,7 @@ export const AGENDA: AgendaDay[] = [
         start: "10:20",
         end: "10:50",
         venue: "main",
-        title: "Fireside: AI Accountability & Agentic Payments",
+        title: "From AI Agents to Stablecoins: The Future of Web3",
         with: ["Rich Widmann", "Catrina Wang"],
       },
       {
