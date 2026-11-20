@@ -104,7 +104,7 @@ export const AGENDA: AgendaDay[] = [
         start: "11:30",
         end: "11:55",
         venue: "main",
-        title: "A Conversation with Alok Vasudev, Managing Partner of Standard",
+        title: "A Conversation with Alok Vasudev, Managing Partner of Standard Venture",
         with: ["Alok Vasudev", "Dylan Unruh"],
       },
       {
