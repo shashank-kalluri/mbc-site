@@ -18,7 +18,7 @@ export type Session = {
   place?: string;
   /** Street address for an off-site event. With it, the place opens in Google Maps. */
   address?: string;
-  /** A one-line description of an off-site event. */
+  /** A one-line description of an off-site event or a stage session. */
   blurb?: string;
   /** The event's Luma page, where people sign up. */
   rsvp?: string;
@@ -391,6 +391,13 @@ export const AGENDA: AgendaDay[] = [
       { start: "11:00", end: "11:40", venue: "workshop", title: "Monad Workshop", with: ["Kacie Ahmed"] },
       { start: "12:00", end: "12:40", venue: "workshop", title: "Base Workshop", with: ["Fahim Ahmed"] },
       { start: "14:00", end: "14:40", venue: "workshop", title: "Gemini Recruiting Workshop", with: ["Grace Reginato"] },
+      {
+        start: "15:00",
+        end: "15:40",
+        venue: "workshop",
+        title: "Solana Workshop, Part 2",
+        blurb: "Learn a few AI tricks and how to set up Solana payments for your AI agent. Twenty people will leave with a Solana hardware badge.",
+      },
 
       {
         start: "14:30",

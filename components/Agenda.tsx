@@ -176,6 +176,7 @@ function SessionCard({ s, showVenue = false, fill = false }: { s: Session; showV
         <p className="text-[#5A6B78] text-[13px] leading-snug mt-1">{speakers.map((p) => p.name).join(" · ")}</p>
       )}
       {s.moderator && <p className="text-[#9CADB7] text-[12px] leading-snug mt-1">Moderated by {s.moderator}</p>}
+      {s.blurb && <p className="text-[#5A6B78] text-[13px] leading-snug mt-1.5">{s.blurb}</p>}
       {people.length > 0 && (
         <div aria-hidden className="mt-3 flex items-center justify-between gap-2">
           <span className="flex -space-x-1.5">
